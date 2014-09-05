@@ -20,6 +20,13 @@
 ;;;; ---- `identical?` ----
 ;;;; Tests whether two arguments are the same object.
 
+;;; /Clojure Programming/ p433 says:
+;;;     In general, numbers will never be identical?, even if provided as
+;;;     literals.
+
+;;; Here are my first thoughts (partly inspired by my understanding of Common
+;;; Lisp):
+
 (fact (identical? 2 2)       => true)  ; Of course
 (fact (identical? 2N 2N)     => false) ; Possibly surprising
 (fact (identical? 2/3 2/3)   => false) ; Possibly surprising
@@ -33,6 +40,17 @@
 (fact (identical? 2 2M)      => false) ; Not surprising
 (fact (identical? 2 2.0M)    => false) ; Not surprising
 (fact (identical? 2.0 2.0)   => false) ; Not surprising
+
+;;; But then I found this:
+(fact (identical?  127  127) => true)
+(fact (identical?  128  128) => false)
+(fact (identical? -128 -128) => true)
+(fact (identical? -129 -129) => false)
+;;; /Clojure Programming/ p433 says:
+;;;     The exception is that the JVM (and therefore Clojure) provides for a
+;;;     limited range of fixnums. Fixnums are a pool of boxed integer values
+;;;     that are always used in preference to allocating a new integer. [...]
+;;;     The Oracle JVM’s fixnum range is ±127.
 
 ;;;; ---------------------------------------------------------------------------
 ;;;; ---- `=` ----
@@ -101,17 +119,6 @@
 
 
 ;; Maybe mention java.math.BigInteger
-
-;;;; ___________________________________________________________________________
-;;;; ---- Large values ----
-
-;;; Interesting:
-;;;   I got into this when playing with Long/MAX_VALUE.
-;;;     (fact (identical? Long/MAX_VALUE Long/MAX_VALUE) => false)
-;;;   Is this a Java thing?
-(fact (identical? 128 128) => false)  ; **** Huh?
-(fact (= 128 128) => true)            ;      So 8 bits?
-(fact (identical? 127 127) => true)   ;      Hmmmm.
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- =-and-same-type ----

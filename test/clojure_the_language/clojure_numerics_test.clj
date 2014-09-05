@@ -131,11 +131,11 @@
 
 (def max-long-plus-1 9223372036854775808N)
 
-(fact "The 'ordinary' operators throw exceptions on overflow"
-  (inc Long/MAX_VALUE) => (throws ArithmeticException "integer overflow"))
-
-(fact "We can avoid overflow exception by coercing to BigInt first"
-  (inc (bigint Long/MAX_VALUE)) => max-long-plus-1)
+(fact "The 'ordinary' operators"
+  (fact "...throw exceptions on overflow"
+    (inc Long/MAX_VALUE) => (throws ArithmeticException "integer overflow"))
+  (fact "We can avoid overflow exceptions by coercing to BigInt first"
+    (inc (bigint Long/MAX_VALUE)) => max-long-plus-1))
 
 (fact "The xxxx' operators"
   (fact "...auto-promote"

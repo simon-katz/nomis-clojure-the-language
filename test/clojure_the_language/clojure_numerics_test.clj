@@ -129,13 +129,18 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- Bigger than longs ----
 
-(def max-long Long/MAX_VALUE)
 (def max-long-plus-1 9223372036854775808N)
 
-(fact (inc max-long) => (throws ArithmeticException))
-(fact (inc (bigint max-long)) => max-long-plus-1)
+(fact (inc Long/MAX_VALUE) => (throws ArithmeticException))
+(fact (inc (bigint Long/MAX_VALUE)) => max-long-plus-1)
 
-(fact (inc' max-long) => max-long-plus-1)
+(fact (inc' Long/MAX_VALUE) => max-long-plus-1)
 (fact (=-and-same-type (inc' 1) 2) => true)
 
-(fact (unchecked-inc max-long) => throws ArithmeticException) ; **** Huh?
+(fact (unchecked-inc Long/MAX_VALUE) => Long/MIN_VALUE)
+
+(do 
+  (def max-long Long/MAX_VALUE)
+  (fact (unchecked-inc max-long) => (throws ArithmeticException)) ; **** Huh?
+  (fact (let [max-long Long/MAX_VALUE] (unchecked-inc max-long))
+    => Long/MIN_VALUE))

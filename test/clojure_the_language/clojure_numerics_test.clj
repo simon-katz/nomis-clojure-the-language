@@ -127,20 +127,35 @@
 (fact (=-and-same-type 2N 2N) => true)
 
 ;;;; ___________________________________________________________________________
-;;;; ---- Bigger than longs ----
+;;;; ---- Going from longs/Longs to bigger or smaller ----
 
 (def max-long-plus-1 9223372036854775808N)
 
-(fact (inc Long/MAX_VALUE) => (throws ArithmeticException))
-(fact (inc (bigint Long/MAX_VALUE)) => max-long-plus-1)
+(fact "The 'ordinary' operators throw exceptions on overflow"
+  (inc Long/MAX_VALUE) => (throws ArithmeticException "integer overflow"))
 
-(fact (inc' Long/MAX_VALUE) => max-long-plus-1)
-(fact (=-and-same-type (inc' 1) 2) => true)
+(fact "We can avoid overflow exception by coercing to BigInt first"
+  (inc (bigint Long/MAX_VALUE)) => max-long-plus-1)
 
-(fact (unchecked-inc Long/MAX_VALUE) => Long/MIN_VALUE)
+(fact "The xxx' operators"
+  (fact "...auto-promote"
+    (inc' Long/MAX_VALUE) => max-long-plus-1)
+  (fact "...only change the type if necessary"
+    (=-and-same-type (inc' 1) 2) => true))
 
-(do 
-  (def max-long Long/MAX_VALUE)
-  (fact (unchecked-inc max-long) => (throws ArithmeticException)) ; **** Huh?
-  (fact (let [max-long Long/MAX_VALUE] (unchecked-inc max-long))
-    => Long/MIN_VALUE))
+(def boxed-max-long Long/MAX_VALUE)
+
+(fact "The unchecked-xxx operators"
+  (fact "...don't check for overflow"
+    (unchecked-inc Long/MAX_VALUE) => Long/MIN_VALUE)
+  (fact "...only do what you expect on longs, not Longs"
+    ;; The doc strings for unchecked operations only define what happens
+    ;; for (unboxed) longs, not for (boxed) Longs.
+    ;; - See https://groups.google.com/d/msg/clojure/1tefVmYKmpc/2hKlXU-c13sJ
+    (fact "...with a boxed value it seems weird"
+      (unchecked-inc boxed-max-long) => (throws ArithmeticException
+                                                "integer overflow"))
+    (fact "...but with an unboxed value it's as you'd expect"
+      (let [unboxed-max-long Long/MAX_VALUE]
+        (unchecked-inc unboxed-max-long))
+      => Long/MIN_VALUE)))

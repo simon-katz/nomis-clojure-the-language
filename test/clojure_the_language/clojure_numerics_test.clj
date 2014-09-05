@@ -141,7 +141,10 @@
   (fact "...auto-promote"
     (inc' Long/MAX_VALUE) => max-long-plus-1)
   (fact "...only change the type if necessary"
-    (=-and-same-type (inc' 1) 2) => true))
+    (=-and-same-type (inc' 1) 2) => true)
+  (fact "...do not demote"
+    (type (dec' (inc' Long/MAX_VALUE)))
+    => BigInt))
 
 (def boxed-max-long Long/MAX_VALUE)
 

@@ -137,7 +137,7 @@
 (fact "We can avoid overflow exception by coercing to BigInt first"
   (inc (bigint Long/MAX_VALUE)) => max-long-plus-1)
 
-(fact "The xxx' operators"
+(fact "The xxxx' operators"
   (fact "...auto-promote"
     (inc' Long/MAX_VALUE) => max-long-plus-1)
   (fact "...only change the type if necessary"
@@ -145,7 +145,7 @@
 
 (def boxed-max-long Long/MAX_VALUE)
 
-(fact "The unchecked-xxx operators"
+(fact "The unchecked-xxxx operators"
   (fact "...don't check for overflow"
     (unchecked-inc Long/MAX_VALUE) => Long/MIN_VALUE)
   (fact "...only do what you expect on longs, not Longs"

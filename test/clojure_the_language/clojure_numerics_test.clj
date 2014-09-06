@@ -24,32 +24,37 @@
 ;;;   In general, numbers will never be identical?, even if provided as
 ;;;   literals.
 
-(fact (identical? 2 2)       => true)  ; Identical! But remember the "in general"
-(fact (identical? 2000 2000) => false) ; That's more like it
-(fact (identical? 2N 2N)     => false)
-(fact (identical? 2/3 2/3)   => false)
-(fact (identical? 2M 2M)     => false)
-(fact (identical? 2.0M 2.0M) => false)
-(fact (identical? 2.0 2.0)   => false)
+(fact "In general, two numbers created from two same-looking literals are not identical"
+  (fact (identical? 2000 2000) => false)
+  (fact (identical? 2N 2N)     => false)
+  (fact (identical? 2/3 2/3)   => false)
+  (fact (identical? 2M 2M)     => false)
+  (fact (identical? 2.0M 2.0M) => false)
+  (fact (identical? 2.0 2.0)   => false))
 
-(fact (let [x 2N] (identical? x x)) => true) ; Of course
+(fact "2 is identical to 2, which seems to contradict the statement that numbers will never be identical, but remember the 'in general'"
+  (identical? 2 2) => true)
 
-(fact (identical? 2 2N)      => false)
-(fact (identical? 2 2M)      => false)
-(fact (identical? 2 2.0M)    => false)
-(fact (identical? 2.0 2.0)   => false)
+(fact "Same-valued fixnums are identical to each other, but same-valued non-fixnums are not identical to each other"
+  ;; Explained by /Clojure Programming/ p433 which says:
+  ;;   The exception is that the JVM (and therefore Clojure) provides for a
+  ;;   limited range of fixnums. Fixnums are a pool of boxed integer values
+  ;;   that are always used in preference to allocating a new integer. [...]
+  ;;   The Oracle JVM’s fixnum range is ±127.
+  ;;     jsk: Actually -128 to +127
+  (fact (identical? -129 -129) => false)
+  (fact (identical? -128 -128) => true)
+  (fact (identical?  127  127) => true)
+  (fact (identical?  128  128) => false))
 
-;;; But then I found this:
-(fact (identical? -129 -129) => false)
-(fact (identical? -128 -128) => true)
-(fact (identical?  127  127) => true)
-(fact (identical?  128  128) => false)
-;;; Explained by /Clojure Programming/ p433 which says:
-;;;   The exception is that the JVM (and therefore Clojure) provides for a
-;;;   limited range of fixnums. Fixnums are a pool of boxed integer values
-;;;   that are always used in preference to allocating a new integer. [...]
-;;;   The Oracle JVM’s fixnum range is ±127.
-;;;     jsk: Actually -128 to +127
+(fact "But, of course, a number object is identical to itself"
+  (let [x 2N] (identical? x x)) => true)
+
+(fact "And, of course, numbers with different representations are not identical"
+  (fact (identical? 2 2N)      => false)
+  (fact (identical? 2 2M)      => false)
+  (fact (identical? 2 2.0M)    => false)
+  (fact (identical? 2.0 2.0)   => false))
 
 ;;;; ---------------------------------------------------------------------------
 ;;;; ---- `=` ----

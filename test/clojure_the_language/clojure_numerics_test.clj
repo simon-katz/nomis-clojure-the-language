@@ -51,10 +51,10 @@
   (let [x 2N] (identical? x x)) => true)
 
 (fact "And, of course, numbers with different representations are not identical"
-  (fact (identical? 2 2N)      => false)
-  (fact (identical? 2 2M)      => false)
-  (fact (identical? 2 2.0M)    => false)
-  (fact (identical? 2.0 2.0)   => false))
+  (fact (identical? 2 2N)   => false)
+  (fact (identical? 2 2M)   => false)
+  (fact (identical? 2 2.0M) => false)
+  (fact (identical? 2 2.0)  => false))
 
 ;;;; ---------------------------------------------------------------------------
 ;;;; ---- `=` ----

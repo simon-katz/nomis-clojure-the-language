@@ -9,20 +9,18 @@
 ;;; mathematics. So, for example, 2 and 2.0 are equivalent values.
 
 ;;;; ___________________________________________________________________________
-;;;; ---- Numeric types ----
+;;;; ---- Clojure's numeric types ----
 
-;;; Clojure's numeric types (some of which are Java types)
-
-(fact "Certain Clojure types are from java.lang"
+(fact "Some of Clojure's numeric types are from java.lang"
   (fact (= Long   java.lang.Long)   => true)
   (fact (= Double java.lang.Double) => true)
   (fact (= Byte   java.lang.Byte)   => true)
   (fact (= Short  java.lang.Short)  => true))
 
-(fact "Certain Clojure types are from java.math"
+(fact "Some of Clojure's numeric types are from java.math"
   (fact (= BigDecimal java.math.BigDecimal) => true))
 
-(fact "Certain Clojure types are from clojure.lang"
+(fact "Some of Clojure's numeric types are from clojure.lang"
   ;; These are not available without the clojure.lang. prefix
   (fact clojure.lang.BigInt => clojure.lang.BigInt)
   (fact clojure.lang.Ratio  => clojure.lang.Ratio))

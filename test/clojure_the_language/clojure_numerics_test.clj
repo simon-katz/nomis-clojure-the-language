@@ -4,7 +4,7 @@
            clojure.lang.Ratio) ;; **** I'm surprised this is needed.
   )
 
-;;;; ---------------------------------------------------------------------------
+;;;; ___________________________________________________________________________
 ;;;; ---- Numeric types ----
 
 (fact (type 2)    => Long)
@@ -16,9 +16,10 @@
 
 (fact (type 4/2)  => Long)
 
-;;;; ---------------------------------------------------------------------------
+;;;; ___________________________________________________________________________
 ;;;; ---- `identical?` ----
-;;;; Tests whether two arguments are the same object.
+;;;; The doc string:
+;;;;   Tests whether two arguments are the same object.
 
 ;;; /Clojure Programming/ p433 says:
 ;;;   In general, numbers will never be identical?, even if provided as
@@ -56,61 +57,118 @@
   (fact (identical? 2 2.0M) => false)
   (fact (identical? 2 2.0)  => false))
 
-;;;; ---------------------------------------------------------------------------
+;;;; ___________________________________________________________________________
 ;;;; ---- `=` ----
-;;;; Equality. Returns true if x equals y, false if not. Same as Java
-;;;; x.equals(y) except it also works for nil, and compares numbers and
-;;;; collections in a type-independent manner. Clojure's immutable data
-;;;; structures define equals() (and thus =) as a value, not an
-;;;; identity, comparison.
+;;;; The doc string:
+;;;;   Equality. Returns true if x equals y, false if not. Same as Java
+;;;;   x.equals(y) except it also works for nil, and compares numbers and
+;;;;   collections in a type-independent manner. Clojure's immutable data
+;;;;   structures define equals() (and thus =) as a value, not an identity,
+;;;;   comparison.
 
-;;; From /Clojure Programming/, p427: "double is the only representation that
-;;; is inherently inexact".
+;;; I think there's a problem with the doc string:
+;;; - What does it mean by "in a type-independent manner"?
+;;;   - Is this defined in any authoritative place?
+;;; - I would expect e.g. (= 2 2M) => true, but that's not so.
+;;;   - I'm not the only one:
+;;;     - See http://dev.clojure.org/jira/browse/CLJ-1333.
 
-;;; **** AFAICS `=` is broken.
-;;;      It is not comparing numbers in a type-independent manner.
+;;; /Clojure Programming/ p433-444 was helpful.
 
-;;; Summary:
-;;; 
-;;;       =        2    2N   2M  2.0M  2.0
-;;; 
-;;;       2        ✓    ✓    ×    ×    ×
-;;; 
-;;;       2N       ✓    ✓    ×    ×    ×
-;;; 
-;;;       2M       ×    ×    ✓    ✓    ×
-;;; 
-;;;       2.0M     ×    ×    ✓    ✓    ×
-;;; 
-;;;       2.0      ×    ×    ×    ×     ✓ 
+;;; We need the notion of categories of numbers. (Is this defined in any
+;;; authoritative place?)
+;;; - We have:
+;;;   - integers (e.g. 2, 2N)
+;;;   - rationals (e.g. 2/3)
+;;;   - arbitrary-precision decimals (e.g. 2M, 2.0M)
+;;;   - limited-precision decimals (e.g. 2.0, (Float. 2.0))
 
-
-(fact (= 2 2)       => true)  ; Of course
-(fact (= 2N 2N)     => true)  ; Of course
-(fact (= 2/3 2/3)   => true)  ; Of course
-(fact (= 2M 2M)     => true)  ; Of course
-(fact (= 2.0M 2.0M) => true)  ; Of course
-(fact (= 2.0 2.0)   => true)  ; Of course
-
-(fact (= 2 2N)      => true)  ; OK -- both are integers
-(fact (= 2 2M)      => false) ; ???? (Both are precise, so I don't understand)
-(fact (= 2 2.0M)    => false) ; ???? (Both are precise, so I don't understand)
-(fact (= 2 2.0)     => false) ; OK -- one is precise and the other isn't
-
-(fact (= 2N 2M)     => false) ; ???? (Both are precise, so I don't understand)
-(fact (= 2N 2.0M)   => false) ; ???? (Both are precise, so I don't understand)
-(fact (= 2N 2.0)    => false) ; OK -- one is precise and the other isn't
-
-(fact (= 2M 2.0M)   => true)  ; OK -- Both are precise
-(fact (= 2M 2.0)    => false) ; OK -- one is precise and the other isn't
-
-(fact (= 2.0M 2.0)  => false) ; OK -- one is precise and the other isn't
-
+;;; Jeez, Clojure is poorly specified in places.
 
 ;;;; ---------------------------------------------------------------------------
+;;;; ---- Things that are fine ----
+
+(fact "All types of integer are usefully comparable using `=`"
+  ;; From /Clojure Programming/ with adjustments
+  (= 2 2N (Integer. 2) (short 2) (Short. (short 2)) (byte 2) (Byte. (byte 2)))
+  => true)
+
+(fact "Rationals are usefully comparable using `=`"
+  (= 2/3 2/3)
+  => true)
+
+(fact "Arbitrary-precision decimals are usefully comparable using `=`"
+  (= 1.25M
+     1.25M)
+  => true)
+
+(fact "Limited-precision decimals of different widths are usefully comparable using `=`"
+  ;; From /Clojure Programming/
+  (= 1.25 ; a Double
+     (Float. 1.25))
+  => true)
+
+;;;; ---------------------------------------------------------------------------
+;;;; ---- The thing that is, in my opinion, contrary to the doc string ----
+
+(fact "`=` return false for comparisons of equivalent numbers of different categories"
+  ;; From /Clojure Programming/
+  (fact (= 1 1.0) => false)
+  (fact (= 1N 1M) => false)
+  (fact (= 1.25 5/4) => false))
+
+;;;; ---------------------------------------------------------------------------
+;;;; ---- My playing ----
+
+;;; Shows that "same category" is a thing, as /Clojure Programming/ says. Shows
+;;; that the doc string's "type-independent manner" is bollocks (or at least
+;;; open to interpretation).
+
+;;; Summary, showing the equivalence classes apart from rationals:
+;;; 
+;;;       =      |   2    2N   |  2M  2.0M |  2.0
+;;;     ___________________________________________
+;;;              |             |           | 
+;;;       2      |   ✓    ✓    |  ×    ×   |  ×
+;;;              |             |           | 
+;;;       2N     |   ✓    ✓    |  ×    ×   |  ×
+;;;     ___________________________________________
+;;;              |             |           | 
+;;;       2M     |   ×    ×    |  ✓    ✓   |  ×
+;;;              |             |           | 
+;;;       2.0M   |   ×    ×    |  ✓    ✓   |  ×
+;;;     ___________________________________________
+;;;              |             |           | 
+;;;       2.0    |   ×    ×    |  ×    ×   |   ✓ 
+
+(fact "Two numbers created from two same-looking literals are equal with ="
+  (fact (= 2 2)       => true)
+  (fact (= 2N 2N)     => true)
+  (fact (= 2/3 2/3)   => true)
+  (fact (= 2M 2M)     => true)
+  (fact (= 2.0M 2.0M) => true)
+  (fact (= 2.0 2.0)   => true))
+
+(fact "Two numbers of the same category and 'value' are equal with ="
+  (fact (= 2   2N)    => true)
+  (fact (= 2M  2.0M)  => true)
+  (fact (= 2.0 2.0)   => true))
+
+(fact "Two numbers of different categories are not equal with ="
+  (fact (= 2    2M)   => false)
+  (fact (= 2    2.0M) => false)
+  (fact (= 2    2.0)  => false)
+  (fact (= 2N   2M)   => false)
+  (fact (= 2N   2.0M) => false)
+  (fact (= 2N   2.0)  => false)
+  (fact (= 2M   2.0)  => false)
+  (fact (= 2.0M 2.0)  => false))
+
+;;;; ___________________________________________________________________________
 ;;;; ---- `==` ----
-;;;; Returns non-nil if nums all have the equivalent value (type-independent),
-;;;; otherwise false.
+;;;; The doc string:
+;;;;   Returns non-nil if nums all have the equivalent value (type-independent),
+;;;;   otherwise false.
 
 (fact (== 2 2N 2M 2.0M 2.0) => true) ; true even for inexact things
 
@@ -173,3 +231,8 @@
       (let [unboxed-max-long Long/MAX_VALUE]
         (unchecked-inc unboxed-max-long))
       => Long/MIN_VALUE)))
+
+;;;; ___________________________________________________________________________
+;;; **** What do you want to do with this?
+;;; From /Clojure Programming/, p427: "double is the only representation that
+;;; is inherently inexact".

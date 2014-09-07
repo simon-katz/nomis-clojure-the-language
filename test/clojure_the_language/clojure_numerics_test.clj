@@ -22,7 +22,8 @@
 (fact (type 2.0)   => Double)
 (fact (type 2.0)   => java.lang.Double)
 
-(fact (type 4/2) => Long)
+(fact "Ratios are turned into Longs if possible"
+  (type 4/2) => Long)
 
 ;;; Some non-Clojure Java numeric types
 
@@ -88,9 +89,13 @@
 ;;; I think there's a problem with the doc string:
 ;;; - What does it mean by "in a type-independent manner"?
 ;;;   - Is this defined in any authoritative place?
+;;;   - The doc string for `==` uses the phrase "type-independent" with a
+;;;     different (and intuitive) meaning.
 ;;; - I would expect e.g. (= 2 2M) => true, but that's not so.
 ;;;   - I'm not the only one:
 ;;;     - See http://dev.clojure.org/jira/browse/CLJ-1333.
+
+;;; Jeez, Clojure is poorly specified in places.
 
 ;;; /Clojure Programming/ p433-444 was helpful.
 
@@ -101,8 +106,6 @@
 ;;;   - rationals (e.g. 2/3)
 ;;;   - arbitrary-precision decimals (e.g. 2M, 2.0M)
 ;;;   - limited-precision decimals (e.g. 2.0, (Float. 2.0))
-
-;;; Jeez, Clojure is poorly specified in places.
 
 ;;;; ---------------------------------------------------------------------------
 ;;;; ---- Things that are fine ----
@@ -131,10 +134,17 @@
 ;;;; ---- The thing that is, in my opinion, contrary to the doc string ----
 
 (fact "`=` return false for comparisons of equivalent numbers of different categories"
-  ;; From /Clojure Programming/
-  (fact (= 1 1.0) => false)
-  (fact (= 1N 1M) => false)
+  ;; From /Clojure Programming/ with some changes and additions
+  (fact (= 2 2.0)    => false)
+  (fact (= 2 2M)     => false)
+  (fact (= 2N 2M)    => false)
   (fact (= 1.25 5/4) => false))
+
+;;; From /Clojure Programming/:
+;;;   Clojure’s = could obviate these type differences (as Ruby and Python do),
+;;;   but doing so would impose some runtime cost that would be unappreciated by
+;;;   those who need to maximize the performance of programs that work with
+;;;   homogeneous numeric data.
 
 ;;;; ---------------------------------------------------------------------------
 ;;;; ---- My playing ----
@@ -189,18 +199,24 @@
 ;;;;   Returns non-nil if nums all have the equivalent value (type-independent),
 ;;;;   otherwise false.
 
+;;; The doc string uses the phrase "type-independent" in a way that has a
+;;; different meaning to that in the doc string for `=`.
+
+;;; From /Clojure Programming/:
+;;;   Clojure opts to provide a third notion of equality, specifically to
+;;;   address the need for type-insensitive equivalence tests.
+
 (fact (== 2 2N 2M 2.0M 2.0) => true) ; true even for inexact things
 
 ;;;; ___________________________________________________________________________
 
 (fact (type (- 2N 1N)) => clojure.lang.BigInt)
-
 (fact (type (/ 4N 2N)) => clojure.lang.BigInt)
 (fact (type (/ 2N 4N)) => clojure.lang.Ratio)
 
 
 ;;;; ___________________________________________________________________________
-;;;; ---- =-and-same-type ----
+;;;; ---- `=-and-same-type` ----
 
 (defn =-and-same-type
   "Returns true iff (= x y) is true and x and y are of the same type."

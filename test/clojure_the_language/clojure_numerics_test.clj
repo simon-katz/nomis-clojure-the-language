@@ -160,49 +160,63 @@
 ;;;         =   means   (= x y) is true
 ;;;         .   means   (= x y) is false
 ;;;             where x is the row value and y is the column value
+;;;
+;;;       F2.0  means   (Float. 2.0)
+;;;
 ;;; 
-;;;             ----------------------------------
-;;;        =    |   2  2N   |  2M 2.0M  |  2.0   |
-;;;     ------------------------------------------
-;;;     |       |           |           |        |
-;;;     |  2    |   =   =   |   .   .   |   .    |
-;;;     |       |           |           |        |
-;;;     |  2N   |   =   =   |   .   .   |   .    |
-;;;     |       |           |           |        |
-;;;     ------------------------------------------
-;;;     |       |           |           |        |
-;;;     |  2M   |   .   .   |   =   =   |   .    |
-;;;     |       |           |           |        |
-;;;     |  2.0M |   .   .   |   =   =   |   .    |
-;;;     |       |           |           |        |
-;;;     ------------------------------------------
-;;;     |       |           |           |        |
-;;;     |  2.0  |   .   .   |   .   .   |   =    |
-;;;     |       |           |           |        |
-;;;     ------------------------------------------
+;;;              --------------------------------------
+;;;        =     |   2  2N   |  2M 2.0M  |  2.0  F2.0 |
+;;;     -----------------------------------------------
+;;;     |        |           |           |            |
+;;;     |  2     |   =   =   |   .   .   |   .   .    |
+;;;     |        |           |           |            |
+;;;     |  2N    |   =   =   |   .   .   |   .   .    |
+;;;     |        |           |           |            |
+;;;     -----------------------------------------------
+;;;     |        |           |           |            |
+;;;     |  2M    |   .   .   |   =   =   |   .   .    |
+;;;     |        |           |           |            |
+;;;     |  2.0M  |   .   .   |   =   =   |   .   .    |
+;;;     |        |           |           |            |
+;;;     -----------------------------------------------
+;;;     |        |           |           |            |
+;;;     |  2.0   |   .   .   |   .   .   |   =   =    |
+;;;     |        |           |           |            |
+;;;     |  F2.0  |   .   .   |   .   .   |   =   =    |
+;;;     |        |           |           |            |
+;;;     -----------------------------------------------
+
 
 (fact "Two numbers created from two same-looking literals are equal with ="
-  (fact (= 2 2)       => true)
-  (fact (= 2N 2N)     => true)
-  (fact (= 2/3 2/3)   => true)
-  (fact (= 2M 2M)     => true)
-  (fact (= 2.0M 2.0M) => true)
-  (fact (= 2.0 2.0)   => true))
+  (fact (= 2 2)                       => true)
+  (fact (= 2N 2N)                     => true)
+  (fact (= 2/3 2/3)                   => true)
+  (fact (= 2M 2M)                     => true)
+  (fact (= 2.0M 2.0M)                 => true)
+  (fact (= 2.0 2.0)                   => true)
+  (fact (= (Float. 2.0) (Float. 2.0)) => true))
 
 (fact "Two numbers of the same category and 'value' are equal with ="
-  (fact (= 2   2N)    => true)
-  (fact (= 2M  2.0M)  => true)
-  (fact (= 2.0 2.0)   => true))
+  (fact (= 2   2N)           => true)
+  (fact (= 2M  2.0M)         => true)
+  (fact (= 2.0 (Float. 2.0)) => true))
 
 (fact "Two numbers of different categories are not equal with ="
-  (fact (= 2    2M)   => false)
-  (fact (= 2    2.0M) => false)
-  (fact (= 2    2.0)  => false)
-  (fact (= 2N   2M)   => false)
-  (fact (= 2N   2.0M) => false)
-  (fact (= 2N   2.0)  => false)
-  (fact (= 2M   2.0)  => false)
-  (fact (= 2.0M 2.0)  => false))
+  (fact (= 2    2M)            => false)
+  (fact (= 2    2.0M)          => false)
+  (fact (= 2    2.0)           => false)
+  (fact (= 2    (Float. 2.0))  => false)
+  ;;
+  (fact (= 2N   2M)            => false)
+  (fact (= 2N   2.0M)          => false)
+  (fact (= 2N   2.0)           => false)
+  (fact (= 2N   (Float. 2.0))  => false)
+  ;;
+  (fact (= 2M   2.0)           => false)
+  (fact (= 2M   (Float. 2.0))  => false)
+  ;;
+  (fact (= 2.0M 2.0)           => false)
+  (fact (= 2.0M (Float. 2.0))  => false))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- `==` ----

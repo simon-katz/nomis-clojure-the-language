@@ -12,10 +12,11 @@
 ;;;; ---- Clojure's numeric types ----
 
 (fact "Some of Clojure's numeric types are from java.lang"
-  (fact (= Long   java.lang.Long)   => true)
-  (fact (= Double java.lang.Double) => true)
-  (fact (= Byte   java.lang.Byte)   => true)
-  (fact (= Short  java.lang.Short)  => true))
+  (fact (= Byte    java.lang.Byte)    => true)
+  (fact (= Short   java.lang.Short)   => true)
+  (fact (= Integer java.lang.Integer) => true)
+  (fact (= Long    java.lang.Long)    => true)
+  (fact (= Double  java.lang.Double)  => true))
 
 (fact "Some of Clojure's numeric types are from java.math"
   (fact (= BigDecimal java.math.BigDecimal) => true))
@@ -36,6 +37,7 @@
   (fact (type (Byte. (byte 2)))            => Byte)
   (fact (type (short 2))                   => Short)
   (fact (type (Short. (short 2)))          => Short)
+  (fact (type (Integer. 2))                => Integer)
   (fact (type (java.math.BigInteger. "2")) => java.math.BigInteger))
 
 (fact "Ratios are turned into Longs if possible"

@@ -259,7 +259,6 @@
       => Long/MIN_VALUE)))
 
 ;;;; ___________________________________________________________________________
-;;;; ---- Going from BigInts to smaller ----
 ;;;; ---- Going from BigInts to other things ----
 
 (fact "Does not demote from BigInt"

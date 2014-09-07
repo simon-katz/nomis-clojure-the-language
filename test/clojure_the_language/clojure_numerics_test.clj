@@ -244,6 +244,8 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- `==-and-same-type` ----
 
+;;; A helper function.
+
 (defn ==-and-same-type
   "Returns true iff x and y are of the same type and (== x y) is true."
   [x y]

@@ -194,7 +194,7 @@
 ;;;     -----------------------------------------------
 
 
-(fact "Two numbers of the same type and with equivalent value are equal with ="
+(fact "Two numbers of the same type and with equivalent value are equal using `=`"
   (fact (= 2 2)                       => true)
   (fact (= 2N 2N)                     => true)
   (fact (= 2/3 2/3)                   => true)
@@ -203,12 +203,12 @@
   (fact (= 2.0 2.0)                   => true)
   (fact (= (Float. 2.0) (Float. 2.0)) => true))
 
-(fact "Two numbers of the same category and with equivalent value are equal with ="
+(fact "Two numbers of the same category and with equivalent value are equal using `=`"
   (fact (= 2   2N)           => true)
   (fact (= 2M  2.0M)         => true)
   (fact (= 2.0 (Float. 2.0)) => true))
 
-(fact "Two numbers of different categories are not equal with ="
+(fact "Two numbers of different categories are not equal using `=`"
   (fact (= 2    2M)            => false)
   (fact (= 2    2.0M)          => false)
   (fact (= 2    2.0)           => false)

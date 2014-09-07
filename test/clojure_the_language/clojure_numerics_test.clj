@@ -2,6 +2,13 @@
   (:require [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- Terminology ----
+
+;;; The phrase "equivalent value" is used when two numbers, possibly of
+;;; different types, are the same value as seen from the point of view of
+;;; mathematics. So, for example, 2 and 2.0 are equivalent values.
+
+;;;; ___________________________________________________________________________
 ;;;; ---- Numeric types ----
 
 ;;; Clojure's numeric types (some of which are Java types)
@@ -133,7 +140,7 @@
 ;;;; ---------------------------------------------------------------------------
 ;;;; ---- The thing that is, in my opinion, contrary to the doc string ----
 
-(fact "`=` return false for comparisons of equivalent numbers of different categories"
+(fact "`=` returns false for comparisons of equivalent numbers of different categories"
   ;; From /Clojure Programming/ with some changes and additions
   (fact (= 2 2.0)    => false)
   (fact (= 2 2M)     => false)
@@ -149,9 +156,9 @@
 ;;;; ---------------------------------------------------------------------------
 ;;;; ---- My playing ----
 
-;;; Shows that "same category" is a thing, as /Clojure Programming/ says. Shows
-;;; that the doc string's "type-independent manner" is bollocks (or at least
-;;; open to interpretation).
+;;; Shows that "same category" is A Thing, as /Clojure Programming/ says. Shows
+;;; that the doc string's "type-independent manner" is wrong (according to what
+;;; I think that should mean).
 
 ;;; Summary, showing the equivalence classes apart from rationals:
 ;;;
@@ -187,7 +194,7 @@
 ;;;     -----------------------------------------------
 
 
-(fact "Two numbers created from two same-looking literals are equal with ="
+(fact "Two numbers of the same type and with equivalent value are equal with ="
   (fact (= 2 2)                       => true)
   (fact (= 2N 2N)                     => true)
   (fact (= 2/3 2/3)                   => true)
@@ -196,7 +203,7 @@
   (fact (= 2.0 2.0)                   => true)
   (fact (= (Float. 2.0) (Float. 2.0)) => true))
 
-(fact "Two numbers of the same category and 'value' are equal with ="
+(fact "Two numbers of the same category and with equivalent value are equal with ="
   (fact (= 2   2N)           => true)
   (fact (= 2M  2.0M)         => true)
   (fact (= 2.0 (Float. 2.0)) => true))

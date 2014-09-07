@@ -256,7 +256,17 @@
 ;;;   Clojure opts to provide a third notion of equality, specifically to
 ;;;   address the need for type-insensitive equivalence tests.
 
-(fact (== 2 2N 2M 2.0M 2.0) => true) ; true even for inexact things
+(fact "Numbers with an equivalent value are equal using `==`"
+  (== (byte 2)
+      (short 2)
+      (Integer. 2)
+      2
+      2N
+      2M
+      2.0M
+      2.0
+      (Float. 2.0))
+  => true)
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Going from Longs to BigInts and vice versa, or not ----

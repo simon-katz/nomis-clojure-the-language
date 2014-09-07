@@ -90,7 +90,7 @@
 ;;; - What does it mean by "in a type-independent manner"?
 ;;;   - Is this defined in any authoritative place?
 ;;;   - The doc string for `==` uses the phrase "type-independent" with a
-;;;     different (and intuitive) meaning.
+;;;     different (and, to me, intuitive) meaning.
 ;;; - I would expect e.g. (= 2 2M) => true, but that's not so.
 ;;;   - I'm not the only one:
 ;;;     - See http://dev.clojure.org/jira/browse/CLJ-1333.
@@ -210,8 +210,9 @@
 ;;;;   Returns non-nil if nums all have the equivalent value (type-independent),
 ;;;;   otherwise false.
 
-;;; The doc string uses the phrase "type-independent" in a way that has a
-;;; different meaning to that in the doc string for `=`.
+;;; The doc string uses the phrase "type-independent" in a way that is (to me)
+;;; intuitive, but which has a different meaning to that in the doc string for
+;;; `=`.
 
 ;;; From /Clojure Programming/:
 ;;;   Clojure opts to provide a third notion of equality, specifically to

@@ -141,10 +141,10 @@
   (fact (= 1.25 5/4) => false))
 
 ;;; From /Clojure Programming/:
-;;;   Clojure’s = could obviate these type differences (as Ruby and Python do),
-;;;   but doing so would impose some runtime cost that would be unappreciated by
-;;;   those who need to maximize the performance of programs that work with
-;;;   homogeneous numeric data.
+;;;   Clojure’s `=` could obviate these type differences (as Ruby and Python
+;;;   do), but doing so would impose some runtime cost that would be
+;;;   unappreciated by those who need to maximize the performance of programs
+;;;   that work with homogeneous numeric data.
 
 ;;;; ---------------------------------------------------------------------------
 ;;;; ---- My playing ----

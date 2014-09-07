@@ -209,13 +209,6 @@
 (fact (== 2 2N 2M 2.0M 2.0) => true) ; true even for inexact things
 
 ;;;; ___________________________________________________________________________
-
-(fact (type (- 2N 1N)) => clojure.lang.BigInt)
-(fact (type (/ 4N 2N)) => clojure.lang.BigInt)
-(fact (type (/ 2N 4N)) => clojure.lang.Ratio)
-
-
-;;;; ___________________________________________________________________________
 ;;;; ---- `=-and-same-type` ----
 
 (defn =-and-same-type
@@ -264,3 +257,28 @@
       (let [unboxed-max-long Long/MAX_VALUE]
         (unchecked-inc unboxed-max-long))
       => Long/MIN_VALUE)))
+
+;;;; ___________________________________________________________________________
+;;;; ---- Going from BigInts to smaller ----
+;;;; ---- Going from BigInts to other things ----
+
+(fact "Does not demote from BigInt"
+  (type (- max-long-plus-1 Long/MAX_VALUE))
+  => clojure.lang.BigInt)
+
+(fact "When the ratio of two BigInts is an integer, the result is a BigInt"
+  (type (/ 4N 2N))
+  => clojure.lang.BigInt)
+
+(fact "When the ratio of two BigInts is not an integer, the result is a Ratio"
+  (/ 3N 2N) => 3/2
+  (let [v (+' Long/MAX_VALUE 2)]
+    (type v)        => clojure.lang.BigInt
+    (type (/ v 2))) => clojure.lang.Ratio)
+
+;; (defmacro my-=>
+;;   ([form expected-value]
+;;      `(let [] (fact ~form ~'=> ~expected-value))))
+
+;; (fact (my-=> 3 3))
+;; (fact (my-=> 3 4))

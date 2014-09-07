@@ -28,23 +28,20 @@
   (fact clojure.lang.Ratio  => clojure.lang.Ratio))
 
 (fact "Some examples of values of each type"
- (fact (type 2)     => Long)
- (fact (type 2N)    => clojure.lang.BigInt)
- (fact (type 2/3)   => clojure.lang.Ratio)
- (fact (type 2.0M)  => BigDecimal)
- (fact (type 2M)    => BigDecimal)
- (fact (type 2.0)   => Double))
+  (fact (type 2)     => Long)
+  (fact (type 2N)    => clojure.lang.BigInt)
+  (fact (type 2/3)   => clojure.lang.Ratio)
+  (fact (type 2.0M)  => BigDecimal)
+  (fact (type 2M)    => BigDecimal)
+  (fact (type 2.0)   => Double)
+  (fact (type (byte 2))                    => Byte)
+  (fact (type (Byte. (byte 2)))            => Byte)
+  (fact (type (short 2))                   => Short)
+  (fact (type (Short. (short 2)))          => Short)
+  (fact (type (java.math.BigInteger. "2")) => java.math.BigInteger))
 
 (fact "Ratios are turned into Longs if possible"
   (type 4/2) => Long)
-
-;;; Some non-Clojure Java numeric types
-
-(fact (type (byte 2))                    => Byte)
-(fact (type (Byte. (byte 2)))            => Byte)
-(fact (type (short 2))                   => Short)
-(fact (type (Short. (short 2)))          => Short)
-(fact (type (java.math.BigInteger. "2")) => java.math.BigInteger)
 
 ;;; From /Clojure Programming/, p427: "double is the only representation that
 ;;; is inherently inexact".

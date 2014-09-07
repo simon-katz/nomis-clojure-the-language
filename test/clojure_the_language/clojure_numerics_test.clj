@@ -126,7 +126,11 @@
 
 (fact "All types of integer are usefully comparable using `=`"
   ;; From /Clojure Programming/ with adjustments
-  (= 2 2N (Integer. 2) (short 2) (Short. (short 2)) (byte 2) (Byte. (byte 2)))
+  (= (Byte. (byte 2))
+     (Short. (short 2))
+     (Integer. 2)
+     2
+     2N)
   => true)
 
 (fact "Ratios are usefully comparable using `=`"
@@ -235,8 +239,8 @@
 ;;;; ---------------------------------------------------------------------------
 
 (fact "Collections use `=` to determine equality"
-  (into #{} [(byte 2)
-             (short 2)
+  (into #{} [(Byte. (byte 2))
+             (Short. (short 2))
              (Integer. 2)
              2
              2N
@@ -261,8 +265,8 @@
 ;;;   address the need for type-insensitive equivalence tests.
 
 (fact "Numbers with an equivalent value are equal using `==`"
-  (== (byte 2)
-      (short 2)
+  (== (Byte. (byte 2))
+      (Short. (short 2))
       (Integer. 2)
       2
       2N

@@ -7,6 +7,8 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- Numeric types ----
 
+;;; Clojure's numeric types (some of which are Java types)
+
 (fact (type 2)    => Long)
 (fact (type 2N)   => BigInt)
 (fact (type 2/3)  => Ratio)
@@ -15,6 +17,19 @@
 (fact (type 2.0)  => Double)
 
 (fact (type 4/2)  => Long)
+
+;;; Some non-Clojure Java numeric types
+
+(fact (type (byte 2)) => java.lang.Byte)
+(fact (type (Byte. (byte 2))) => java.lang.Byte)
+(fact (type (short 2)) => java.lang.Short)
+(fact (type (Short. (short 2))) => java.lang.Short)
+
+(fact (type (java.math.BigInteger. "2")) => java.math.BigInteger)
+
+;;; **** What do you want to do with this?
+;;; From /Clojure Programming/, p427: "double is the only representation that
+;;; is inherently inexact".
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- `identical?` ----
@@ -180,8 +195,6 @@
 (fact (type (/ 2N 4N)) => Ratio)
 
 
-;; Maybe mention java.math.BigInteger
-
 ;;;; ___________________________________________________________________________
 ;;;; ---- =-and-same-type ----
 
@@ -231,8 +244,3 @@
       (let [unboxed-max-long Long/MAX_VALUE]
         (unchecked-inc unboxed-max-long))
       => Long/MIN_VALUE)))
-
-;;;; ___________________________________________________________________________
-;;; **** What do you want to do with this?
-;;; From /Clojure Programming/, p427: "double is the only representation that
-;;; is inherently inexact".

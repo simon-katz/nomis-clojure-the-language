@@ -257,7 +257,7 @@
 (fact (==-and-same-type 2N 2N) => true)
 
 ;;;; ___________________________________________________________________________
-;;;; ---- Going from longs/Longs to bigger or smaller ----
+;;;; ---- Going from Longs to bigger or smaller ----
 
 (def max-long-plus-1 9223372036854775808N)
 

@@ -13,31 +13,37 @@
 
 ;;; Clojure's numeric types (some of which are Java types)
 
-(fact (type 2)     => Long)
-(fact (type 2)     => java.lang.Long)
+(fact "Certain Clojure types are from java.lang"
+  (fact (= Long   java.lang.Long)   => true)
+  (fact (= Double java.lang.Double) => true)
+  (fact (= Byte   java.lang.Byte)   => true)
+  (fact (= Short  java.lang.Short)  => true))
 
-;; **** I'm surprised clojure.lang.xxxx is needed for BigInt and Ratio.
+(fact "Certain Clojure types are from java.math"
+  (fact (= BigDecimal java.math.BigDecimal) => true))
 
-(fact (type 2N)    => clojure.lang.BigInt)
+(fact "Certain Clojure types are from clojure.lang"
+  ;; These are not available without the clojure.lang. prefix
+  (fact clojure.lang.BigInt => clojure.lang.BigInt)
+  (fact clojure.lang.Ratio  => clojure.lang.Ratio))
 
-(fact (type 2/3)   => clojure.lang.Ratio)
-
-(fact (type 2.0M)  => BigDecimal)
-(fact (type 2.0M)  => java.math.BigDecimal)
-(fact (type 2M)    => BigDecimal)
-
-(fact (type 2.0)   => Double)
-(fact (type 2.0)   => java.lang.Double)
+(fact "Some examples of values of each type"
+ (fact (type 2)     => Long)
+ (fact (type 2N)    => clojure.lang.BigInt)
+ (fact (type 2/3)   => clojure.lang.Ratio)
+ (fact (type 2.0M)  => BigDecimal)
+ (fact (type 2M)    => BigDecimal)
+ (fact (type 2.0)   => Double))
 
 (fact "Ratios are turned into Longs if possible"
   (type 4/2) => Long)
 
 ;;; Some non-Clojure Java numeric types
 
-(fact (type (byte 2))                    => java.lang.Byte)
-(fact (type (Byte. (byte 2)))            => java.lang.Byte)
-(fact (type (short 2))                   => java.lang.Short)
-(fact (type (Short. (short 2)))          => java.lang.Short)
+(fact (type (byte 2))                    => Byte)
+(fact (type (Byte. (byte 2)))            => Byte)
+(fact (type (short 2))                   => Short)
+(fact (type (Short. (short 2)))          => Short)
 (fact (type (java.math.BigInteger. "2")) => java.math.BigInteger)
 
 ;;; From /Clojure Programming/, p427: "double is the only representation that

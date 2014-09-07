@@ -157,9 +157,9 @@
 ;;;
 ;;;   Key to the table entries:
 ;;;
-;;;         =   (= x y) is true
-;;;         .   (= x y) is false
-;;;             where x is the row value and x is the column value
+;;;         =   means   (= x y) is true
+;;;         .   means   (= x y) is false
+;;;             where x is the row value and y is the column value
 ;;; 
 ;;;             ----------------------------------
 ;;;        =    |   2  2N   |  2M 2.0M  |  2.0   |

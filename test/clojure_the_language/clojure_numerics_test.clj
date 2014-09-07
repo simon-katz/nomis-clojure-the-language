@@ -1,8 +1,5 @@
 (ns clojure-the-language.clojure-numerics-test
-  (:require [midje.sweet :refer :all])
-  (:import clojure.lang.BigInt ;; **** I'm surprised this is needed.
-           clojure.lang.Ratio) ;; **** I'm surprised this is needed.
-  )
+  (:require [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Numeric types ----
@@ -10,11 +7,20 @@
 ;;; Clojure's numeric types (some of which are Java types)
 
 (fact (type 2)    => Long)
-(fact (type 2N)   => BigInt)
-(fact (type 2/3)  => Ratio)
-(fact (type 2M)   => BigDecimal)
+(fact (type 2)    => java.lang.Long)
+
+;; **** I'm surprised clojure.lang.xxxx is needed for BigInt and Ratio.
+
+(fact (type 2N)   => clojure.lang.BigInt)
+
+(fact (type 2/3)  => clojure.lang.Ratio)
+
 (fact (type 2.0M) => BigDecimal)
+(fact (type 2.0M) => java.math.BigDecimal)
+(fact (type 2M)   => BigDecimal)
+
 (fact (type 2.0)  => Double)
+(fact (type 2.0)  => java.lang.Double)
 
 (fact (type 4/2)  => Long)
 
@@ -27,7 +33,6 @@
 
 (fact (type (java.math.BigInteger. "2")) => java.math.BigInteger)
 
-;;; **** What do you want to do with this?
 ;;; From /Clojure Programming/, p427: "double is the only representation that
 ;;; is inherently inexact".
 
@@ -189,10 +194,10 @@
 
 ;;;; ___________________________________________________________________________
 
-(fact (type (- 2N 1N)) => BigInt)
+(fact (type (- 2N 1N)) => clojure.lang.BigInt)
 
-(fact (type (/ 4N 2N)) => BigInt)
-(fact (type (/ 2N 4N)) => Ratio)
+(fact (type (/ 4N 2N)) => clojure.lang.BigInt)
+(fact (type (/ 2N 4N)) => clojure.lang.Ratio)
 
 
 ;;;; ___________________________________________________________________________
@@ -226,7 +231,7 @@
     (=-and-same-type (inc' 1) 2) => true)
   (fact "...do not demote"
     (type (dec' (inc' Long/MAX_VALUE)))
-    => BigInt))
+    => clojure.lang.BigInt))
 
 (def boxed-max-long Long/MAX_VALUE)
 

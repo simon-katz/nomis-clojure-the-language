@@ -242,55 +242,54 @@
 (fact (== 2 2N 2M 2.0M 2.0) => true) ; true even for inexact things
 
 ;;;; ___________________________________________________________________________
-;;;; ---- Going from Longs to bigger or smaller ----
+;;;; ---- Going from Longs to BigInts and vice versa, or not ----
 
 (def max-long-plus-1 9223372036854775808N)
 
-(fact "The 'ordinary' operators"
+(fact "About the 'ordinary' arithmetic operators"
   (fact "Throw exceptions on overflow"
-    (inc Long/MAX_VALUE) => (throws ArithmeticException "integer overflow"))
+    (inc Long/MAX_VALUE)
+    => (throws ArithmeticException "integer overflow"))
   (fact "We can avoid overflow exceptions by coercing to BigInt first"
-    (inc (bigint Long/MAX_VALUE)) => max-long-plus-1))
+    (inc (bigint Long/MAX_VALUE))
+    => max-long-plus-1)
+  (fact "Do not demote from BigInt"
+    (type (- max-long-plus-1 Long/MAX_VALUE))
+    => clojure.lang.BigInt)
+  (fact "When the ratio of two BigInts is an integer, the result is a BigInt"
+    (type (/ 4N 2N))
+    => clojure.lang.BigInt)
+  (fact "When the ratio of two BigInts is not an integer, the result is a Ratio"
+    (/ 3N 2N) => 3/2
+    (let [v (+' Long/MAX_VALUE 2)]
+      (type v)        => clojure.lang.BigInt
+      (type (/ v 2))) => clojure.lang.Ratio))
 
-(fact "The xxxx' operators"
+(fact "About the xxxx' operators"
   (fact "Auto-promote"
-    (inc' Long/MAX_VALUE) => max-long-plus-1)
+    (inc' Long/MAX_VALUE)
+    => max-long-plus-1)
   (fact "Do not promote if unnecessary"
-    (type (inc' 1)) => Long)
+    (type (inc' 1))
+    => Long)
   (fact "Do not demote"
     (type (dec' (inc' Long/MAX_VALUE)))
     => clojure.lang.BigInt))
 
 (def boxed-max-long Long/MAX_VALUE)
 
-(fact "The unchecked-xxxx operators"
+(fact "About the unchecked-xxxx operators"
   (fact "Don't check for overflow"
-    (unchecked-inc Long/MAX_VALUE) => Long/MIN_VALUE)
+    (unchecked-inc Long/MAX_VALUE)
+    => Long/MIN_VALUE)
   (fact "Only do what you expect on longs, not Longs"
     ;; The doc strings for unchecked operations only define what happens
     ;; for (unboxed) longs, not for (boxed) Longs.
     ;; - See https://groups.google.com/d/msg/clojure/1tefVmYKmpc/2hKlXU-c13sJ
     (fact "With a boxed value it seems weird"
-      (unchecked-inc boxed-max-long) => (throws ArithmeticException
-                                                "integer overflow"))
+      (unchecked-inc boxed-max-long)
+      => (throws ArithmeticException "integer overflow"))
     (fact "But with an unboxed value it's as you'd expect"
       (let [unboxed-max-long Long/MAX_VALUE]
         (unchecked-inc unboxed-max-long))
       => Long/MIN_VALUE)))
-
-;;;; ___________________________________________________________________________
-;;;; ---- Going from BigInts to other things ----
-
-(fact "Does not demote from BigInt"
-  (type (- max-long-plus-1 Long/MAX_VALUE))
-  => clojure.lang.BigInt)
-
-(fact "When the ratio of two BigInts is an integer, the result is a BigInt"
-  (type (/ 4N 2N))
-  => clojure.lang.BigInt)
-
-(fact "When the ratio of two BigInts is not an integer, the result is a Ratio"
-  (/ 3N 2N) => 3/2
-  (let [v (+' Long/MAX_VALUE 2)]
-    (type v)        => clojure.lang.BigInt
-    (type (/ v 2))) => clojure.lang.Ratio)

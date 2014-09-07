@@ -294,10 +294,3 @@
   (let [v (+' Long/MAX_VALUE 2)]
     (type v)        => clojure.lang.BigInt
     (type (/ v 2))) => clojure.lang.Ratio)
-
-;; (defmacro my-=>
-;;   ([form expected-value]
-;;      `(let [] (fact ~form ~'=> ~expected-value))))
-
-;; (fact (my-=> 3 3))
-;; (fact (my-=> 3 4))

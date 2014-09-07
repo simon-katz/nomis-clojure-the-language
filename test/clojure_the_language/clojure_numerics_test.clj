@@ -19,7 +19,8 @@
   (fact (= Double  java.lang.Double)  => true))
 
 (fact "Some of Clojure's numeric types are from java.math"
-  (fact (= BigDecimal java.math.BigDecimal) => true))
+  (fact (= BigDecimal java.math.BigDecimal) => true)
+  (fact (= BigInteger java.math.BigInteger) => true))
 
 (fact "Some of Clojure's numeric types are from clojure.lang"
   ;; These are not available without the clojure.lang. prefix
@@ -33,12 +34,15 @@
   (fact (type 2.0M)  => BigDecimal)
   (fact (type 2M)    => BigDecimal)
   (fact (type 2.0)   => Double)
-  (fact (type (byte 2))                    => Byte)
-  (fact (type (Byte. (byte 2)))            => Byte)
-  (fact (type (short 2))                   => Short)
-  (fact (type (Short. (short 2)))          => Short)
-  (fact (type (Integer. 2))                => Integer)
-  (fact (type (java.math.BigInteger. "2")) => java.math.BigInteger))
+  (fact (type (Byte. (byte 2)))   => Byte)
+  (fact (type (Short. (short 2))) => Short)
+  (fact (type (Integer. 2))       => Integer)
+  (fact (type (BigInteger. "2"))  => BigInteger))
+
+(fact "Autoboxing"
+  (fact (type (byte 2))  => Byte)
+  (fact (type (short 2)) => Short)
+  (fact (type (long 2))  => Long))
 
 (fact "Ratios are turned into Longs if possible"
   (type 4/2) => Long)

@@ -36,12 +36,13 @@
   (fact (type 2.0)   => Double)
   (fact (type (Byte. (byte 2)))   => Byte)
   (fact (type (Short. (short 2))) => Short)
-  (fact (type (Integer. 2))       => Integer)
+  (fact (type (Integer. (int 2))) => Integer)
   (fact (type (BigInteger. "2"))  => BigInteger))
 
 (fact "Autoboxing"
   (fact (type (byte 2))  => Byte)
   (fact (type (short 2)) => Short)
+  (fact (type (int 2))   => Integer)
   (fact (type (long 2))  => Long))
 
 (fact "Ratios are turned into Longs if possible"
@@ -128,7 +129,7 @@
   ;; From /Clojure Programming/ with adjustments
   (= (Byte. (byte 2))
      (Short. (short 2))
-     (Integer. 2)
+     (Integer. (int 2))
      2
      2N)
   => true)
@@ -241,7 +242,7 @@
 (fact "Collections use `=` to determine equality"
   (into #{} [(Byte. (byte 2))
              (Short. (short 2))
-             (Integer. 2)
+             (Integer. (int 2))
              2
              2N
              2M
@@ -267,7 +268,7 @@
 (fact "Numbers with an equivalent value are equal using `==`"
   (== (Byte. (byte 2))
       (Short. (short 2))
-      (Integer. 2)
+      (Integer. (int 2))
       2
       2N
       2M

@@ -209,17 +209,17 @@
 (fact (== 2 2N 2M 2.0M 2.0) => true) ; true even for inexact things
 
 ;;;; ___________________________________________________________________________
-;;;; ---- `=-and-same-type` ----
+;;;; ---- `==-and-same-type` ----
 
-(defn =-and-same-type
-  "Returns true iff (= x y) is true and x and y are of the same type."
+(defn ==-and-same-type
+  "Returns true iff x and y are of the same type and (== x y) is true."
   [x y]
   (and (= (type x) (type y))
        (== x y)))
 
-(fact (=-and-same-type 2 2)   => true)
-(fact (=-and-same-type 2 2N)  => false)
-(fact (=-and-same-type 2N 2N) => true)
+(fact (==-and-same-type 2 2)   => true)
+(fact (==-and-same-type 2 2N)  => false)
+(fact (==-and-same-type 2N 2N) => true)
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Going from longs/Longs to bigger or smaller ----
@@ -236,7 +236,7 @@
   (fact "...auto-promote"
     (inc' Long/MAX_VALUE) => max-long-plus-1)
   (fact "...only change the type if necessary"
-    (=-and-same-type (inc' 1) 2) => true)
+    (==-and-same-type (inc' 1) 2) => true)
   (fact "...do not demote"
     (type (dec' (inc' Long/MAX_VALUE)))
     => clojure.lang.BigInt))

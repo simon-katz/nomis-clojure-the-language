@@ -110,7 +110,7 @@
 ;;; authoritative place?)
 ;;; - We have:
 ;;;   - integers (e.g. 2, 2N)
-;;;   - rationals (e.g. 2/3)
+;;;   - ratios (e.g. 2/3)
 ;;;   - arbitrary-precision decimals (e.g. 2M, 2.0M)
 ;;;   - limited-precision decimals (e.g. 2.0, (Float. 2.0))
 
@@ -122,7 +122,7 @@
   (= 2 2N (Integer. 2) (short 2) (Short. (short 2)) (byte 2) (Byte. (byte 2)))
   => true)
 
-(fact "Rationals are usefully comparable using `=`"
+(fact "Ratios are usefully comparable using `=`"
   (= 2/3 2/3)
   => true)
 
@@ -160,7 +160,7 @@
 ;;; that the doc string's "type-independent manner" is wrong (according to what
 ;;; I think that should mean).
 
-;;; Summary, showing the equivalence classes apart from rationals:
+;;; Summary, showing the equivalence classes apart from Ratios:
 ;;;
 ;;;   Key to the table entries:
 ;;;
@@ -255,15 +255,7 @@
     => max-long-plus-1)
   (fact "Do not demote from BigInt"
     (type (- max-long-plus-1 Long/MAX_VALUE))
-    => clojure.lang.BigInt)
-  (fact "When the ratio of two BigInts is an integer, the result is a BigInt"
-    (type (/ 4N 2N))
-    => clojure.lang.BigInt)
-  (fact "When the ratio of two BigInts is not an integer, the result is a Ratio"
-    (/ 3N 2N) => 3/2
-    (let [v (+' Long/MAX_VALUE 2)]
-      (type v)        => clojure.lang.BigInt
-      (type (/ v 2))) => clojure.lang.Ratio))
+    => clojure.lang.BigInt))
 
 (fact "About the xxxx' operators"
   (fact "Auto-promote"
@@ -293,3 +285,20 @@
       (let [unboxed-max-long Long/MAX_VALUE]
         (unchecked-inc unboxed-max-long))
       => Long/MIN_VALUE)))
+
+;;;; ___________________________________________________________________________
+;;;; ---- Some things about BigInts and Ratios ----
+
+(fact "About the ratio of a BigInt and a Long-or-a-BigInt"
+  (let [an-even-big-int (+' Long/MAX_VALUE 1)
+        an-odd-big-int  (+' Long/MAX_VALUE 2)]
+    (assert (even? an-even-big-int))
+    (assert (odd?  an-odd-big-int))
+    (assert (= (type an-even-big-int) clojure.lang.BigInt))
+    (assert (= (type an-odd-big-int)  clojure.lang.BigInt))
+    (fact "If the ratio is an integer it is a BigInt"
+      (type (/ an-even-big-int 2))  => clojure.lang.BigInt
+      (type (/ an-even-big-int 2N)) => clojure.lang.BigInt)
+    (fact "If ratio is not an integer it is a Ratio"
+      (type (/ an-odd-big-int 2))   => clojure.lang.Ratio
+      (type (/ an-odd-big-int 2N))  => clojure.lang.Ratio)))

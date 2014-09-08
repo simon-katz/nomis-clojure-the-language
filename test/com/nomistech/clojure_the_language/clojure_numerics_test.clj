@@ -16,6 +16,7 @@
   (fact (= Short   java.lang.Short)   => true)
   (fact (= Integer java.lang.Integer) => true)
   (fact (= Long    java.lang.Long)    => true)
+  (fact (= Float   java.lang.Float)   => true)
   (fact (= Double  java.lang.Double)  => true))
 
 (fact "Some of Clojure's numeric types are from java.math"
@@ -23,7 +24,7 @@
   (fact (= BigInteger java.math.BigInteger) => true))
 
 (fact "Some of Clojure's numeric types are from clojure.lang"
-  ;; These are not available without the clojure.lang. prefix
+  ;; These are not available without the clojure.lang. prefix.
   (fact clojure.lang.BigInt => clojure.lang.BigInt)
   (fact clojure.lang.Ratio  => clojure.lang.Ratio))
 
@@ -34,16 +35,18 @@
   (fact (type 2.0M)  => BigDecimal)
   (fact (type 2M)    => BigDecimal)
   (fact (type 2.0)   => Double)
-  (fact (type (Byte. (byte 2)))   => Byte)
-  (fact (type (Short. (short 2))) => Short)
-  (fact (type (Integer. (int 2))) => Integer)
-  (fact (type (BigInteger. "2"))  => BigInteger))
+  (fact (type (Byte. (byte 2)))     => Byte)
+  (fact (type (Short. (short 2)))   => Short)
+  (fact (type (Integer. (int 2)))   => Integer)
+  (fact (type (BigInteger. "2"))    => BigInteger)
+  (fact (type (Float. (float 2.0))) => Float))
 
-(fact "Autoboxing"
-  (fact (type (byte 2))  => Byte)
-  (fact (type (short 2)) => Short)
-  (fact (type (int 2))   => Integer)
-  (fact (type (long 2))  => Long))
+(fact "Autoboxing when calling a function"
+  (fact (type (byte 2))    => Byte)
+  (fact (type (short 2))   => Short)
+  (fact (type (int 2))     => Integer)
+  (fact (type (long 2))    => Long)
+  (fact (type (float 2.0)) => Float))
 
 (fact "Ratios are turned into Longs if possible"
   (type 4/2) => Long)

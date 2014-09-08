@@ -286,23 +286,29 @@
 (def max-long-plus-1 9223372036854775808N)
 
 (fact "About the 'ordinary' arithmetic operators"
+  ;;
   (fact "Throw exceptions on overflow"
     (inc Long/MAX_VALUE)
     => (throws ArithmeticException "integer overflow"))
+  ;; 
   (fact "We can avoid overflow exceptions by coercing to BigInt first"
     (inc (bigint Long/MAX_VALUE))
     => max-long-plus-1)
+  ;; 
   (fact "Do not demote from BigInt"
     (type (- max-long-plus-1 Long/MAX_VALUE))
     => clojure.lang.BigInt))
 
 (fact "About the xxxx' operators"
+  ;;
   (fact "Auto-promote"
     (inc' Long/MAX_VALUE)
     => max-long-plus-1)
+  ;;
   (fact "Do not promote if unnecessary"
     (type (inc' 1))
     => Long)
+  ;;
   (fact "Do not demote"
     (type (dec' (inc' Long/MAX_VALUE)))
     => clojure.lang.BigInt))
@@ -310,9 +316,11 @@
 (def boxed-max-long Long/MAX_VALUE)
 
 (fact "About the unchecked-xxxx operators"
+  ;;
   (fact "Don't check for overflow"
     (unchecked-inc Long/MAX_VALUE)
     => Long/MIN_VALUE)
+  ;;
   (fact "Only do what you expect on longs, not Longs"
     ;; The doc strings for unchecked operations only define what happens
     ;; for (unboxed) longs, not for (boxed) Longs.

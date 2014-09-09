@@ -81,7 +81,7 @@
   (fact (identical? 2.0M 2.0M) => false)
   (fact (identical? 2.0 2.0)   => false))
 
-(fact "2 is identical to 2, which seems to contradict the statement that numbers will never be identical, but remember the 'in general'"
+(fact "In some cases, two numbers created from two same-looking literals are identical"
   (identical? 2 2) => true)
 
 (fact "Same-valued fixnums are identical to each other, but same-valued non-fixnums are not identical to each other"
@@ -122,8 +122,6 @@
 ;; - I would expect e.g. (= 2 2M) => true, but that's not so.
 ;;   - I'm not the only one:
 ;;     - See http://dev.clojure.org/jira/browse/CLJ-1333.
-
-;; Jeez, Clojure is poorly specified in places.
 
 ;; /Clojure Programming/ p433-444 was helpful.
 

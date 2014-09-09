@@ -4,9 +4,9 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- Terminology ----
 
-;;; The phrase "equivalent value" is used when two numbers, possibly of
-;;; different types, are the same value as seen from the point of view of
-;;; mathematics. So, for example, 2 and 2.0 are equivalent values.
+;; The phrase "equivalent value" is used when two numbers, possibly of
+;; different types, are the same value as seen from the point of view of
+;; mathematics. So, for example, 2 and 2.0 are equivalent values.
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Clojure's numeric types ----
@@ -51,17 +51,17 @@
 (fact "Ratios are turned into Longs if possible"
   (type 4/2) => Long)
 
-;;; From /Clojure Programming/, p427: "double is the only representation that
-;;; is inherently inexact".
+;; From /Clojure Programming/, p427: "double is the only representation that
+;; is inherently inexact".
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- `identical?` ----
 ;;;; The doc string:
 ;;;;   Tests whether two arguments are the same object.
 
-;;; /Clojure Programming/ p433 says:
-;;;   In general, numbers will never be identical?, even if provided as
-;;;   literals.
+;; /Clojure Programming/ p433 says:
+;;   In general, numbers will never be identical?, even if provided as
+;;   literals.
 
 (fact "In general, two numbers created from two same-looking literals are not identical"
   (fact (identical? 2000 2000) => false)
@@ -104,26 +104,26 @@
 ;;;;   structures define equals() (and thus =) as a value, not an identity,
 ;;;;   comparison.
 
-;;; I think there's a problem with the doc string:
-;;; - What does it mean by "in a type-independent manner"?
-;;;   - Is this defined in any authoritative place?
-;;;   - The doc string for `==` uses the phrase "type-independent" with a
-;;;     different (and, to me, intuitive) meaning.
-;;; - I would expect e.g. (= 2 2M) => true, but that's not so.
-;;;   - I'm not the only one:
-;;;     - See http://dev.clojure.org/jira/browse/CLJ-1333.
+;; I think there's a problem with the doc string:
+;; - What does it mean by "in a type-independent manner"?
+;;   - Is this defined in any authoritative place?
+;;   - The doc string for `==` uses the phrase "type-independent" with a
+;;     different (and, to me, intuitive) meaning.
+;; - I would expect e.g. (= 2 2M) => true, but that's not so.
+;;   - I'm not the only one:
+;;     - See http://dev.clojure.org/jira/browse/CLJ-1333.
 
-;;; Jeez, Clojure is poorly specified in places.
+;; Jeez, Clojure is poorly specified in places.
 
-;;; /Clojure Programming/ p433-444 was helpful.
+;; /Clojure Programming/ p433-444 was helpful.
 
-;;; We need the notion of categories of numbers. (Is this defined in any
-;;; authoritative place?)
-;;; - We have:
-;;;   - integers (e.g. 2, 2N)
-;;;   - ratios (e.g. 2/3)
-;;;   - arbitrary-precision decimals (e.g. 2M, 2.0M)
-;;;   - limited-precision decimals (e.g. 2.0, (Float. 2.0))
+;; We need the notion of categories of numbers. (Is this defined in any
+;; authoritative place?)
+;; - We have:
+;;   - integers (e.g. 2, 2N)
+;;   - ratios (e.g. 2/3)
+;;   - arbitrary-precision decimals (e.g. 2M, 2.0M)
+;;   - limited-precision decimals (e.g. 2.0, (Float. 2.0))
 
 ;;;; ---------------------------------------------------------------------------
 ;;;; ---- Things that are fine ----
@@ -162,51 +162,51 @@
   (fact (= 2N 2M)    => false)
   (fact (= 1.25 5/4) => false))
 
-;;; From /Clojure Programming/:
-;;;   Clojure’s `=` could obviate these type differences (as Ruby and Python
-;;;   do), but doing so would impose some runtime cost that would be
-;;;   unappreciated by those who need to maximize the performance of programs
-;;;   that work with homogeneous numeric data.
+;; From /Clojure Programming/:
+;;   Clojure’s `=` could obviate these type differences (as Ruby and Python
+;;   do), but doing so would impose some runtime cost that would be
+;;   unappreciated by those who need to maximize the performance of programs
+;;   that work with homogeneous numeric data.
 
 ;;;; ---------------------------------------------------------------------------
 ;;;; ---- My playing ----
 
-;;; Shows that "same category" is A Thing, as /Clojure Programming/ says. Shows
-;;; that the doc string's "type-independent manner" is wrong (according to what
-;;; I think that should mean).
+;; Shows that "same category" is A Thing, as /Clojure Programming/ says. Shows
+;; that the doc string's "type-independent manner" is wrong (according to what
+;; I think that should mean).
 
-;;; Summary, showing the equivalence classes apart from Ratios:
+;; Summary, showing the equivalence classes apart from Ratios:
 ;;;
-;;;   Key to the table entries:
+;;   Key to the table entries:
 ;;;
-;;;         =   means   (= x y) is true
-;;;         .   means   (= x y) is false
-;;;             where x is the row value and y is the column value
+;;         =   means   (= x y) is true
+;;         .   means   (= x y) is false
+;;             where x is the row value and y is the column value
 ;;;
-;;;       F2.0  means   (Float. 2.0)
+;;       F2.0  means   (Float. 2.0)
 ;;;
-;;; 
-;;;              --------------------------------------
-;;;        =     |   2  2N   |  2M 2.0M  |  2.0  F2.0 |
-;;;     -----------------------------------------------
-;;;     |        |           |           |            |
-;;;     |  2     |   =   =   |   .   .   |   .   .    |
-;;;     |        |           |           |            |
-;;;     |  2N    |   =   =   |   .   .   |   .   .    |
-;;;     |        |           |           |            |
-;;;     -----------------------------------------------
-;;;     |        |           |           |            |
-;;;     |  2M    |   .   .   |   =   =   |   .   .    |
-;;;     |        |           |           |            |
-;;;     |  2.0M  |   .   .   |   =   =   |   .   .    |
-;;;     |        |           |           |            |
-;;;     -----------------------------------------------
-;;;     |        |           |           |            |
-;;;     |  2.0   |   .   .   |   .   .   |   =   =    |
-;;;     |        |           |           |            |
-;;;     |  F2.0  |   .   .   |   .   .   |   =   =    |
-;;;     |        |           |           |            |
-;;;     -----------------------------------------------
+;; 
+;;              --------------------------------------
+;;        =     |   2  2N   |  2M 2.0M  |  2.0  F2.0 |
+;;     -----------------------------------------------
+;;     |        |           |           |            |
+;;     |  2     |   =   =   |   .   .   |   .   .    |
+;;     |        |           |           |            |
+;;     |  2N    |   =   =   |   .   .   |   .   .    |
+;;     |        |           |           |            |
+;;     -----------------------------------------------
+;;     |        |           |           |            |
+;;     |  2M    |   .   .   |   =   =   |   .   .    |
+;;     |        |           |           |            |
+;;     |  2.0M  |   .   .   |   =   =   |   .   .    |
+;;     |        |           |           |            |
+;;     -----------------------------------------------
+;;     |        |           |           |            |
+;;     |  2.0   |   .   .   |   .   .   |   =   =    |
+;;     |        |           |           |            |
+;;     |  F2.0  |   .   .   |   .   .   |   =   =    |
+;;     |        |           |           |            |
+;;     -----------------------------------------------
 
 
 (fact "Two numbers of the same type and with equivalent value are equal using `=`"
@@ -260,13 +260,13 @@
 ;;;;   Returns non-nil if nums all have the equivalent value (type-independent),
 ;;;;   otherwise false.
 
-;;; The doc string uses the phrase "type-independent" in a way that is (to me)
-;;; intuitive, but which has a different meaning to that in the doc string for
-;;; `=`.
+;; The doc string uses the phrase "type-independent" in a way that is (to me)
+;; intuitive, but which has a different meaning to that in the doc string for
+;; `=`.
 
-;;; From /Clojure Programming/:
-;;;   Clojure opts to provide a third notion of equality, specifically to
-;;;   address the need for type-insensitive equivalence tests.
+;; From /Clojure Programming/:
+;;   Clojure opts to provide a third notion of equality, specifically to
+;;   address the need for type-insensitive equivalence tests.
 
 (fact "Numbers with an equivalent value are equal using `==`"
   (== (Byte. (byte 2))

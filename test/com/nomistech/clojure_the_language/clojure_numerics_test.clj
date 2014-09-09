@@ -28,13 +28,23 @@
   (fact clojure.lang.BigInt => clojure.lang.BigInt)
   (fact clojure.lang.Ratio  => clojure.lang.Ratio))
 
-(fact "Some examples of values of each type"
+(fact "We can produce unboxed values"
+  ;; **** Is there a way to make a test of this?
+  (byte 2)
+  (short 2)
+  (int 2)
+  (float 2.2)
+  (double 2.2))
+
+(fact "Some examples of values that have literal representations"
   (fact (type 2)     => Long)
   (fact (type 2N)    => clojure.lang.BigInt)
   (fact (type 2/3)   => clojure.lang.Ratio)
   (fact (type 2.0M)  => BigDecimal)
   (fact (type 2M)    => BigDecimal)
-  (fact (type 2.0)   => Double)
+  (fact (type 2.0)   => Double))
+
+(fact "Some examples of values that do not have literal representations"
   (fact (type (Byte. (byte 2)))     => Byte)
   (fact (type (Short. (short 2)))   => Short)
   (fact (type (Integer. (int 2)))   => Integer)

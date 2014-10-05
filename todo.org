@@ -1,1 +1,3 @@
 * Use Gorilla REPL
+* Move stuff to here from ~/development-100/__for-sync/code/learning/clojure-ragbag
+** In particular the clojure-fundamentals subdirectory

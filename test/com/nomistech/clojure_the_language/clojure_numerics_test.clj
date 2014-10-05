@@ -30,6 +30,10 @@
 
 (fact "We can produce unboxed values"
   ;; **** Is there a way to make a test of this?
+
+  ;; Glenjamin> nomiskatz: you could probably write a java class method with
+  ;; overloading to test the primitives?
+
   (byte 2)
   (short 2)
   (int 2)

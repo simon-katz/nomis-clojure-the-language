@@ -29,3 +29,36 @@
   => (MyRecord. 1 2))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- Confusing stuff about protocols and inheritance ----
+
+(defprotocol PI-1
+  (pi-1-a [x])
+  (pi-1-b [x]))
+
+(extend-protocol PI-1
+  java.util.Collection
+  (pi-1-a [x] :pi-1-a-collection)
+  (pi-1-b [x] :pi-1-b-collection))
+
+(fact "Inheritance works as you expect"
+  (pi-1-a #{}) => :pi-1-a-collection
+  (pi-1-b #{}) => :pi-1-b-collection
+  (pi-1-a [])  => :pi-1-a-collection
+  (pi-1-b [])  => :pi-1-b-collection)
+
+(defprotocol PI-2
+  (pi-2-a [x])
+  (pi-2-b [x]))
+
+(extend-protocol PI-2
+  java.util.Collection
+  (pi-2-a [x] :pi-2-a-collection)
+  (pi-2-b [x] :pi-2-b-collection)
+  java.util.List
+  (pi-2-a [x] :pi-2-a-list))
+
+(fact "Inheritance does not work as you expect"
+  (pi-2-a #{}) => :pi-2-a-collection
+  (pi-2-b #{}) => :pi-2-b-collection
+  (pi-2-a [])  => :pi-2-a-list
+  (pi-2-b [])  => (throws))

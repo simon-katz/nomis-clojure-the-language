@@ -19,44 +19,48 @@
            java.lang.ArithmeticException))
 
 ;;;; ___________________________________________________________________________
-;;;; doseq and dotimes return nil
+;;;; `doseq` and `dotimes` return nil
 
-(dotimes [i 3] (println i))
-;; => nil
-
-(doseq [x [:a :b :c]] (println x))
-;; => nil
-
-;; doseq doc says
-;;   'with bindings and filtering as provided by "for"'
-;; - unclear doc!...
+(with-out-str ; avoid output to stdout when running tests
+  (fact "`dotimes` returns nil"
+    (dotimes [i 3] (println i))
+    => nil)
+  (fact "`doseq` returns nil"
+    (doseq [x [:a :b :c]] (println x))
+    => nil))
 
 ;;;; ___________________________________________________________________________
 ;;;; doseq allows nested iteration
 
-(doseq [x [1 2]
-        y [:a :b :c]]
-  (println [x y]))
-;; [1 :a]
-;; [1 :b]
-;; [1 :c]
-;; [2 :a]
-;; [2 :b]
-;; [2 :c]
-;; => nil
+(fact
+  (with-out-str
+   (doseq [x [1 2]
+           y [:a :b :c]]
+     (println [x y])))
+  =>
+  "[1 :a]
+[1 :b]
+[1 :c]
+[2 :a]
+[2 :b]
+[2 :c]
+")
 
 ;;;; ___________________________________________________________________________
 ;;;; doseq allows earlier bindings to be used by later bindings
 
-(doseq [x [[1 2] [:a :b :c]]
-        y x]
-  (println [x y]))
-;; [[1 2] 1]
-;; [[1 2] 2]
-;; [[:a :b :c] :a]
-;; [[:a :b :c] :b]
-;; [[:a :b :c] :c]
-;; => nil
+(fact
+  (with-out-str
+   (doseq [x [[1 2] [:a :b :c]]
+           y x]
+     (println [x y])))
+  =>
+  "[[1 2] 1]
+[[1 2] 2]
+[[:a :b :c] :a]
+[[:a :b :c] :b]
+[[:a :b :c] :c]
+")
 
 ;;;; ___________________________________________________________________________
 ;;;; for

@@ -1,20 +1,22 @@
-;;;; From http://ianrumford.github.io/blog/2013/08/25/some-trivial-examples-of-using-clojure-reducers/
-;;;; and the corresponding gist at https://gist.github.com/ianrumford/6333358
-
 (ns com.nomistech.clojure-the-language.reducers-rumford-test
   (:require [clojure.core.reducers :as r]
             [clojure.string :as string]
             [midje.sweet :refer :all]))
 
-;; The Families in the Village
+;;;; From http://ianrumford.github.io/blog/2013/08/25/some-trivial-examples-of-using-clojure-reducers/
+;;;; and the corresponding gist at https://gist.github.com/ianrumford/6333358
+
+;;;; With extras.
+
+
+;;;; ___________________________________________________________________________
 
 (def village
-  [
-   {:home :north :family "smith" :name "sue" :age 37 :sex :f :role :parent}
+  "The Families in the Village"
+  [{:home :north :family "smith" :name "sue" :age 37 :sex :f :role :parent}
    {:home :north :family "smith" :name "stan" :age 35 :sex :m :role :parent}
    {:home :north :family "smith" :name "simon" :age 7 :sex :m :role :child}
    {:home :north :family "smith" :name "sadie" :age 5 :sex :f :role :child}
-   
    
    {:home :south :family "jones" :name "jill" :age 45 :sex :f :role :parent}
    {:home :south :family "jones" :name "jeff" :age 45 :sex :m :role :parent}
@@ -27,8 +29,7 @@
    {:home :west :family "brown" :name "bettie" :age 29 :sex :f :role :child}
    
    {:home :east :family "williams" :name "walter" :age 23 :sex :m :role :parent}
-   {:home :east :family "williams" :name "wanda" :age 3 :sex :f :role :child}
-   ])
+   {:home :east :family "williams" :name "wanda" :age 3 :sex :f :role :child}])
 
 
 ;;;; ___________________________________________________________________________
@@ -41,6 +42,45 @@
 ;; Example 1 - use redcue to add up all the mapped values
 (r/reduce + 0 (ex1-map-children-to-value-1 village))
 
+;;;; ---------------------------------------------------------------------------
+;;;; nomis stuff
+
+(defn person--child?
+  [person]
+  (= (:role person)
+     :child))
+
+(defn person--child?->1
+  [person]
+  (if (person--child? person) 1 0))
+
+(fact
+  (r/reduce + 0 ((r/map person--child?->1) village))
+  => 8)
+
+(fact
+  (r/reduce + 0 (r/map person--child?->1 village))
+  => 8)
+
+(fact
+  (r/reduce + 0 ((comp (r/map (constantly 1))
+                       (r/filter person--child?))
+                 village))
+  => 8)
+
+;; Separating into map and filter is a bit faster, it seems.
+
+#_
+(def my-collection (time (into [] (range 50000000))))
+#_
+(do
+  (time (r/reduce + 0 ((comp (r/map (constantly 1))
+                             (r/filter even?))
+                       my-collection)))
+  (time (r/reduce + 0 ((r/map (fn [x] (if (even? x) 1 0)))
+                       my-collection))))
+;; "Elapsed time: 4976.768 msecs"
+;; "Elapsed time: 5909.332 msecs"
 
 ;;;; ___________________________________________________________________________
 
@@ -56,6 +96,20 @@
 (r/reduce + 0 (ex2-pipeline village))
 ;; =>
 2
+
+;;;; ---------------------------------------------------------------------------
+;;;; nomis stuff
+
+(defn person--brown-family-member? [person]
+  (= (string/lower-case (:family person))
+     "brown"))
+
+(fact
+  (r/reduce + 0 ((comp (r/map (constantly 1))
+                       (r/filter person--child?)
+                       (r/filter person--brown-family-member?))
+                 village))
+  => 2)
 
 ;;;; ___________________________________________________________________________
 
@@ -84,6 +138,20 @@
 ;; =>
 3
 
+;;;; ---------------------------------------------------------------------------
+;;;; nomis stuff
+
+(defn person--name-begins-with-j? [person]
+  (= (string/lower-case (first (:name person)))
+     "j"))
+
+(fact
+  (r/reduce + 0 ((comp (r/map (constantly 1))
+                       (r/filter person--name-begins-with-j?)
+                       (r/filter person--child?))
+                 village))
+  => 3)
+
 ;;;; ___________________________________________________________________________
 
 ;; Example 4 - making a collection how many children's names start with J?
@@ -99,6 +167,18 @@
  {:age 16, :home :south, :name "jason", :sex :f, :family "jones", :role :child}
  {:age 14, :home :south, :name "june", :sex :f, :family "jones", :role :child}]
 
+
+;;;; ---------------------------------------------------------------------------
+;;;; nomis stuff
+
+(fact
+  (into [] ((comp (r/filter person--name-begins-with-j?)
+                  (r/filter person--child?))
+            village))
+  =>
+  [{:age 19, :home :south, :name "jackie", :sex :f, :family "jones", :role :child}
+   {:age 16, :home :south, :name "jason", :sex :f, :family "jones", :role :child}
+   {:age 14, :home :south, :name "june", :sex :f, :family "jones", :role :child}])
 
 ;;;; ___________________________________________________________________________
 
@@ -141,17 +221,56 @@
              (ex3-select-children village))))))
 
 ;; Example 5 - calculate the average age of children on or below the equator
-(def ex5-averge-age-of-children-on-or-below-the-equator (float (/ ex5-sum-of-ages-of-children-on-or-below-the-equator ex5-no-children-on-or-below-the-equator )))
+(def ex5-averge-age-of-children-on-or-below-the-equator
+  (float (/ ex5-sum-of-ages-of-children-on-or-below-the-equator
+            ex5-no-children-on-or-below-the-equator )))
 
+;;;; ---------------------------------------------------------------------------
+;;;; nomis stuff
+
+(fact
+  ex5-no-children-on-or-below-the-equator
+  => 6)
+
+(fact
+  ex5-sum-of-ages-of-children-on-or-below-the-equator
+  => 104)
+
+(fact
+  ex5-averge-age-of-children-on-or-below-the-equator
+  => (float 52/3))
+
+(defn person--add-lat-and-long
+  [person]
+  (condp = (:home person)
+    :north (assoc person :lat 90 :lng 0)
+    :south (assoc person :lat -90 :lng 0)
+    :west (assoc person :lat 0 :lng -180)
+    :east (assoc person :lat 0 :lng 180)))
+
+(fact
+  (let [children-below-equator ((comp (r/filter #(>= 0 (:lat %)))
+                                      (r/map person--add-lat-and-long)
+                                      (r/filter person--child?))
+                                village)]
+    (/ (r/reduce + 0 ((r/map #(:age %)) children-below-equator))
+       (r/reduce + 0 ((r/map (constantly 1)) children-below-equator))))
+  => 52/3)
 
 ;;;; ___________________________________________________________________________
 
 ;; That was fun but why bother
 
+
+
+;; N.B. This example doesn't show that `fold` does better than `reduce`.
+;;      The collections are too small.
+;;      (That's what this example is intended to show.)
+
 ;; Example 6 - comparing the performance of reduce and fold
 
 ;; Example 6 - time reduce adding up Example 5's ages
-(time (r/reduce +
+#_(time (r/reduce +
                 (ex5-select-age
                  (ex5-select-people-on-or-below-equator
                   (ex5-map-home-to-latitude-and-longitude
@@ -161,13 +280,16 @@
 
 
 ;; Example 6 - time fold adding up Example 5's ages
-(time (r/fold +
+#_(time (r/fold +
               (ex5-select-age
                (ex5-select-people-on-or-below-equator
                 (ex5-map-home-to-latitude-and-longitude
                  (ex3-select-children village))))))
 ;; =>
 "Elapsed time: 0.185448 msecs"
+
+;;;; ---------------------------------------------------------------------------
+;;;; nomis stuff
 
 
 ;;;; ___________________________________________________________________________
@@ -195,8 +317,8 @@
 
 (defn ex7-make-visitors [n] (take n (repeatedly ex7-make-visitor)))
 
-(def ex7-visitors (ex7-make-visitors 100))
-;;(def ex7-visitors (into [] (ex7-make-visitors 1000000)))
+;;(def ex7-visitors (ex7-make-visitors 100))
+(def ex7-visitors (into [] (ex7-make-visitors 1000000)))
 
 ;; Example 7 - count the visiting Brown children using reduce
 ;;(time (r/reduce + 0 (ex2-pipeline ex7-visitors)))
@@ -208,12 +330,14 @@
 ;; =>
 "Elapsed time: 64.788173 msecs"
 
+
 ;; Example 7 - count the visiting Brown children using core map, filter and reduce
 ;; (time (reduce + 0
 ;;               (map #(if (= :child (:role %)) 1 0)
 ;;                    (filter #(= "brown" (string/lower-case (:family %))) ex7-visitors))))
 ;; =>
 "Elapsed time: 223.55717 msecs"
+
 
 
 ;; WHat else can you do with fold?
@@ -224,6 +348,16 @@
 ;; A fold supplied with the chunk size, a combiner and a reducer
 ;;(r/fold the-chunk-size (r/monoid the-combiner-function the-init-function) the-reducer-function)
 
+;;;; ---------------------------------------------------------------------------
+;;;; nomis stuff
+
+#_
+(do
+  (time (reduce + 0
+                (map #(if (= :child (:role %)) 1 0)
+                     (filter #(= "brown" (string/lower-case (:family %))) ex7-visitors))))
+  (time (r/reduce + 0 (ex2-pipeline ex7-visitors)))
+  (time (r/fold + (ex2-pipeline ex7-visitors))))
 
 ;;;; ___________________________________________________________________________
 
@@ -254,3 +388,7 @@
 (r/fold ex8-combiner ex8-reducer  ex8-visitors-collection)
 ;; =>
 {:total-people 28, :total-age 1314, :average-age 46.92857}
+
+;;;; ---------------------------------------------------------------------------
+;;;; nomis stuff
+

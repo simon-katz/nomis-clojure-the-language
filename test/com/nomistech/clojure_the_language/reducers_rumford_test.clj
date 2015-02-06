@@ -58,11 +58,11 @@
   (r/reduce + 0 ((r/map person--child?->1) village))
   => 8)
 
-(fact
+(fact "can have same 'shape' usage as old-style `map` etc functions"
   (r/reduce + 0 (r/map person--child?->1 village))
   => 8)
 
-(fact
+(fact "reducing functions are composable"
   (r/reduce + 0 ((comp (r/map (constantly 1))
                        (r/filter person--child?))
                  village))
@@ -401,3 +401,38 @@
 ;;;; ---------------------------------------------------------------------------
 ;;;; nomis stuff
 
+;;;; ---------------------------------------------------------------------------
+;;;; Demo of ordering
+
+(reduce +  0 ((comp (partial map (fn [x] (println "doing +") (+ x 10)))
+                    (partial map (fn [x] (println "doing *") (* x 10))))
+              [1 2 3]))
+;; doing *
+;; doing *
+;; doing *
+;; doing +
+;; doing +
+;; doing +
+
+(reduce +  0 ((comp (r/map (fn [x] (println "doing +") (+ x 10)))
+                    (r/map (fn [x] (println "doing *") (* x 10))))
+              [1 2 3]))
+;; doing *
+;; doing +
+;; doing *
+;; doing +
+;; doing *
+;; doing +
+
+;;;; ---------------------------------------------------------------------------
+;;;; Example from Rich Hickey's EuroClojure 2012 talk:
+;;;;     http://vimeo.com/channels/357487/45561411
+
+#_
+(let [v (into [] (range 10000000))]
+  [(time (reduce + (map inc (filter even? v))))
+   (time (reduce + (r/map inc (r/filter even? v))))
+   (time (r/fold + (r/map inc (r/filter even? v))))])
+;; "Elapsed time: 1298.577 msecs"
+;; "Elapsed time: 901.575 msecs"
+;; "Elapsed time: 636.778 msecs"

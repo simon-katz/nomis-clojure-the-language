@@ -352,12 +352,21 @@
 ;;;; nomis stuff
 
 #_
-(do
-  (time (reduce + 0
-                (map #(if (= :child (:role %)) 1 0)
-                     (filter #(= "brown" (string/lower-case (:family %))) ex7-visitors))))
-  (time (r/reduce + 0 (ex2-pipeline ex7-visitors)))
-  (time (r/fold + (ex2-pipeline ex7-visitors))))
+[(time (reduce + 0
+               ((comp (partial map person--child?->1)
+                      (partial filter person--brown-family-member?))
+                ex7-visitors)))
+ (time (r/reduce + 0
+                 ((comp (r/map person--child?->1)
+                        (r/filter person--brown-family-member?))
+                  ex7-visitors)))
+ (time (r/fold + ((comp (r/map person--child?->1)
+                        (r/filter person--brown-family-member?))
+                  ex7-visitors)))]
+
+;; "Elapsed time: 214.727 msecs"
+;; "Elapsed time: 181.938 msecs"
+;; "Elapsed time: 97.075 msecs"
 
 ;;;; ___________________________________________________________________________
 

@@ -401,16 +401,36 @@
 ;;;; ---------------------------------------------------------------------------
 ;;;; nomis stuff
 
-;;;; ---------------------------------------------------------------------------
-;;;; Demo of ordering
+(defn with-collect-logging* [fun-of-log-fun]
+  (let [log-entries (agent [])]
+    (letfn [(log [entry]
+              (send log-entries conj entry))]
+      (fun-of-log-fun log))
+    (await log-entries)
+    @log-entries))
 
 (defmacro with-collect-logging [{:keys [log-name]} & body]
-  `(let [~'log-entries (agent [])
-         ~log-name (fn [~'entry]
-                     (send ~'log-entries conj ~'entry))]
-     ~@body
-     (await ~'log-entries)
-     @~'log-entries))
+  `(with-collect-logging*
+     (fn [~log-name]
+       ~@body)))
+
+(fact
+  (with-collect-logging*
+    (fn [log]
+      (log :a)
+      (log :b)
+      (log :c)))
+  => [:a :b :c])
+
+(fact
+  (with-collect-logging {:log-name log}
+    (log :a)
+    (log :b)
+    (log :c))
+  => [:a :b :c])
+
+;;;; ---------------------------------------------------------------------------
+;;;; Demo of ordering
 
 (fact
   (with-collect-logging {:log-name log}

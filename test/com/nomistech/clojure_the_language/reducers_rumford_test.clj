@@ -404,25 +404,27 @@
 ;;;; ---------------------------------------------------------------------------
 ;;;; Demo of ordering
 
-(reduce +  0 ((comp (partial map (fn [x] (println "doing +") (+ x 10)))
-                    (partial map (fn [x] (println "doing *") (* x 10))))
-              [1 2 3]))
-;; doing *
-;; doing *
-;; doing *
-;; doing +
-;; doing +
-;; doing +
+(defmacro with-collect-logging [{:keys [log-name]} & body]
+  `(let [~'log-entries (agent [])
+         ~log-name (fn [~'entry]
+                     (send ~'log-entries conj ~'entry))]
+     ~@body
+     (await ~'log-entries)
+     @~'log-entries))
 
-(reduce +  0 ((comp (r/map (fn [x] (println "doing +") (+ x 10)))
-                    (r/map (fn [x] (println "doing *") (* x 10))))
-              [1 2 3]))
-;; doing *
-;; doing +
-;; doing *
-;; doing +
-;; doing *
-;; doing +
+(fact
+  (with-collect-logging {:log-name log}
+    (reduce +  0 ((comp (partial map (fn [x] (log "+") (+ x 10)))
+                        (partial map (fn [x] (log "*") (* x 10))))
+                  [1 2 3])))
+  => ["*" "*" "*" "+" "+" "+"])
+
+(fact
+  (with-collect-logging {:log-name log}
+    (reduce +  0 ((comp (r/map (fn [x] (log "+") (+ x 10)))
+                        (r/map (fn [x] (log "*") (* x 10))))
+                  [1 2 3])))
+  => ["*" "+" "*" "+" "*" "+"])
 
 ;;;; ---------------------------------------------------------------------------
 ;;;; Example from Rich Hickey's EuroClojure 2012 talk:

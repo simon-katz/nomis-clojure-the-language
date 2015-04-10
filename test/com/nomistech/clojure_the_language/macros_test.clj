@@ -1,14 +1,15 @@
 (ns com.nomistech.clojure-the-language.macros-test
   (:require [midje.sweet :refer :all]))
 
-(defmacro goo [x] `(list x
-                         'x
-                         ~'x
-                         ~x
-                         '~x))
+(defmacro do-things-with-symbols [x]
+  `(list x
+         'x
+         ~'x
+         ~x
+         '~x))
 
 (fact
-  (macroexpand-1 '(goo x-in-call))
+  (macroexpand-1 '(do-things-with-symbols x-in-call))
   => '(clojure.core/list com.nomistech.clojure-the-language.macros-test/x
                          'com.nomistech.clojure-the-language.macros-test/x
                          x

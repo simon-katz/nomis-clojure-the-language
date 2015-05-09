@@ -28,7 +28,22 @@
   (map->MyRecord {:x 1 :y 2})
   => (MyRecord. 1 2))
 
-;;; #### Question: When to use `MyRecord.` and when to use `->MyRecord`?
+
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+;;;; Q. When to use `MyRecord.` and when to use `->MyRecord`?
+;;;; A.  `MyRecord.` is not a function.
+;;;;     So generally use `->MyRecord` (the Clojure thing, not the Java thing).
+;;;; See below.
+
+(fact
+  (= (map ->MyRecord [1 2 3] [10 20 30])
+     [{:x 1 :y 10}
+      {:x 2 :y 20}
+      {:x 3 :y 30}]))
+
+;;; This does not compile:
+;;;   (map MyRecord. [1 2 3] [10 20 30])
+
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;;;; You can override (some) methods of java.lang.Object
@@ -49,6 +64,7 @@
 ;;   (equals [_ other]
 ;;     false))
 
+
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;;;; Type hints
 
@@ -60,6 +76,7 @@
 (fact
   (str (->MyRecord3 "plop" "plop plop"))
   => "==== MyRecord3 [4, 9] ====" )
+
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Confusing stuff about protocols and inheritance ----

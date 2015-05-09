@@ -28,6 +28,39 @@
   (map->MyRecord {:x 1 :y 2})
   => (MyRecord. 1 2))
 
+;;; #### Question: When to use `MyRecord.` and when to use `->MyRecord`?
+
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+;;;; You can override (some) methods of java.lang.Object
+
+(defrecord MyRecord2 [x y]
+  Object
+  (toString [this]
+    (format "==== MyRecord2 [%s, %s] ====" x y)))
+
+(fact
+  (str (->MyRecord2 1 2))
+  => "==== MyRecord2 [1, 2] ====")
+
+;;;; ...but not all of them; this gives an error:
+
+;; (defrecord MyRecord3 [x y]
+;;   Object
+;;   (equals [_ other]
+;;     false))
+
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+;;;; Type hints
+
+(defrecord MyRecord3 [^String x ^String y]
+  Object
+  (toString [this]
+    (format "==== MyRecord3 [%s, %s] ====" (.length x) (.length y))))
+
+(fact
+  (str (->MyRecord3 "plop" "plop plop"))
+  => "==== MyRecord3 [4, 9] ====" )
+
 ;;;; ___________________________________________________________________________
 ;;;; ---- Confusing stuff about protocols and inheritance ----
 

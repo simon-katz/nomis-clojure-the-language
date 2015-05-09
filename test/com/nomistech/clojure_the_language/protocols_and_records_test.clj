@@ -32,7 +32,6 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;;;; Q. When to use `MyRecord.` and when to use `->MyRecord`?
 ;;;; A.  `MyRecord.` is not a function.
-;;;;     So generally use `->MyRecord` (the Clojure thing, not the Java thing).
 ;;;; See below.
 
 (fact
@@ -43,6 +42,12 @@
 
 ;;; This does not compile:
 ;;;   (map MyRecord. [1 2 3] [10 20 30])
+
+;;;; Also, `->MyRecord` is available when you require/use this
+;;;; namespace, so the client doesn't have to use import as well.
+
+;;;; So generally use `->MyRecord`.
+;;;; (Use the Clojure thing, not the Java thing).
 
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

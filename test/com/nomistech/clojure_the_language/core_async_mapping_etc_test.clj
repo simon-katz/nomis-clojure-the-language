@@ -20,6 +20,17 @@
                     [(a/to-chan (range 5))]))
   => [0 100 200 300 400])
 
+(fact "About `a/reduce`"
+  (letfn [(factorial [n]
+            ;; oh what fun!
+            (let [numbers-to-multiply-ch (a/map inc
+                                                [(a/to-chan (range n))])]
+              (a/<!! (a/reduce *
+                               1
+                               numbers-to-multiply-ch))))]
+    (factorial 5))
+  => 120)
+
 (fact "About `a/map<` (N.B. This is deprecated)"
   (chan->seq (a/map< (partial * 100)
                      (a/to-chan (range 5))))
@@ -35,3 +46,19 @@
       (a/close! wrapping-ch))
     (chan->seq wrapped-ch))
   => [0 100 200 300 400])
+
+(fact "About `a/filter<` (N.B. This is deprecated)"
+  (chan->seq (a/filter< even?
+                        (a/to-chan (range 5))))
+  => [0 2 4])
+
+(fact "About `a/filter>` (N.B. This is deprecated)"
+  (let [wrapped-ch  (a/chan)
+        wrapping-ch (a/filter> even?
+                               wrapped-ch)]
+    (a/go
+      (doseq [i (range 5)]
+        (a/>! wrapping-ch i))
+      (a/close! wrapping-ch))
+    (chan->seq wrapped-ch))
+  => [0 2 4])

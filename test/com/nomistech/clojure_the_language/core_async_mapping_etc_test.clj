@@ -14,6 +14,7 @@
      (cons v (chan->seq c)))))
 
 ;;;; ___________________________________________________________________________
+;;;; Non- transducer-based stuff
 
 (fact "About `a/map`"
   (chan->seq (a/map (partial * 100)
@@ -68,17 +69,20 @@
                         (a/to-chan (range 5))))
   => [0 :plop 1 :plop 2 :plop 3 :plop 4 :plop])
 
+;;;; ___________________________________________________________________________
+;;;; Transducer-based stuff
 
-;;;; Transducers
-
-;;;; #### A zero buffer size does not do the xform!!!
-;;;;      Must have a buffer. Zero gives no buffer I guess.
-
-(fact "My first transducer example "
+(fact "A `map` transducer"
   (let [c (a/chan 1 (map (partial * 100)))]
     (a/onto-chan c (range 5))
     (chan->seq c))
   => [0 100 200 300 400])
+
+(fact "Transducers do nothing when there is no buffer (when buffer size is 0)"
+  (let [c (a/chan 0 (map (partial * 100)))]
+    (a/onto-chan c (range 5))
+    (chan->seq c))
+  => (range 5))
 
 (fact "My second transducer example"
   (let [c (a/chan 1 (filter even?))]
@@ -86,22 +90,19 @@
     (chan->seq c))
   => [0 2 4])
 
-
-;;;; #### Huh? Wrong order of composition??
-;;;; See http://clojure.org/transducers :
-;;;; - "Composition of the transformer runs right-to-left but builds a
-;;;;    transformation stack that runs left-to-right (filtering happens
-;;;;    before mapping in this example)."
-
-(fact "My third transducer example"
+(fact "Composing transducers -- ordering is different to composing functions!"
+  ;; See http://clojure.org/transducers :
+  ;; - "Composition of the transformer runs right-to-left but builds a
+  ;;    transformation stack that runs left-to-right (filtering happens
+  ;;    before mapping in this example)."
   (let [c (a/chan 1 (comp (filter even?)
                           (map (partial * 100))))]
     (a/onto-chan c (range 5))
     (chan->seq c))
   => [0 200 400])
 
-(fact "My fourth transducer example"
-  (let [c (a/chan 1 (remove keyword?))]
-    (a/onto-chan c (mapcat (fn [x] [x :plop]) (range 5)))
+(fact "A `mapcat` transducer"
+  (let [c (a/chan 1 (mapcat (fn [x] [x x])))]
+    (a/onto-chan c (range 5))
     (chan->seq c))
-  => [0 1 2 3 4])
+  => [0 0 1 1 2 2 3 3 4 4])

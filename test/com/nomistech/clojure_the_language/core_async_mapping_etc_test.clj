@@ -18,7 +18,7 @@
 
 (fact "About `a/map`"
   (chan->seq (a/map (partial * 100)
-                    [(a/to-chan (range 5))]))
+                    [(a/to-chan [0 1 2 3 4])]))
   => [0 100 200 300 400])
 
 (fact "About `a/reduce`"
@@ -34,7 +34,7 @@
 
 (fact "About `a/map<` (N.B. This is deprecated)"
   (chan->seq (a/map< (partial * 100)
-                     (a/to-chan (range 5))))
+                     (a/to-chan [0 1 2 3 4])))
   => [0 100 200 300 400])
 
 (fact "About `a/map>` (N.B. This is deprecated)"
@@ -42,7 +42,7 @@
         wrapping-ch (a/map> (partial * 100)
                             wrapped-ch)]
     (a/go
-      (doseq [i (range 5)]
+      (doseq [i [0 1 2 3 4]]
         (a/>! wrapping-ch i))
       (a/close! wrapping-ch))
     (chan->seq wrapped-ch))
@@ -50,7 +50,7 @@
 
 (fact "About `a/filter<` (N.B. This is deprecated)"
   (chan->seq (a/filter< even?
-                        (a/to-chan (range 5))))
+                        (a/to-chan [0 1 2 3 4])))
   => [0 2 4])
 
 (fact "About `a/filter>` (N.B. This is deprecated)"
@@ -58,7 +58,7 @@
         wrapping-ch (a/filter> even?
                                wrapped-ch)]
     (a/go
-      (doseq [i (range 5)]
+      (doseq [i [0 1 2 3 4]]
         (a/>! wrapping-ch i))
       (a/close! wrapping-ch))
     (chan->seq wrapped-ch))
@@ -66,7 +66,7 @@
 
 (fact "About `a/mapcat< (N.B. This is deprecated)"
   (chan->seq (a/mapcat< (fn [x] [x :plop])
-                        (a/to-chan (range 5))))
+                        (a/to-chan [0 1 2 3 4])))
   => [0 :plop 1 :plop 2 :plop 3 :plop 4 :plop])
 
 ;;;; ___________________________________________________________________________
@@ -74,19 +74,19 @@
 
 (fact "A `map` transducer"
   (let [c (a/chan 1 (map (partial * 100)))]
-    (a/onto-chan c (range 5))
+    (a/onto-chan c [0 1 2 3 4])
     (chan->seq c))
   => [0 100 200 300 400])
 
 (fact "Transducers do nothing when there is no buffer (when buffer size is 0)"
   (let [c (a/chan 0 (map (partial * 100)))]
-    (a/onto-chan c (range 5))
+    (a/onto-chan c [0 1 2 3 4])
     (chan->seq c))
-  => (range 5))
+  => [0 1 2 3 4])
 
 (fact "My second transducer example"
   (let [c (a/chan 1 (filter even?))]
-    (a/onto-chan c (range 5))
+    (a/onto-chan c [0 1 2 3 4])
     (chan->seq c))
   => [0 2 4])
 
@@ -97,12 +97,12 @@
   ;;    before mapping in this example)."
   (let [c (a/chan 1 (comp (filter even?)
                           (map (partial * 100))))]
-    (a/onto-chan c (range 5))
+    (a/onto-chan c [0 1 2 3 4])
     (chan->seq c))
   => [0 200 400])
 
 (fact "A `mapcat` transducer"
   (let [c (a/chan 1 (mapcat (fn [x] [x x])))]
-    (a/onto-chan c (range 5))
+    (a/onto-chan c [0 1 2 3 4])
     (chan->seq c))
   => [0 0 1 1 2 2 3 3 4 4])

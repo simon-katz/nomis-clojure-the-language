@@ -15,7 +15,23 @@
 
 ;;;; ___________________________________________________________________________
 
-(fact
-  (chan->seq (a/map inc
+(fact "About `a/map`"
+  (chan->seq (a/map (partial * 100)
                     [(a/to-chan (range 5))]))
-  => [1 2 3 4 5])
+  => [0 100 200 300 400])
+
+(fact "About `a/map<` (N.B. This is deprecated)"
+  (chan->seq (a/map< (partial * 100)
+                     (a/to-chan (range 5))))
+  => [0 100 200 300 400])
+
+(fact "About `a/map>` (N.B. This is deprecated)"
+  (let [wrapped-ch  (a/chan)
+        wrapping-ch (a/map> (partial * 100)
+                            wrapped-ch)]
+    (a/go
+      (doseq [i (range 5)]
+        (a/>! wrapping-ch i))
+      (a/close! wrapping-ch))
+    (chan->seq wrapped-ch))
+  => [0 100 200 300 400])

@@ -103,7 +103,7 @@
     (fact "Not in a nested vector -- fucked and not explained I think ####"
       (macroexpand-1 '(match [1 2 3 4 5]
                         [1 2 & r] (str "r = " r)))
-      => (throws AssertionError))))
+      => (throws clojure.lang.Compiler$CompilerException))))
 
 (fact "Match on a map"
   (fact "Trivial"
@@ -191,11 +191,11 @@
     (fact "Numbers"
       (macroexpand-1 '(match :whatever
                         {1 :a} :this))
-      => (throws java.lang.ClassCastException))
+      => (throws clojure.lang.Compiler$CompilerException))
     (fact "Quoted symbols"
       (macroexpand-1 '(match :whatever
                         {'sym :a} :this))
-      => (throws java.lang.ClassCastException)))
+      => (throws clojure.lang.Compiler$CompilerException)))
   (fact "Variables bound to non- clojure.lang.Named values are allowed as map keys in match patterns"
     (fact "Numbers"
       (let [v 1]

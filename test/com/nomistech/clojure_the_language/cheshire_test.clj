@@ -6,12 +6,12 @@
 (fact
   (generate-string {:foo "bar" :baz 5})
   =>
-  "{\"baz\":5,\"foo\":\"bar\"}")
+  "{\"foo\":\"bar\",\"baz\":5}")
 
 (fact
   (generate-string [{:foo "bar" :baz 5}])
   =>
-  "[{\"baz\":5,\"foo\":\"bar\"}]")
+  "[{\"foo\":\"bar\",\"baz\":5}]")
 
 (fact
   (generate-string {:foo "bar" :baz (java.util.Date. 0)})
@@ -26,7 +26,7 @@
 (fact
   (generate-string {:foo "bar" :baz {:eggplant [1 2 3]}} {:pretty true})
   =>
-  "{\n  \"baz\" : {\n    \"eggplant\" : [ 1, 2, 3 ]\n  },\n  \"foo\" : \"bar\"\n}")
+  "{\n  \"foo\" : \"bar\",\n  \"baz\" : {\n    \"eggplant\" : [ 1, 2, 3 ]\n  }\n}")
 
 (fact
   (generate-string {:foo "It costs £100"})

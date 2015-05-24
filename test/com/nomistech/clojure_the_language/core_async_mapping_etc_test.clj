@@ -62,3 +62,8 @@
       (a/close! wrapping-ch))
     (chan->seq wrapped-ch))
   => [0 2 4])
+
+(fact "About `a/mapcat< (N.B. This is deprecated)"
+  (chan->seq (a/mapcat< (fn [x] [x :plop])
+                        (a/to-chan (range 5))))
+  => [0 :plop 1 :plop 2 :plop 3 :plop 4 :plop])

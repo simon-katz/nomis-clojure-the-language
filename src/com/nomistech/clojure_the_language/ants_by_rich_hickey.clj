@@ -281,8 +281,6 @@
                                      (* scale dim) 
                                      (* scale dim)))))
 
-(def frame (doto (new JFrame) (.add panel) .pack .show))
-
 (def animator (agent nil))
 
 (defn animation [x]
@@ -306,6 +304,7 @@
   ;; demo
   ;; (load-file "/Users/rich/dev/clojure/ants.clj")
   (do
+    (def frame (doto (new JFrame) (.add panel) .pack .show))
     (def ants (setup))
     (send-off animator animation)
     (dorun (map #(send-off % behave) ants))

@@ -67,3 +67,33 @@
   (chan->seq (a/mapcat< (fn [x] [x :plop])
                         (a/to-chan (range 5))))
   => [0 :plop 1 :plop 2 :plop 3 :plop 4 :plop])
+
+
+;;;; Transducers
+
+
+;;;; #### A zero buffer size does not to the xform!!!
+
+(fact "My first transducer example -- "
+  (let [c (a/chan 1 (map (partial * 100)))]
+    (a/onto-chan c (range 5))
+    (chan->seq c))
+  => [0 100 200 300 400])
+
+(fact "My second transducer example"
+  (let [c (a/chan 1 (filter even?))]
+    (a/onto-chan c (range 5))
+    (chan->seq c))
+  => [0 2 4])
+
+(fact "My third transducer example"
+  ;; #### Huh? Wrong order of composition??
+  ;; See http://clojure.org/transducers :
+  ;; - "Composition of the transformer runs right-to-left but builds a
+  ;;    transformation stack that runs left-to-right (filtering happens
+  ;;    before mapping in this example)."
+  (let [c (a/chan 1 (comp (filter even?)
+                          (map (partial * 100))))]
+    (a/onto-chan c (range 5))
+    (chan->seq c))
+  => [0 200 400])

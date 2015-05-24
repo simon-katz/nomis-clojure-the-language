@@ -71,10 +71,9 @@
 
 ;;;; Transducers
 
-
 ;;;; #### A zero buffer size does not to the xform!!!
 
-(fact "My first transducer example -- "
+(fact "My first transducer example "
   (let [c (a/chan 1 (map (partial * 100)))]
     (a/onto-chan c (range 5))
     (chan->seq c))

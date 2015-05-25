@@ -149,20 +149,26 @@
 
 (defn sentynil->nil [x] (if (sentynil? x) nil x))
 
+(defmacro with-if-senty-take [[v take-form] open-form closed-form]
+  ;; strange name to get proper indentation
+  `(if-let [~v ~take-form]
+     (do ~open-form)
+     (do ~closed-form)))
+
 (fact "About using a sentynil value for nil"
 
   (let [values-from-who-knows-where (->> [0 1 nil 3 nil]
                                          (map nil->sentynil))]
 
     (fact "Removing nil"
-        
+      
       (fact "In Clojure 1.6"
         (let [wrapped-ch  (a/chan)
               wrapping-ch (a/remove> sentynil? wrapped-ch)]
           (a/onto-chan wrapping-ch values-from-who-knows-where)
           (chan->seq wrapped-ch))
         => [0 1 3])
-        
+      
       (fact "In Clojure 1.7"
         (let [c (a/chan 1 (remove sentynil?))]
           (a/onto-chan c values-from-who-knows-where)
@@ -173,10 +179,14 @@
 
       (letfn [(chan->seq-with-sentynil->nil [c]
                 (lazy-seq
-                 (when-let [v (a/<!! c)]
+                 (with-if-senty-take [v (a/<!! c)]
                    (cons (sentynil->nil v)
-                         (chan->seq-with-sentynil->nil c)))))]
-          
+                         (chan->seq-with-sentynil->nil c))
+                   (do
+                     ;; whatever is needed when channel is closed
+                     ;; - so don't be tempted to 
+                     ))))]
+        
         (fact "In Clojure 1.6 & Clojure 1.7"
           (let [c (a/chan)]
             (a/onto-chan c values-from-who-knows-where)

@@ -117,7 +117,7 @@
 ;;;; Motivation
 ;;;; ==========
 ;;;;
-;;;; You can do this...
+;;;; 1. For removing nils, you can do this...
 
 (comment
   (let [c (a/chan)]
@@ -126,6 +126,9 @@
     c))
 
 ;;;; ...but that doesn't play nicely in a mappy/filtery context.
+
+;;;; 2. Might want to pass nils through.
+;;;;    - Although Googling suggests this is wrong-headed.
 
 
 ;;;; What to do about it

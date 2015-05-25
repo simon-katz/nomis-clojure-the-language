@@ -130,7 +130,7 @@
 
 ;;;; You can replace nil with a sentinel value, like this:
 
-(def the-sentynil-value
+(def ^:private the-sentynil-value
   "A sentinel value that is put on channels instead of nil."
   ::sentynil)
 

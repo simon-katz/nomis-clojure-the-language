@@ -149,11 +149,12 @@
 
 (defn sentynil->nil [x] (if (sentynil? x) nil x))
 
-(defmacro with-if-senty-take [[v take-form] open-form closed-form]
+(defmacro with-if-sentynil-take [[v take-form] open-form closed-form]
   ;; strange name to get proper indentation
-  `(if-let [~v ~take-form]
-     (do ~open-form)
-     (do ~closed-form)))
+  `(if-let [raw-val# ~take-form]
+     (let [~v (sentynil->nil raw-val#)]
+       ~open-form)
+     ~closed-form))
 
 (fact "About using a sentynil value for nil"
 
@@ -179,8 +180,8 @@
 
       (letfn [(chan->seq-with-sentynil->nil [c]
                 (lazy-seq
-                 (with-if-senty-take [v (a/<!! c)]
-                   (cons (sentynil->nil v)
+                 (with-if-sentynil-take [v (a/<!! c)]
+                   (cons v
                          (chan->seq-with-sentynil->nil c))
                    (do
                      ;; whatever is needed when channel is closed

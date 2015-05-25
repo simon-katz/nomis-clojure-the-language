@@ -141,22 +141,22 @@
 (defn sentynil-chan [ch] (a/remove> sentynil? ch))
 
 (fact "About using a sentynil value for nil"
-  
-  (fact "In Clojure 1.6"
-    (let [wrapped-ch  (a/chan)
-          wrapping-ch (sentynil-chan wrapped-ch)]
-      (a/go
-        (doseq [i [0 1 nil 3 nil]]
-          (a/>! wrapping-ch (nil->sentynil i)))
-        (a/close! wrapping-ch))
-      (chan->seq wrapped-ch))
-    => [0 1 3])
+
+  (letfn [(put-stuff-and-close [c]
+            (a/go
+              (doseq [i [0 1 nil 3 nil]]
+                (a/>! c (nil->sentynil i)))
+              (a/close! c)))]
     
-  (fact "In Clojure 1.7"
-    (let [c (a/chan 1 (remove sentynil?))]
-      (a/go
-        (doseq [i [0 1 nil 3 nil]]
-          (a/>! c (nil->sentynil i)))
-        (a/close! c))
-      (chan->seq c))
-    => [0 1 3]))
+    (fact "In Clojure 1.6"
+      (let [wrapped-ch  (a/chan)
+            wrapping-ch (sentynil-chan wrapped-ch)]
+        (put-stuff-and-close wrapping-ch)
+        (chan->seq wrapped-ch))
+      => [0 1 3])
+    
+    (fact "In Clojure 1.7"
+      (let [c (a/chan 1 (remove sentynil?))]
+        (put-stuff-and-close c)
+        (chan->seq c))
+      => [0 1 3])))

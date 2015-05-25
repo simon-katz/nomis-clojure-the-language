@@ -132,7 +132,7 @@
 
 (def the-sentynil-value
   "A sentinel value that is put on channels instead of nil."
-  (cons nil nil))
+  ::sentynil)
 
 (defn nil->sentynil [x] (if (nil? x) the-sentynil-value x))
 

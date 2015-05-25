@@ -150,36 +150,32 @@
 
   (let [values-from-who-knows-where (->> [0 1 nil 3 nil]
                                          (map nil->sentynil))]
-    
-    (letfn [(put-stuff-and-close [c]
-              (a/go (doseq [i values-from-who-knows-where] (a/>! c i))
-                    (a/close! c)))]
 
-      (fact "Removing nil"
+    (fact "Removing nil"
         
-        (fact "In Clojure 1.6"
-          (let [wrapped-ch  (a/chan)
-                wrapping-ch (a/remove> sentynil? wrapped-ch)]
-            (put-stuff-and-close wrapping-ch)
-            (chan->seq wrapped-ch))
-          => [0 1 3])
+      (fact "In Clojure 1.6"
+        (let [wrapped-ch  (a/chan)
+              wrapping-ch (a/remove> sentynil? wrapped-ch)]
+          (a/onto-chan wrapping-ch values-from-who-knows-where)
+          (chan->seq wrapped-ch))
+        => [0 1 3])
         
-        (fact "In Clojure 1.7"
-          (let [c (a/chan 1 (remove sentynil?))]
-            (put-stuff-and-close c)
-            (chan->seq c))
-          => [0 1 3]))
+      (fact "In Clojure 1.7"
+        (let [c (a/chan 1 (remove sentynil?))]
+          (a/onto-chan c values-from-who-knows-where)
+          (chan->seq c))
+        => [0 1 3]))
 
-      (fact "Preserving nil"
+    (fact "Preserving nil"
 
-        (letfn [(chan->seq-with-sentynil->nil [c]
-                  (lazy-seq
-                   (when-let [v (a/<!! c)]
-                     (cons (sentynil->nil v)
-                           (chan->seq-with-sentynil->nil c)))))]
+      (letfn [(chan->seq-with-sentynil->nil [c]
+                (lazy-seq
+                 (when-let [v (a/<!! c)]
+                   (cons (sentynil->nil v)
+                         (chan->seq-with-sentynil->nil c)))))]
           
-          (fact "In Clojure 1.6 & Clojure 1.7"
-            (let [c (a/chan)]
-              (put-stuff-and-close c)
-              (chan->seq-with-sentynil->nil c))
-            => [0 1 nil 3 nil]))))))
+        (fact "In Clojure 1.6 & Clojure 1.7"
+          (let [c (a/chan)]
+            (a/onto-chan c values-from-who-knows-where)
+            (chan->seq-with-sentynil->nil c))
+          => [0 1 nil 3 nil])))))

@@ -110,6 +110,9 @@
 ;;;; ___________________________________________________________________________
 ;;;; How to replace `nil` with a sentinel value on channels.
 
+;;;; #### There are two things you might want to do:
+;;;;      1. Pass nils through
+;;;;      2. Remove nils
 
 ;;;; Motivation
 ;;;; ==========

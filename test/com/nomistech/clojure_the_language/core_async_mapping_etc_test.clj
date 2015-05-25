@@ -91,7 +91,7 @@
   => [0 2 4])
 
 (fact "Composing transducers -- ordering is different to composing functions!"
-  ;; See http://clojure.org/transducers :
+  ;; See http://clojure.org/transducers:
   ;; - "Composition of the transformer runs right-to-left but builds a
   ;;    transformation stack that runs left-to-right (filtering happens
   ;;    before mapping in this example)."
@@ -106,3 +106,57 @@
     (a/onto-chan c [0 1 2 3 4])
     (chan->seq c))
   => [0 0 1 1 2 2 3 3 4 4])
+
+;;;; ___________________________________________________________________________
+;;;; How to replace `nil` with a sentinel value on channels.
+
+
+;;;; Motivation
+;;;; ==========
+;;;;
+;;;; You can do this...
+
+(comment
+  (let [c (a/chan)]
+    (when-let [x ...]
+      (a/>! c ...))
+    c))
+
+;;;; ...but that doesn't play nicely in a mappy/filtery context.
+
+
+;;;; What to do about it
+;;;; ===================
+
+;;;; You can replace nil with a sentinel value, like this:
+
+(def the-sentynil-value
+  "A sentinel value that is put on channels instead of nil."
+  (cons nil nil))
+
+(defn nil->sentynil [x] (if (nil? x) the-sentynil-value x))
+
+(defn sentynil? [x] (= x the-sentynil-value))
+
+(defn sentynil-chan [ch] (a/remove> sentynil? ch))
+
+(fact "About using a sentynil value for nil"
+  
+  (fact "In Clojure 1.6"
+    (let [wrapped-ch  (a/chan)
+          wrapping-ch (sentynil-chan wrapped-ch)]
+      (a/go
+        (doseq [i [0 1 nil 3 nil]]
+          (a/>! wrapping-ch (nil->sentynil i)))
+        (a/close! wrapping-ch))
+      (chan->seq wrapped-ch))
+    => [0 1 3])
+    
+  (fact "In Clojure 1.7"
+    (let [c (a/chan 1 (remove sentynil?))]
+      (a/go
+        (doseq [i [0 1 nil 3 nil]]
+          (a/>! c (nil->sentynil i)))
+        (a/close! c))
+      (chan->seq c))
+    => [0 1 3]))

@@ -84,7 +84,7 @@
     (chan->seq c))
   => [0 1 2 3 4])
 
-(fact "My second transducer example"
+(fact "A `filter` transducer"
   (let [c (a/chan 1 (filter even?))]
     (a/onto-chan c [0 1 2 3 4])
     (chan->seq c))

@@ -185,7 +185,6 @@
                          (chan->seq-with-sentynil->nil c))
                    (do
                      ;; whatever is needed when channel is closed
-                     ;; - so don't be tempted to 
                      ))))]
         
         (fact "In Clojure 1.6 & Clojure 1.7"

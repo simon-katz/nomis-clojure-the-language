@@ -108,11 +108,11 @@
   => [0 0 1 1 2 2 3 3 4 4])
 
 ;;;; ___________________________________________________________________________
-;;;; How to replace `nil` with a sentinel value on channels.
+;;;; Playing with `nil` (not) on channels.
 
-;;;; #### There are two things you might want to do:
-;;;;      1. Pass nils through
-;;;;      2. Remove nils
+;;;; There are two things you might want to do:
+;;;;   1. Remove nils.
+;;;;   2. Pass nils through.
 
 ;;;; Motivation
 ;;;; ==========
@@ -131,35 +131,55 @@
 ;;;; What to do about it
 ;;;; ===================
 
+;;;; Probably nothing, except avoid nils if you can.
+;;;; I experimented, but I don't think I like it...
+
 ;;;; You can replace nil with a sentinel value, like this:
 
 (def ^:private the-sentynil-value
   "A sentinel value that is put on channels instead of nil."
   ::sentynil)
 
-(defn nil->sentynil [x] (if (nil? x) the-sentynil-value x))
-
 (defn sentynil? [x] (= x the-sentynil-value))
 
-(defn sentynil-chan [ch] (a/remove> sentynil? ch))
+(defn nil->sentynil [x] (if (nil? x) the-sentynil-value x))
+
+(defn sentynil->nil [x] (if (sentynil? x) nil x))
 
 (fact "About using a sentynil value for nil"
 
-  (letfn [(put-stuff-and-close [c]
-            (a/go
-              (doseq [i [0 1 nil 3 nil]]
-                (a/>! c (nil->sentynil i)))
-              (a/close! c)))]
+  (let [values-from-who-knows-where (->> [0 1 nil 3 nil]
+                                         (map nil->sentynil))]
     
-    (fact "In Clojure 1.6"
-      (let [wrapped-ch  (a/chan)
-            wrapping-ch (sentynil-chan wrapped-ch)]
-        (put-stuff-and-close wrapping-ch)
-        (chan->seq wrapped-ch))
-      => [0 1 3])
-    
-    (fact "In Clojure 1.7"
-      (let [c (a/chan 1 (remove sentynil?))]
-        (put-stuff-and-close c)
-        (chan->seq c))
-      => [0 1 3])))
+    (letfn [(put-stuff-and-close [c]
+              (a/go (doseq [i values-from-who-knows-where] (a/>! c i))
+                    (a/close! c)))]
+
+      (fact "Removing nil"
+        
+        (fact "In Clojure 1.6"
+          (let [wrapped-ch  (a/chan)
+                wrapping-ch (a/remove> sentynil? wrapped-ch)]
+            (put-stuff-and-close wrapping-ch)
+            (chan->seq wrapped-ch))
+          => [0 1 3])
+        
+        (fact "In Clojure 1.7"
+          (let [c (a/chan 1 (remove sentynil?))]
+            (put-stuff-and-close c)
+            (chan->seq c))
+          => [0 1 3]))
+
+      (fact "Preserving nil"
+
+        (letfn [(chan->seq-with-sentynil->nil [c]
+                  (lazy-seq
+                   (when-let [v (a/<!! c)]
+                     (cons (sentynil->nil v)
+                           (chan->seq-with-sentynil->nil c)))))]
+          
+          (fact "In Clojure 1.6 & Clojure 1.7"
+            (let [c (a/chan)]
+              (put-stuff-and-close c)
+              (chan->seq-with-sentynil->nil c))
+            => [0 1 nil 3 nil]))))))

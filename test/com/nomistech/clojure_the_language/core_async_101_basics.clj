@@ -206,3 +206,11 @@
   ;; Use `sliding-buffer` to drop oldest values when the buffer is full:
   (chan (sliding-buffer 10))
   )
+
+;;;; ___________________________________________________________________________
+;;;; Dealing with closed channels
+
+(comment
+  ;; Use this pattern when taking from a possibly-closed channel:
+  (when-let [v (a/<! c)]
+    ... v ...))

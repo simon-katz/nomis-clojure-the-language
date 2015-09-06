@@ -5,6 +5,6 @@
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]]
   :repl-options {:init-ns user}
   :profiles {:dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]
-                                  [midje "1.6.3"]]
+                                  [midje "1.7.0"]]
                    :source-paths ["dev"]
                    :plugins [[lein-midje "3.1.3"]]}})

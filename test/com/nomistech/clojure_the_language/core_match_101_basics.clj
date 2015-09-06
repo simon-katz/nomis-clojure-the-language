@@ -100,10 +100,11 @@
       (match [[1 2 3 4 5]]
         [[1 2 & r]] (str "r = " r))
       => "r = [3 4 5]")
-    (fact "Not in a nested vector -- fucked and not explained I think ####"
+    (fact "Not in a nested vector"
       (macroexpand-1 '(match [1 2 3 4 5]
                         [1 2 & r] (str "r = " r)))
-      => (throws clojure.lang.Compiler$CompilerException))))
+      => (throws AssertionError
+                 "Pattern row 1: Pattern row has differing number of patterns. [1 2 & r] has 4 pattern/s, expecting 5 for occurrences [1 2 3 4 5]"))))
 
 (fact "Match on a map"
   (fact "Trivial"
@@ -191,11 +192,11 @@
     (fact "Numbers"
       (macroexpand-1 '(match :whatever
                         {1 :a} :this))
-      => (throws clojure.lang.Compiler$CompilerException))
+      => (throws java.lang.ClassCastException))
     (fact "Quoted symbols"
       (macroexpand-1 '(match :whatever
                         {'sym :a} :this))
-      => (throws clojure.lang.Compiler$CompilerException)))
+      => (throws java.lang.ClassCastException)))
   (fact "Variables bound to non- clojure.lang.Named values are allowed as map keys in match patterns"
     (fact "Numbers"
       (let [v 1]

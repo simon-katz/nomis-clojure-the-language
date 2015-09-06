@@ -3,5 +3,8 @@
                  [cheshire "5.4.0"]
                  [org.clojure/core.match "0.3.0-alpha4"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]]
-  :profiles {:dev {:dependencies [[midje "1.6.3"]]
+  :repl-options {:init-ns user}
+  :profiles {:dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]
+                                  [midje "1.6.3"]]
+                   :source-paths ["dev"]
                    :plugins [[lein-midje "3.1.3"]]}})

@@ -81,4 +81,59 @@
 ;;;;   - `if-not` is a macro.
 ;;;;   - `if-not` is better than `my-if-not-1`.
 ;;;;   - Note that much of Clojure is implemented using macros.
-;;;;     e.g. `and`, `or`, `let`, `cond`, `while`, `letfn`, `with-redefs`, `->`.
+;;;;     e.g. `and`, `or`, `let`, `cond`, `while`, `letfn`, `with-redefs`, `->`,
+;;;;          `->>`, `as->`.
+
+;;;; ___________________________________________________________________________
+;;;; ~@ -- unquote-splicing
+
+(fact "Unquote unquotes"
+  (let [x (range 5)]
+    `[:a ~x :b])
+  => '[:a (0 1 2 3 4) :b])
+
+(fact "Unquote-splicing unquotes and splices"
+  (let [x (range 5)]
+    `[:a ~@x :b])
+  => '[:a 0 1 2 3 4 :b])
+
+;;;; ___________________________________________________________________________
+;;;; Code transformation.
+
+(defmacro lisp-let [[& bindings] & body]
+  ;; A very simple-minded implementation -- no error checking.
+  `(let ~(vec (apply concat bindings))
+     ~@body))
+
+(fact
+  (macroexpand-1 '(lisp-let [[a 2]
+                             [b 3]
+                             [c 4]]
+                            (* a b c)))
+  => '(clojure.core/let [a 2
+                         b 3
+                         c 4]
+        (* a b c)))
+
+(fact
+  (lisp-let [[a 2]
+             [b 3]
+             [c 4]]
+            (* a b c))
+  => 24)
+
+;;;; Is this a good use of macros?
+;;;; - Probably not.
+;;;; - I prefer this syntax for `let`-style things, but it's a bad idea to have
+;;;;   lots of little utility macros and functions to make the language the way
+;;;;   you want it.
+;;;;   Use the idioms of the language you are using.
+
+;;;; It's hard to come up with simple examples, because Clojure has so much
+;;;; built in.
+
+;;;; Look at examples:
+;;;; e.g. `and`, `or`, `let`, `cond`, `while`, `letfn`, `with-redefs`, `->`,
+;;;;      `->>`, `as->`.
+
+;;;; Maybe see `try+` and `throw+` in https://github.com/scgilardi/slingshot

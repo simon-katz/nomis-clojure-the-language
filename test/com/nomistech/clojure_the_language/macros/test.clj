@@ -4,6 +4,21 @@
             [midje.sweet :refer :all]))
 
 (fact
+  (let [x 99]
+    (defs/my-if-not (> x 100)
+      :big
+      :small))
+  => :big)
+
+(fact
+  (macroexpand-1 '(defs/my-if-not (> x 100)
+                    :big
+                    :small))
+  => '(if (> x 100)
+        :small
+        :big))
+
+(fact
   (macroexpand-1 '(defs/do-things-with-symbols x-in-call))
   => '(clojure.core/list x-in-call
                          'x-in-call

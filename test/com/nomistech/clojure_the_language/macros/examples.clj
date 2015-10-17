@@ -23,17 +23,17 @@
 (fact
   (let [x 99]
     (my-if-not-1 (> x 100)
-                 :large
-                 :small))
+                 (do (println "It's large") :large)
+                 (do (println "It's small") :small)))
   => :large)
 
 (fact
   (macroexpand-1 '(my-if-not-1 (> x 100)
-                               :large
-                               :small))
+                               (do (println "It's large") :large)
+                               (do (println "It's small") :small)))
   => '(if (> x 100)
-        :small
-        :large))
+        (do (println "It's small") :small)
+        (do (println "It's large") :large)))
 
 ;;;; ___________________________________________________________________________
 ;;;; Intro to syntax-quote and unquote.
@@ -50,15 +50,15 @@
 (fact
   (let [x 99]
     (my-if-not-2 (> x 100)
-                 :large
-                 :small))
+                 (do (println "It's large") :large)
+                 (do (println "It's small") :small)))
   => :large)
 
 (fact
   (macroexpand-1 '(my-if-not-2 (> x 100)
-                               :large
-                               :small))
+                               (do (println "It's large") :large)
+                               (do (println "It's small") :small)))
   => '(if (> x 100)
-        :small
-        :large))
+        (do (println "It's small") :small)
+        (do (println "It's large") :large)))
 

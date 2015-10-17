@@ -40,13 +40,16 @@
 ;;;; ___________________________________________________________________________
 
 (fact
-  (macroexpand-1 '(defs/do-things-with-symbols x-in-call))
-  => '(clojure.core/list x-in-call
-                         'x-in-call
-                         x-in-def
-                         com.nomistech.clojure-the-language.macros.defs/x-in-def
-                         'com.nomistech.clojure-the-language.macros.defs/x-in-def
-                         clojure.core/*print-level*
-                         clojure.core/+
-                         clojure.core/cond
-                         if))
+  (macroexpand-1 '(defs/do-things-with-symbols-1 x-in-call))
+  => '{:unquote        x-in-call
+       :quote-unquote 'x-in-call
+       :force-capture  x-in-def
+       :undecorated    com.nomistech.clojure-the-language.macros.defs/x-in-def
+       :quote         'com.nomistech.clojure-the-language.macros.defs/x-in-def})
+
+(fact
+  (macroexpand-1 '(defs/do-things-with-symbols-2))
+  => '{:undecorated-value-symbol   clojure.core/*print-level*
+       :undecorated-fun-symbol     clojure.core/+
+       :undecorated-macro-symbol   clojure.core/cond
+       :undecorated-special-symbol if})

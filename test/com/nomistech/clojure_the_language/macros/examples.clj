@@ -46,9 +46,35 @@
         (do (println "It's small") :small)
         (do (println "It's large") :large)))
 
+;;;; Why would you use this?
+
+;;;; Given...
+
+#_
+(if test
+  (a long (and (complicated))
+     (computation with)
+     lots
+     (of bits)
+     and
+     pieces)
+  something-quick-and-simple)
+
+;;;; ...you might prefer...
+
+#_
+(if-not test
+  something-quick-and-simple
+  (a long (and (complicated))
+     (computation with)
+     lots
+     (of bits)
+     and
+     pieces))
+
 ;;;; Is this a good use of macros?
 ;;;; Yes, but...
-;;;; - See syntax-quote below.
+;;;; - (if (not ...) ... ...) is probably fine too.
 
 ;;;; ___________________________________________________________________________
 ;;;; Syntax-quote, unquote and unquote-splicing.
@@ -82,7 +108,7 @@
                   (do (println "It's small") :small)))
   => :large)
 
-(fact
+(fact "`our-if-not-2` macroexpands identically to `our-if-not-1`"
   (macroexpand-1 '(our-if-not-2 (> x 100)
                                 (do (println "It's large") :large)
                                 (do (println "It's small") :small)))

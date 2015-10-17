@@ -29,16 +29,16 @@
 (fact
   (let [x 99]
     (if-not (> x 100)
-      (do (println "It's large") :large)
-      (do (println "It's small") :small)))
-  => :large)
+      (do (println "x is small") :small)
+      (do (println "x is large") :large)))
+  => :small)
 
 (fact
   (let [x 101]
     (if-not (> x 100)
-      (do (println "It's large") :large)
-      (do (println "It's small") :small)))
-  => :small)
+      (do (println "x is small") :small)
+      (do (println "x is large") :large)))
+  => :large)
 
 ;;;; ___________________________________________________________________________
 ;;;; Defining a simple macro.
@@ -52,20 +52,20 @@
 (fact
   (let [x 99]
     (our-if-not-1 (> x 100)
-                  (do (println "It's large") :large)
-                  (do (println "It's small") :small)))
-  => :large)
+                  (do (println "x is small") :small)
+                  (do (println "x is large") :large)))
+  => :small)
 
 ;;;; What's happening?
 ;;;; - Before compilation, macro calls are replaced with their macro expansion.
 
 (fact "Let's look at macroexpansion"
   (macroexpand-1 '(our-if-not-1 (> x 100)
-                                (do (println "It's large") :large)
-                                (do (println "It's small") :small)))
+                                (do (println "x is small") :small)
+                                (do (println "x is large") :large)))
   => '(if (> x 100)
-        (do (println "It's small") :small)
-        (do (println "It's large") :large)))
+        (do (println "x is large") :large)
+        (do (println "x is small") :small)))
 
 ;;;; Why would you use this?
 
@@ -124,17 +124,17 @@
 (fact
   (let [x 99]
     (our-if-not-2 (> x 100)
-                  (do (println "It's large") :large)
-                  (do (println "It's small") :small)))
-  => :large)
+                  (do (println "x is small") :small)
+                  (do (println "x is large") :large)))
+  => :small)
 
 (fact "`our-if-not-2` macroexpands identically to `our-if-not-1`"
   (macroexpand-1 '(our-if-not-2 (> x 100)
-                                (do (println "It's large") :large)
-                                (do (println "It's small") :small)))
+                                (do (println "x is small") :small)
+                                (do (println "x is large") :large)))
   => '(if (> x 100)
-        (do (println "It's small") :small)
-        (do (println "It's large") :large)))
+        (do (println "x is large") :large)
+        (do (println "x is small") :small)))
 
 ;;;; Is this a good use of macros?
 ;;;; Yes, but...

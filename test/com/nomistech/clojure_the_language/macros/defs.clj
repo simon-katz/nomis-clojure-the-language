@@ -21,4 +21,8 @@
          '~x-in-def ; quote-unquote
          ~'x-in-def ; force capture
            x-in-def
-          'x-in-def))
+          'x-in-def
+          +
+          cond
+          if        ; different -- is this for things that satisfy `special-symbol?`?
+          ))

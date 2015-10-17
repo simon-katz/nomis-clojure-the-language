@@ -73,8 +73,7 @@
      pieces))
 
 ;;;; Is this a good use of macros?
-;;;; Yes, but...
-;;;; - (if (not ...) ... ...) is probably fine too.
+;;;; - See `our-if-not-2` later.
 
 ;;;; ___________________________________________________________________________
 ;;;; Syntax-quote, unquote and unquote-splicing.
@@ -118,6 +117,7 @@
 
 ;;;; Is this a good use of macros?
 ;;;; Yes, but...
+;;;; - (if (not ...) ... ...) is probably fine too.
 ;;;; - `if-not` is built in to Clojure.
 ;;;;   - `if-not` is a macro.
 ;;;;   - `if-not` is better than `our-if-not-1`.

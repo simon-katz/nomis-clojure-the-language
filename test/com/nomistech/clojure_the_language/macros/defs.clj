@@ -1,6 +1,13 @@
 (ns com.nomistech.clojure-the-language.macros.defs)
 
 ;;;; ___________________________________________________________________________
+;;;; Macro basics
+
+(defmacro my-if-not-1
+  ([test then else]
+   (list 'if test else then)))
+
+;;;; ___________________________________________________________________________
 ;;;; backquote/syntax-quote and unquote
 
 (defmacro my-if-not-2

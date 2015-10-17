@@ -7,6 +7,23 @@
 
 (fact
   (let [x 99]
+    (defs/my-if-not-1 (> x 100)
+      :big
+      :small))
+  => :big)
+
+(fact
+  (macroexpand-1 '(defs/my-if-not-1 (> x 100)
+                    :big
+                    :small))
+  => '(if (> x 100)
+        :small
+        :big))
+
+;;;; ___________________________________________________________________________
+
+(fact
+  (let [x 99]
     (defs/my-if-not-2 (> x 100)
       :big
       :small))

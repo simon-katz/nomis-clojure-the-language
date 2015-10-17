@@ -5,8 +5,8 @@
 
 (fact
   (macroexpand-1 '(defs/do-things-with-symbols x-in-call))
-  => '(clojure.core/list com.nomistech.clojure-the-language.macros.defs/x-in-def
-                         'com.nomistech.clojure-the-language.macros.defs/x-in-def
+  => '(clojure.core/list x-in-call
+                         'x-in-call
                          x-in-def
-                         x-in-call
-                         'x-in-call))
+                         com.nomistech.clojure-the-language.macros.defs/x-in-def
+                         'com.nomistech.clojure-the-language.macros.defs/x-in-def))

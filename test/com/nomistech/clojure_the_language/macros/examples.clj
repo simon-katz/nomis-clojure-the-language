@@ -22,7 +22,28 @@
 ;;;; - The full power of the language is available when defining a macro.
 
 ;;;; ___________________________________________________________________________
+;;;; `if-not`
+
+;;;; This is built in to Clojure.
+
+(fact
+  (let [x 99]
+    (if-not (> x 100)
+      (do (println "It's large") :large)
+      (do (println "It's small") :small)))
+  => :large)
+
+(fact
+  (let [x 101]
+    (if-not (> x 100)
+      (do (println "It's large") :large)
+      (do (println "It's small") :small)))
+  => :small)
+
+;;;; ___________________________________________________________________________
 ;;;; Defining a simple macro.
+
+;;;; How would we define `if-not` if it wasn't already in Clojure?
 
 (defmacro our-if-not-1
   ([test then else]

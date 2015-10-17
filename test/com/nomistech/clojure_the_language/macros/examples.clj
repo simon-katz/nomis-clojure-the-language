@@ -147,5 +147,14 @@
 ;;;; ___________________________________________________________________________
 
 ;;;; TODO:
+
+;;;; - Don't need to talk about accidental capture, right?
+
+;;;; - Repeated evaluation
+
 ;;;; - Capture
-;;;; - ...# symbols
+;;;; - Binding to namespace-qualified names is forbidden
+;;;; - auto-gensym (...#) symbols (maybe manual gensym first)
+;;;; - Getting to function-land quickly.
+;;;;   - Changing and recompiling (but less of an issue with Workflow Reloaded)
+;;;;   - Easier to read, write and reason about

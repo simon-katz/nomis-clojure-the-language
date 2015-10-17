@@ -135,5 +135,3 @@
 ;;;; Look at examples:
 ;;;; e.g. `and`, `or`, `let`, `cond`, `while`, `letfn`, `with-redefs`, `->`,
 ;;;;      `->>`, `as->`.
-
-;;;; Maybe see `try+` and `throw+` in https://github.com/scgilardi/slingshot

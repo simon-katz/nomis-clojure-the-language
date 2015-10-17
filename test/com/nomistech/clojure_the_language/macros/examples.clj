@@ -26,7 +26,7 @@
 
 ;;;; Define a macro:
 
-(defmacro my-if-not-1
+(defmacro our-if-not-1
   ([test then else]
    (list 'if test else then)))
 
@@ -34,9 +34,9 @@
 
 (fact
   (let [x 99]
-    (my-if-not-1 (> x 100)
-                 (do (println "It's large") :large)
-                 (do (println "It's small") :small)))
+    (our-if-not-1 (> x 100)
+                  (do (println "It's large") :large)
+                  (do (println "It's small") :small)))
   => :large)
 
 ;;;; What's happening?
@@ -45,9 +45,9 @@
 ;;;; What's a macro expansion?
 
 (fact
-  (macroexpand-1 '(my-if-not-1 (> x 100)
-                               (do (println "It's large") :large)
-                               (do (println "It's small") :small)))
+  (macroexpand-1 '(our-if-not-1 (> x 100)
+                                (do (println "It's large") :large)
+                                (do (println "It's small") :small)))
   => '(if (> x 100)
         (do (println "It's small") :small)
         (do (println "It's large") :large)))
@@ -77,21 +77,21 @@
 ;;;; ___________________________________________________________________________
 ;;;; Defining macros using syntax-quote.
 
-(defmacro my-if-not-2
+(defmacro our-if-not-2
   ([test then else]
    `(if ~test ~else ~then)))
 
 (fact
   (let [x 99]
-    (my-if-not-2 (> x 100)
-                 (do (println "It's large") :large)
-                 (do (println "It's small") :small)))
+    (our-if-not-2 (> x 100)
+                  (do (println "It's large") :large)
+                  (do (println "It's small") :small)))
   => :large)
 
 (fact
-  (macroexpand-1 '(my-if-not-2 (> x 100)
-                               (do (println "It's large") :large)
-                               (do (println "It's small") :small)))
+  (macroexpand-1 '(our-if-not-2 (> x 100)
+                                (do (println "It's large") :large)
+                                (do (println "It's small") :small)))
   => '(if (> x 100)
         (do (println "It's small") :small)
         (do (println "It's large") :large)))
@@ -100,7 +100,7 @@
 ;;;; Yes, but...
 ;;;; - `if-not` is built in to Clojure.
 ;;;;   - `if-not` is a macro.
-;;;;   - `if-not` is better than `my-if-not-1`.
+;;;;   - `if-not` is better than `our-if-not-1`.
 ;;;;   - Note that much of Clojure is implemented using macros.
 ;;;;     e.g. `and`, `or`, `let`, `cond`, `while`, `letfn`, `with-redefs`, `->`,
 ;;;;          `->>`, `as->`.

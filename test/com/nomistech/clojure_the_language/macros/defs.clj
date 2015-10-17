@@ -22,7 +22,8 @@
          ~'x-in-def ; force capture
            x-in-def
           'x-in-def
-          +
-          cond
+          *print-level* ; a value var
+          +         ; a function
+          cond      ; a macro
           if        ; different -- is this for things that satisfy `special-symbol?`?
           ))

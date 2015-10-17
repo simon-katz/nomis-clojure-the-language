@@ -46,6 +46,7 @@
                          x-in-def
                          com.nomistech.clojure-the-language.macros.defs/x-in-def
                          'com.nomistech.clojure-the-language.macros.defs/x-in-def
+                         clojure.core/*print-level*
                          clojure.core/+
                          clojure.core/cond
                          if))

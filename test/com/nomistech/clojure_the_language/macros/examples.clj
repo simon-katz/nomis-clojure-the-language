@@ -22,7 +22,7 @@
 ;;;; - The full power of the language is available when defining a macro.
 
 ;;;; ___________________________________________________________________________
-;;;; Simple rearranging of arguments.
+;;;; Simple rearranging of arguments
 
 ;;;; Define a macro:
 
@@ -57,12 +57,25 @@
 ;;;; - See syntax-quote below.
 
 ;;;; ___________________________________________________________________________
-;;;; Intro to syntax-quote and unquote.
+;;;; Syntax-quote, unquote and unquote-splicing.
+;;;; - Templates
 
-;;;; ` -- syntax-quote (the backquote character)
-;;;; ~ -- unquote
+;;;; `  -- syntax-quote (the backquote character)
+;;;; ~  -- unquote
+;;;; ~@ -- unquote-splicing
 
-;;;; Allow us to write macros using templates.
+(fact "Unquote inside syntax-quote unquotes"
+  (let [x (range 5)]
+    `[:a ~x :b])
+  => '[:a (0 1 2 3 4) :b])
+
+(fact "Unquote-splicing inside syntax-quote unquotes and splices"
+  (let [x (range 5)]
+    `[:a ~@x :b])
+  => '[:a 0 1 2 3 4 :b])
+
+;;;; ___________________________________________________________________________
+;;;; Defining macros using syntax-quote.
 
 (defmacro my-if-not-2
   ([test then else]
@@ -91,19 +104,6 @@
 ;;;;   - Note that much of Clojure is implemented using macros.
 ;;;;     e.g. `and`, `or`, `let`, `cond`, `while`, `letfn`, `with-redefs`, `->`,
 ;;;;          `->>`, `as->`.
-
-;;;; ___________________________________________________________________________
-;;;; ~@ -- unquote-splicing
-
-(fact "Unquote unquotes"
-  (let [x (range 5)]
-    `[:a ~x :b])
-  => '[:a (0 1 2 3 4) :b])
-
-(fact "Unquote-splicing unquotes and splices"
-  (let [x (range 5)]
-    `[:a ~@x :b])
-  => '[:a 0 1 2 3 4 :b])
 
 ;;;; ___________________________________________________________________________
 ;;;; Code transformation.

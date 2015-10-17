@@ -4,14 +4,22 @@
 ;;;; ___________________________________________________________________________
 ;;;; Macro basics
 
-;;;; Macros -- key points
+;;;; Macros -- key points:
 ;;;;
 ;;;; - Macros allow us to arbitrarily transform code.
 ;;;;
 ;;;; - Macros transform code that the programmer writes
-;;;;   into code that the compiler can process
+;;;;   into code that the compiler can process.
 ;;;;
 ;;;; - Macros use code as data.
+;;;;
+;;;; - Clojure and other Lisps are homoiconic:
+;;;;   - Code is represented by data structures, not as sequences
+;;;;     of characters.
+;;;;   - Clojure is defined in terms of the evaluation of data structures,
+;;;;     not in terms of the syntax of character streams.
+;;;;
+;;;; - The full power of the language is available when defining a macro.
 
 ;;;; ___________________________________________________________________________
 ;;;; Simple rearranging of arguments.
@@ -135,3 +143,9 @@
 ;;;; Look at examples:
 ;;;; e.g. `and`, `or`, `let`, `cond`, `while`, `letfn`, `with-redefs`, `->`,
 ;;;;      `->>`, `as->`.
+
+;;;; ___________________________________________________________________________
+
+;;;; TODO:
+;;;; - Capture
+;;;; - ...# symbols

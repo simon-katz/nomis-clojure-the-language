@@ -4,6 +4,18 @@
 ;;;; ___________________________________________________________________________
 ;;;; Macro basics
 
+;;;; Macros -- key points
+;;;;
+;;;; - Macros allow us to arbitrarily transform code.
+;;;;
+;;;; - Macros transform code that the programmer writes
+;;;;   into code that the compiler can process
+;;;;
+;;;; - Macros use code as data.
+
+;;;; ___________________________________________________________________________
+;;;; Simple rearranging of arguments.
+
 (defmacro my-if-not-1
   ([test then else]
    (list 'if test else then)))
@@ -24,7 +36,12 @@
         :big))
 
 ;;;; ___________________________________________________________________________
-;;;; backquote/syntax-quote and unquote
+;;;; Intro to syntax-quote and unquote.
+
+;;;; ` -- syntax-quote (the backquote character)
+;;;; ~ -- unquote
+
+;;;; Allow us to write macros using templates.
 
 (defmacro my-if-not-2
   ([test then else]

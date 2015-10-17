@@ -1,8 +1,13 @@
 (ns com.nomistech.clojure-the-language.macros.defs)
 
-(defmacro my-if-not
+;;;; ___________________________________________________________________________
+;;;; backquote/syntax-quote and unquote
+
+(defmacro my-if-not-2
   ([test then else]
    `(if ~test ~else ~then)))
+
+;;;; ___________________________________________________________________________
 
 (defmacro do-things-with-symbols [x-in-def]
   `(list  ~x-in-def ; unquote

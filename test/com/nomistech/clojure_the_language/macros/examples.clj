@@ -22,15 +22,11 @@
 ;;;; - The full power of the language is available when defining a macro.
 
 ;;;; ___________________________________________________________________________
-;;;; Simple rearranging of arguments
-
-;;;; Define a macro:
+;;;; Defining a simple macro.
 
 (defmacro our-if-not-1
   ([test then else]
    (list 'if test else then)))
-
-;;;; A use of the macro:
 
 (fact
   (let [x 99]
@@ -42,9 +38,7 @@
 ;;;; What's happening?
 ;;;; - Before compilation, macro calls are replaced with their macro expansion.
 
-;;;; What's a macro expansion?
-
-(fact
+(fact "Let's look at macroexpansion"
   (macroexpand-1 '(our-if-not-1 (> x 100)
                                 (do (println "It's large") :large)
                                 (do (println "It's small") :small)))
@@ -107,6 +101,8 @@
 
 ;;;; ___________________________________________________________________________
 ;;;; Code transformation.
+
+;;;; More than just rearranging things.
 
 (defmacro lisp-let [[& bindings] & body]
   ;; A very simple-minded implementation -- no error checking.

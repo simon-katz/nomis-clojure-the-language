@@ -2,10 +2,10 @@
   (:require [midje.sweet :refer :all]))
 
 (defmacro do-things-with-symbols [x]
-  `(list x
-         'x
+  `(list   x
+          'x
          ~'x
-         ~x
+          ~x
          '~x))
 
 (fact

@@ -2,7 +2,7 @@
   (:require [midje.sweet :refer :all]))
 
 
-;; Or was what you did at the Citi interview better?
+;; Or was what you did at that interview better?
 ;; - partition into pairs...
 
 (defn take-while-binary-pred

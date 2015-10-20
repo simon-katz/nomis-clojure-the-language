@@ -6,23 +6,26 @@
 
 ;;;; Macros -- key points:
 ;;;;
-;;;; - Macros transform
-;;;;     code that the programmer writes
-;;;;     into
-;;;;     code that the compiler can process
+;;;; - A general definition:
+;;;;   - Macros transform
+;;;;       code that the programmer writes
+;;;;       into
+;;;;       code that the compiler can process
 ;;;;
-;;;; - Macros use code as data
+;;;; - Macros? XXXX has macros!
+;;;;   - Lisp macros are different (and Clojure is a Lisp)
 ;;;;
-;;;; - Macros allow us to arbitrarily transform code
-;;;;   - Very different to macros in non-Lisps
+;;;; - How is Lisp different? How are Lisp macros different?
 ;;;;
-;;;; - Clojure and other Lisps are homoiconic:
-;;;;   - Code is represented by data structures, not as sequences
-;;;;     of characters.
-;;;;   - Clojure is defined in terms of the evaluation of data structures,
-;;;;     not in terms of the syntax of character streams.
+;;;;   - Clojure and other Lisps are homoiconic:
+;;;;     - Code is represented by data structures, not as sequences
+;;;;       of characters
 ;;;;
-;;;; - The full power of the language is available when defining a macro.
+;;;;   - Lisp macros use code as data
+;;;;
+;;;;   - Lisp macros allow us to arbitrarily transform code
+;;;;
+;;;;   - The full power of the language is available when defining a macro
 
 ;;;; ___________________________________________________________________________
 ;;;; `if-not`

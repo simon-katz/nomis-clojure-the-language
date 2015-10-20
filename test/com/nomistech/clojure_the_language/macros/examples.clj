@@ -14,7 +14,7 @@
 ;;;; - Macros use code as data
 ;;;;
 ;;;; - Macros allow us to arbitrarily transform code
-;;;    - Very different to macros in non-Lisps
+;;;;   - Very different to macros in non-Lisps
 ;;;;
 ;;;; - Clojure and other Lisps are homoiconic:
 ;;;;   - Code is represented by data structures, not as sequences

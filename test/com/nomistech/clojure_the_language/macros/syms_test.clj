@@ -8,9 +8,9 @@
   (macroexpand-1 '(syms/do-things-with-symbols-1 x-in-call))
   => '{:unquote        x-in-call
        :quote-unquote 'x-in-call
-       :force-capture  x-in-def
-       :undecorated    com.nomistech.clojure-the-language.macros.syms/x-in-def
-       :quote         'com.nomistech.clojure-the-language.macros.syms/x-in-def})
+       :force-capture  x
+       :undecorated    com.nomistech.clojure-the-language.macros.syms/x
+       :quote         'com.nomistech.clojure-the-language.macros.syms/x})
 
 (fact
   (macroexpand-1 '(syms/do-things-with-symbols-2))

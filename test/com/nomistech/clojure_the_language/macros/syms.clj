@@ -2,12 +2,12 @@
 
 ;;;; ___________________________________________________________________________
 
-(defmacro do-things-with-symbols-1 [x-in-def]
-  `{:unquote        ~x-in-def
-    :quote-unquote '~x-in-def
-    :force-capture ~'x-in-def
-    :undecorated     x-in-def
-    :quote          'x-in-def})
+(defmacro do-things-with-symbols-1 [x]
+  `{:unquote        ~x
+    :quote-unquote '~x
+    :force-capture ~'x
+    :undecorated     x
+    :quote          'x})
 
 (defmacro do-things-with-symbols-2 []
   `{:undecorated-value-symbol   *print-level*

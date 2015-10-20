@@ -74,7 +74,7 @@
         (do (println "x is large") :large)
         (do (println "x is small") :small)))
 
-;;;; Why would you use this?
+;;;; Why would you use `if-not`?
 
 ;;;; Given...
 
@@ -100,9 +100,6 @@
      and
      pieces))
 
-;;;; Is this a good use of macros?
-;;;; - See `our-if-not-2` later.
-
 ;;;; ___________________________________________________________________________
 ;;;; Syntax-quote, unquote and unquote-splicing.
 ;;;; - Templates
@@ -124,9 +121,15 @@
 ;;;; ___________________________________________________________________________
 ;;;; Defining macros using syntax-quote.
 
-(defmacro our-if-not-2
-  ([test then else]
-   `(if ~test ~else ~then)))
+;; Remember we had:
+
+(defmacro our-if-not-1 [test then else]
+  (list 'if test else then))
+
+;; A nicer way:
+
+(defmacro our-if-not-2 [test then else]
+  `(if ~test ~else ~then))
 
 (fact
   (let [x 99]

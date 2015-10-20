@@ -152,9 +152,9 @@
 
 ;;;; ___________________________________________________________________________
 
-;;;;   - Note that much of Clojure is implemented using macros.
-;;;;     e.g. `and`, `or`, `let`, `cond`, `while`, `letfn`, `with-redefs`, `->`,
-;;;;          `->>`, `as->`.
+;;;; - Note that much of Clojure is implemented using macros.
+;;;;   e.g. `and`, `or`, `let`, `cond`, `while`, `letfn`, `with-redefs`, `->`,
+;;;;        `->>`, `as->`.
 
 ;;;; ___________________________________________________________________________
 ;;;; Code transformation.

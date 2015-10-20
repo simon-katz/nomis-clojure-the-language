@@ -13,7 +13,9 @@
 ;;;;       code that the compiler can process
 ;;;;
 ;;;; - Macros? XXXX has macros!
-;;;;   - Lisp macros are different (and Clojure is a Lisp)
+;;;;   - Lisp macros are different
+;;;;     - because Lisp is different
+;;;;       (and Clojure is a Lisp)
 ;;;;
 ;;;; - How is Lisp different? How are Lisp macros different?
 ;;;;

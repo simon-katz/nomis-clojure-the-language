@@ -6,12 +6,15 @@
 
 ;;;; Macros -- key points:
 ;;;;
-;;;; - Macros allow us to arbitrarily transform code.
+;;;; - Macros transform
+;;;;     code that the programmer writes
+;;;;     into
+;;;;     code that the compiler can process
 ;;;;
-;;;; - Macros transform code that the programmer writes
-;;;;   into code that the compiler can process.
+;;;; - Macros use code as data
 ;;;;
-;;;; - Macros use code as data.
+;;;; - Macros allow us to arbitrarily transform code
+;;;    - Very different to macros in non-Lisps
 ;;;;
 ;;;; - Clojure and other Lisps are homoiconic:
 ;;;;   - Code is represented by data structures, not as sequences

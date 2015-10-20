@@ -53,9 +53,8 @@
 
 ;;;; How would we define `if-not` if it wasn't already in Clojure?
 
-(defmacro our-if-not-1
-  ([test then else]
-   (list 'if test else then)))
+(defmacro our-if-not-1 [test then else]
+  (list 'if test else then))
 
 (fact
   (let [x 99]

@@ -139,19 +139,19 @@
   => :small)
 
 (fact "`our-if-not-2` macroexpands identically to `our-if-not-1`"
-  (macroexpand-1 '(our-if-not-2 (> x 100)
-                                (do (println "x is small") :small)
-                                (do (println "x is large") :large)))
-  => '(if (> x 100)
-        (do (println "x is large") :large)
-        (do (println "x is small") :small)))
+  (macroexpand-1 '(our-if-not-2 c t e))
+  =>
+  '(if c e t))
 
 ;;;; Is this a good use of macros?
 ;;;; Yes, but...
 ;;;; - (if (not ...) ... ...) is probably fine too.
 ;;;; - `if-not` is built in to Clojure.
-;;;;   - `if-not` is a macro.
-;;;;   - `if-not` is better than `our-if-not-1`.
+;;;;   - it's  a macro.
+;;;;   - it's better than `our-if-not-1`.
+
+;;;; ___________________________________________________________________________
+
 ;;;;   - Note that much of Clojure is implemented using macros.
 ;;;;     e.g. `and`, `or`, `let`, `cond`, `while`, `letfn`, `with-redefs`, `->`,
 ;;;;          `->>`, `as->`.

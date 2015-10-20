@@ -194,8 +194,16 @@
 ;;;; built in.
 
 ;;;; Look at examples:
-;;;; e.g. `and`, `or`, `let`, `cond`, `while`, `letfn`, `with-redefs`, `->`,
+;;;;
+;;;; e.g. In clojure itself:
+;;;;      `and`, `or`, `let`, `cond`, `while`, `letfn`, `with-redefs`, `->`,
 ;;;;      `->>`, `as->`.
+;;;;
+;;;; e.g. In libraries:
+;;;;      - `try+` / `throw+` in Slingshot (https://github.com/scgilardi/slingshot)
+;;;;      - `defroutes` / `GET` / `POST` etc in Compojure
+;;;;      - core.match -- a library for pattern matching
+;;;;      - core.async -- a library for asynchronous programming using channels
 
 ;;;; ___________________________________________________________________________
 

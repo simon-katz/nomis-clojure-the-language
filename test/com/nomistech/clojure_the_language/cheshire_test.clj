@@ -1,7 +1,7 @@
 (ns com.nomistech.clojure-the-language.cheshire-test
-  (:require [midje.sweet :refer :all]
-            ;; [com.nomistech.clojure-the-language.cheshire :refer :all]
-            [cheshire.core :refer :all]))
+  (:require [cheshire.core :refer :all]
+            [com.nomistech.clojure-the-language.utils.utils :as u]
+            [midje.sweet :refer :all]))
 
 (fact
   (generate-string {:foo "bar" :baz 5})
@@ -24,7 +24,8 @@
   "{\"baz\":\"1970-01-01\"}")
 
 (fact
-  (generate-string {:foo "bar" :baz {:eggplant [1 2 3]}} {:pretty true})
+  (u/remove-any-carriage-return-chars
+   (generate-string {:foo "bar" :baz {:eggplant [1 2 3]}} {:pretty true}))
   =>
   "{\n  \"foo\" : \"bar\",\n  \"baz\" : {\n    \"eggplant\" : [ 1, 2, 3 ]\n  }\n}")
 

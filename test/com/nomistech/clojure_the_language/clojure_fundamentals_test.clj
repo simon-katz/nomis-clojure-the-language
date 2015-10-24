@@ -1,7 +1,8 @@
 (ns com.nomistech.clojure-the-language.clojure-fundamentals-test
-  (:require [midje.sweet :refer :all]
-            [clojure.test]
-            [clojure.zip :as zip]))
+  (:require [clojure.test]
+            [clojure.zip :as zip]
+            [com.nomistech.clojure-the-language.utils.utils :as u]
+            [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 
@@ -33,10 +34,11 @@
 ;;;; doseq allows nested iteration
 
 (fact
-  (with-out-str
-   (doseq [x [1 2]
-           y [:a :b :c]]
-     (println [x y])))
+  (u/remove-any-carriage-return-chars
+   (with-out-str
+     (doseq [x [1 2]
+             y [:a :b :c]]
+       (println [x y]))))
   =>
   "[1 :a]
 [1 :b]
@@ -50,10 +52,11 @@
 ;;;; doseq allows earlier bindings to be used by later bindings
 
 (fact
-  (with-out-str
-   (doseq [x [[1 2] [:a :b :c]]
-           y x]
-     (println [x y])))
+  (u/remove-any-carriage-return-chars
+   (with-out-str
+     (doseq [x [[1 2] [:a :b :c]]
+             y x]
+       (println [x y]))))
   =>
   "[[1 2] 1]
 [[1 2] 2]

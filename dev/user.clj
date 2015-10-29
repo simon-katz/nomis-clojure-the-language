@@ -5,4 +5,5 @@
             [clojure.repl :refer :all ; [apropos dir doc find-doc pst source]
              ]
             [clojure.tools.namespace.repl :refer :all]
+            [clojure.tools.namespace.move :refer :all]
             [midje.repl :refer :all]))

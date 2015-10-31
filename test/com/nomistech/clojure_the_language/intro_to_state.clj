@@ -105,21 +105,21 @@
 (def n-competitors 100)
 
 (defn demo-competition-to-modify-atom []
-  (let [n-attempts-atom (atom 0)
-        futures         (for [i (range n-competitors)]
-                          (future (swap! atom-to-demo-competing-updates
-                                         (fn [n]
-                                           (swap! n-attempts-atom inc)
-                                           (Thread/sleep (rand-int 100))
-                                           (inc n)))))]
+  (let [n-attempts-agent (agent 0)
+        futures          (for [i (range n-competitors)]
+                           (future (swap! atom-to-demo-competing-updates
+                                          (fn [n]
+                                            (send n-attempts-agent inc)
+                                            (Thread/sleep (rand-int 100))
+                                            (inc n)))))]
     (loop []
       (println @atom-to-demo-competing-updates)
       (when (not-every? realized? futures)
         (Thread/sleep 1000)
         (recur)))
-    (println "Finished -- n-attempts =" @n-attempts-atom)
+    (println "Finished -- n-attempts =" @n-attempts-agent)
     [@atom-to-demo-competing-updates
-     @n-attempts-atom]))
+     @n-attempts-agent]))
 
 (fact "About concurrency and atoms"
   (let [[final-value n-attempts] (demo-competition-to-modify-atom)]

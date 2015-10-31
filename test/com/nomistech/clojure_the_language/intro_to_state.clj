@@ -48,14 +48,16 @@
 
 (def my-map-atom (atom {}))
 
-(swap! my-map-atom assoc :first-name "Alice") ; (assoc {} :first-name "Alice"}
+(swap! my-map-atom assoc :first-name "Alice")
+;; (assoc {} :first-name "Alice"}
 (fact @my-map-atom => {:first-name "Alice"})
 
-(swap! my-map-atom assoc :first-name "Bob")   ; (assoc {:first-name "Alice"}
-                                              ;        :first-name "Bob")
+(swap! my-map-atom assoc :first-name "Bob")
+;; (assoc {:first-name "Alice"} :first-name "Bob")
 (fact @my-map-atom => {:first-name "Bob"})
 
 (swap! my-map-atom assoc-in [:address :line-1] "78 Green Lane")
+;; (assoc-in {:first-name "Bob"} [:address :line-1] "78 Green Lane")
 (fact @my-map-atom => {:first-name "Bob"
                        :address {:line-1 "78 Green Lane"}})
 

@@ -101,30 +101,32 @@
 ;;;;         the swap function is retried
 ;;;;         (using the current value as input to the swap function).
 ;;;;
-;;;; - An agent (another kind or reference) is used to keep track of how
-;;;;   many times the swap function is called.
-;;;;   - This is just incidental -- I'm not trying to explain agents here.
+;;;; - Another atom is used to keep track of how many times the swap function
+;;;;   is called. (But note that swap functions are not really supposed to
+;;;;   have side effects -- it's just for this example.)
 
 (def competing-updates-atom (atom 0))
 
 (def n-competitors 100)
 
 (defn demo-competition-to-modify-atom []
-  (let [n-attempts-agent (agent 0)
-        futures          (for [i (range n-competitors)]
-                           (future (swap! competing-updates-atom
-                                          (fn [n]
-                                            (send n-attempts-agent inc)
-                                            (Thread/sleep (rand-int 100))
-                                            (inc n)))))]
+  (let [n-attempts-atom (atom 0)]
+    (dotimes [_ n-competitors]
+      (.start (Thread. (fn []
+                         (swap! competing-updates-atom
+                                (fn [n]
+                                  (swap! n-attempts-atom inc)
+                                  (Thread/sleep (rand-int 200))
+                                  (inc n)))))))
     (loop []
-      (println @competing-updates-atom)
-      (when (not-every? realized? futures)
+      (println [@competing-updates-atom
+                @n-attempts-atom])
+      (when (< @competing-updates-atom n-competitors)
         (Thread/sleep 1000)
         (recur)))
-    (println "Finished -- n-attempts =" @n-attempts-agent)
+    (println "Finished. n-attempts =" @n-attempts-atom)
     [@competing-updates-atom
-     @n-attempts-agent]))
+     @n-attempts-atom]))
 
 (fact "About concurrency and atoms"
   (let [[final-value n-attempts] (demo-competition-to-modify-atom)]
@@ -134,9 +136,6 @@
 ;;;; ___________________________________________________________________________
 
 ;;;; TODO:
-
-;;;; You are using atoms, futures and agents above. Shit.
-
 ;;;; - Look at your notes
 ;;;; - More on atoms?
 ;;;;   - When to use atoms

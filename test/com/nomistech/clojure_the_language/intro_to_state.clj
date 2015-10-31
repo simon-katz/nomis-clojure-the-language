@@ -8,11 +8,11 @@
 ;;;; Sane concurrency follows.
 
 ;;;; References
-;;;; - There are a fair few types of reference
+;;;; - There are a fair few types of reference.
 ;;;;   - atoms, refs, vars, agents, promises, futures...
-;;;; - Some are for managing state
-;;;; - Some are for managing concurrency
-;;;; - Some combine the two
+;;;; - Some are for managing state.
+;;;; - Some are for managing concurrency.
+;;;; - Some combine the two.
 
 ;;;; Here we will look at two reference types, both for managing state
 ;;;; - Atoms

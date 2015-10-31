@@ -48,22 +48,20 @@
 
 (def my-map-atom (atom {}))
 
-(swap! my-map-atom assoc :first-name "Alice")
+(swap! my-map-atom assoc :first-name "Alice") ; (assoc {} :first-name "Alice"}
 (fact @my-map-atom => {:first-name "Alice"})
 
-(swap! my-map-atom assoc :first-name "Bob")
+(swap! my-map-atom assoc :first-name "Bob")   ; (assoc {:first-name "Alice"}
+                                              ;        :first-name "Bob")
 (fact @my-map-atom => {:first-name "Bob"})
 
 (swap! my-map-atom assoc-in [:address :line-1] "78 Green Lane")
-(swap! my-map-atom assoc-in [:address :line-2] "New Town")
 (fact @my-map-atom => {:first-name "Bob"
-                       :address {:line-1 "78 Green Lane"
-                                 :line-2 "New Town"}})
+                       :address {:line-1 "78 Green Lane"}})
 
-(swap! my-map-atom assoc-in [:address :line-1] "780 Green Lane")
+(swap! my-map-atom assoc-in [:address :line-1] "37 High Street")
 (fact @my-map-atom => {:first-name "Bob"
-                       :address {:line-1 "780 Green Lane"
-                                 :line-2 "New Town"}})
+                       :address {:line-1 "37 High Street"}})
 
 ;;;; ___________________________________________________________________________
 ;;;; Atoms: `compare-and-set!`

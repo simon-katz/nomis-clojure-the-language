@@ -102,8 +102,7 @@
 ;;;;         (using the current value as input to the swap function).
 ;;;;
 ;;;; - Another atom is used to keep track of how many times the swap function
-;;;;   is called. (But note that swap functions are not really supposed to
-;;;;   have side effects -- it's just for this example.)
+;;;;   is called.
 
 (def competing-updates-atom (atom 0))
 

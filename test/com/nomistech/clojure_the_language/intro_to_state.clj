@@ -54,6 +54,21 @@
 ;;;; ___________________________________________________________________________
 ;;;; Atoms and concurrency
 
+;;;; Illustration of multiple threads competing to update an atom.
+;;;;
+;;;; - Each thread uses `swap!` with a function that runs for a long time.
+;;;;
+;;;; - Clojure allows each thread to be optimistic.
+;;;;
+;;;; - When a thread finishes:
+;;;;   - If the current value is the same as the value when the operation
+;;;;     started
+;;;;     then
+;;;;         the new value is swapped in
+;;;;     else
+;;;;         the swap operation is retried
+;;;;         (using the current value as input to the swap operation).
+
 (def atom-to-demo-competing-updates (atom 0))
 
 (def n-competitors 100)
@@ -79,3 +94,11 @@
   (let [[final-value n-attempts] (demo-competition-to-modify-atom)]
     (fact final-value => n-competitors)
     (fact (> n-attempts n-competitors) => truthy)))
+
+;;;; ___________________________________________________________________________
+
+;;;; TODO:
+;;;; - Look at your notes
+;;;; - More on atoms?
+;;;; - Refs
+;;;; - Single big atoms vs multiple small refs

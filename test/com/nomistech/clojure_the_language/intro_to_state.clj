@@ -60,10 +60,15 @@
                        :address {:line-1 "78 Green Lane"
                                  :line-2 "New Town"}})
 
-
 ;;;; ___________________________________________________________________________
 ;;;; `compare-and-set!`
 
+(fact @my-number-atom => 64)
+(fact (compare-and-set! my-number-atom 99 42) => false)
+(fact @my-number-atom => 64)
+
+(fact (compare-and-set! my-number-atom 64 42) => true)
+(fact @my-number-atom => 42)
 
 ;;;; ___________________________________________________________________________
 ;;;; `reset!`

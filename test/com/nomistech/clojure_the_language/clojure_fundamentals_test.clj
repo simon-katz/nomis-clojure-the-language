@@ -212,15 +212,36 @@
 ;;;; ___________________________________________________________________________
 ;;;; Chunked sequences
 
-;;;; From
-;;;; http://blog.fogus.me/2010/01/22/de-chunkifying-sequences-in-clojure/
+;;;; See http://blog.fogus.me/2010/01/22/de-chunkifying-sequences-in-clojure/
 ;;;; (the content of which is included in The Joy of Clojure):
 
-(def gimme #(do (print \.) %))
+(defn demo-chunked
+  "Take the first item from a chunked lazy sequence of size n, and
+  print a dot for each item in the list that is realized."
+  [n]
+  (letfn [(identity-with-print-dot [x]
+            (print \.)
+            x)]
+    (take 1 (map identity-with-print-dot
+                 (range n)))))
 
-(take 1 (map gimme (range 32)))
+(fact "Demo of chunked sequences -- in chunks of size 32"
+  (do (with-out-str (doall (demo-chunked 1)))
+      => ".")
+  (do (with-out-str (doall (demo-chunked 2)))
+      => "..")
+  (do (with-out-str (doall (demo-chunked 31)))
+      => "...............................")
+  (do (with-out-str (doall (demo-chunked 32)))
+      => "................................")
+  (do (with-out-str (doall (demo-chunked 33)))
+      => "................................")
+  (do (with-out-str (doall (demo-chunked 34)))
+      => "................................")
+  (do (with-out-str (doall (demo-chunked 1000)))
+      => "................................"))
 
-;;; Ah! -- built-in functions use chunk-buffer and chunk-cons:
+;;; Built-in functions use chunk-buffer and chunk-cons:
 ;;;
  ;; (defn range
  ;;   "Returns a lazy seq of nums from start (inclusive) to end

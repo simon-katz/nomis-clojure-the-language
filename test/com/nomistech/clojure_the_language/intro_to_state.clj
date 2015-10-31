@@ -19,21 +19,30 @@
 ;;;; - Refs (confusing names! A ref is one kind of reference.)
 
 ;;;; ___________________________________________________________________________
-;;;; Atoms: `atom`, `reset!` and `swap!`
+;;;; Atoms: `atom`, `deref`, `@` and `swap!`
 
 (def my-atom-1 (atom 0))
 
 (fact (deref my-atom-1) => 0)
 (fact @my-atom-1 => 0)
 
-(reset! my-atom-1 100)
-(fact @my-atom-1 => 100)
+(swap! my-atom-1 inc) ; (inc 0)
+(fact @my-atom-1 => 1)
 
-(swap! my-atom-1 inc)
-(fact @my-atom-1 => 101)
+(swap! my-atom-1 inc) ; (inc 1)
+(fact @my-atom-1 => 2)
 
-(swap! my-atom-1 + 10 20 30)
-(fact @my-atom-1 => 161)
+;;;; Supplying args to the swap function:
+
+(swap! my-atom-1 + 1) ; (+ 2 1)
+(fact @my-atom-1 => 3)
+
+(swap! my-atom-1 + 1) ; (+ 3 1)
+(fact @my-atom-1 => 4)
+
+(swap! my-atom-1 + 10 20 30) ; (+ 4 10 20 30)
+(fact @my-atom-1 => 64)
+
 
 ;; Maps in atoms
 
@@ -51,6 +60,16 @@
                      :address {:line-1 "78 Green Lane"
                                :line-2 "New Town"}})
 
+
+;;;; ___________________________________________________________________________
+;;;; `compare-and-set!`
+
+
+;;;; ___________________________________________________________________________
+;;;; `reset!`
+
+(reset! my-atom-1 100)
+(fact @my-atom-1 => 100)
 
 ;;;; ___________________________________________________________________________
 ;;;; Atoms and concurrency

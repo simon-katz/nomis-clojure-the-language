@@ -51,6 +51,7 @@
                      :address {:line-1 "78 Green Lane"
                                :line-2 "New Town"}})
 
+
 ;;;; ___________________________________________________________________________
 ;;;; Atoms and concurrency
 
@@ -59,10 +60,11 @@
 ;;;; - Each thread uses `swap!` with a function that runs for a long time.
 ;;;;
 ;;;; - Clojure allows each thread to be optimistic.
+;;;;   - So multiple swap operations run concurrently.
 ;;;;
-;;;; - When a thread finishes:
-;;;;   - If the current value is the same as the value when the operation
-;;;;     started
+;;;; - When a swap operation finishes:
+;;;;   - If the current value of the atom is the same as the value when the
+;;;;     operation started
 ;;;;     then
 ;;;;         the new value is swapped in
 ;;;;     else

@@ -107,7 +107,7 @@
 
 (def competing-updates-atom (atom 0))
 
-(def n-competitors 100)
+(def n-competitors 1000)
 
 (defn demo-competition-to-modify-atom []
   (let [n-attempts-atom (atom 0)]
@@ -117,7 +117,7 @@
                                    (swap! competing-updates-atom
                                           (fn [n]
                                             (swap! n-attempts-atom inc)
-                                            (Thread/sleep (rand-int 200))
+                                            (Thread/sleep (rand-int 100))
                                             (inc n))))))))
             (report-on-what-is-happenning []
               (loop []

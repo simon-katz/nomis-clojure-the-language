@@ -118,7 +118,7 @@
                                             (swap! n-attempts-atom inc)
                                             (Thread/sleep (rand-int 100))
                                             (inc n))))))))
-            (report-on-what-is-happenning []
+            (report-on-what-is-happening []
               (loop []
                 (println [@competing-updates-atom
                           @n-attempts-atom])
@@ -130,7 +130,7 @@
               [@competing-updates-atom
                @n-attempts-atom])]
       (create-competing-threads)
-      (report-on-what-is-happenning)
+      (report-on-what-is-happening)
       (wrap-up-and-result))))
 
 (fact "About concurrency and atoms"

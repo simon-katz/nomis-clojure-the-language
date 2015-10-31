@@ -21,44 +21,44 @@
 ;;;; ___________________________________________________________________________
 ;;;; Atoms: `atom`, `deref`, `@` and `swap!`
 
-(def my-atom-1 (atom 0))
+(def my-number-atom (atom 0))
 
-(fact (deref my-atom-1) => 0)
-(fact @my-atom-1 => 0)
+(fact (deref my-number-atom) => 0)
+(fact @my-number-atom => 0)
 
-(swap! my-atom-1 inc) ; (inc 0)
-(fact @my-atom-1 => 1)
+(swap! my-number-atom inc) ; (inc 0)
+(fact @my-number-atom => 1)
 
-(swap! my-atom-1 inc) ; (inc 1)
-(fact @my-atom-1 => 2)
+(swap! my-number-atom inc) ; (inc 1)
+(fact @my-number-atom => 2)
 
 ;;;; Supplying args to the swap function:
 
-(swap! my-atom-1 + 1) ; (+ 2 1)
-(fact @my-atom-1 => 3)
+(swap! my-number-atom + 1) ; (+ 2 1)
+(fact @my-number-atom => 3)
 
-(swap! my-atom-1 + 1) ; (+ 3 1)
-(fact @my-atom-1 => 4)
+(swap! my-number-atom + 1) ; (+ 3 1)
+(fact @my-number-atom => 4)
 
-(swap! my-atom-1 + 10 20 30) ; (+ 4 10 20 30)
-(fact @my-atom-1 => 64)
+(swap! my-number-atom + 10 20 30) ; (+ 4 10 20 30)
+(fact @my-number-atom => 64)
 
 
 ;; Maps in atoms
 
-(def my-atom-2 (atom {}))
+(def my-map-atom (atom {}))
 
-(swap! my-atom-2 assoc :first-name "Alice")
-(fact @my-atom-2 => {:first-name "Alice"})
+(swap! my-map-atom assoc :first-name "Alice")
+(fact @my-map-atom => {:first-name "Alice"})
 
-(swap! my-atom-2 assoc :first-name "Bob")
-(fact @my-atom-2 => {:first-name "Bob"})
+(swap! my-map-atom assoc :first-name "Bob")
+(fact @my-map-atom => {:first-name "Bob"})
 
-(swap! my-atom-2 assoc-in [:address :line-1] "78 Green Lane")
-(swap! my-atom-2 assoc-in [:address :line-2] "New Town")
-(fact @my-atom-2 => {:first-name "Bob"
-                     :address {:line-1 "78 Green Lane"
-                               :line-2 "New Town"}})
+(swap! my-map-atom assoc-in [:address :line-1] "78 Green Lane")
+(swap! my-map-atom assoc-in [:address :line-2] "New Town")
+(fact @my-map-atom => {:first-name "Bob"
+                       :address {:line-1 "78 Green Lane"
+                                 :line-2 "New Town"}})
 
 
 ;;;; ___________________________________________________________________________
@@ -68,8 +68,8 @@
 ;;;; ___________________________________________________________________________
 ;;;; `reset!`
 
-(reset! my-atom-1 100)
-(fact @my-atom-1 => 100)
+(reset! my-number-atom 100)
+(fact @my-number-atom => 100)
 
 ;;;; ___________________________________________________________________________
 ;;;; Atoms and concurrency

@@ -87,18 +87,22 @@
 ;;;; Illustration of multiple threads competing to update an atom.
 ;;;;
 ;;;; - Each thread uses `swap!` with a function that runs for a long time.
+;;;;   (I'm calling the function a "swap function".)
 ;;;;
 ;;;; - Clojure allows each thread to be optimistic.
-;;;;   - So multiple swap operations run concurrently.
+;;;;   - So multiple swap functions run concurrently.
 ;;;;
-;;;; - When a swap operation finishes:
+;;;; - When a swap function finishes:
 ;;;;   - If the current value of the atom is the same as the value when the
-;;;;     operation started
+;;;;     function started
 ;;;;     then
 ;;;;         the new value is swapped in
 ;;;;     else
-;;;;         the swap operation is retried
-;;;;         (using the current value as input to the swap operation).
+;;;;         the swap function is retried
+;;;;         (using the current value as input to the swap function).
+;;;;
+;;;; - An agent (another kind or reference) is used to keep track of how
+;;;;   many times the swap function is called.
 
 (def atom-to-demo-competing-updates (atom 0))
 

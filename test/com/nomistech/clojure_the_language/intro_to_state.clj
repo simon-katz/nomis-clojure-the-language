@@ -2,6 +2,23 @@
   (:require [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
+
+;;;; Concurrency and state management without locks.
+;;;; Focus on sane management of state.
+;;;; Sane concurrency follows.
+
+;;;; References
+;;;; - There are a fair few types of reference
+;;;;   - atoms, refs, vars, agents, promises, futures...
+;;;; - Some are for managing state
+;;;; - Some are for managing concurrency
+;;;; - Some combine the two
+
+;;;; Here we will look at two reference types, both for managing state
+;;;; - Atoms
+;;;; - Refs (confusing names! A ref is one kind of reference.)
+
+;;;; ___________________________________________________________________________
 ;;;; Atoms: `atom`, `reset!` and `swap!`
 
 (def my-atom-1 (atom 0))

@@ -84,14 +84,17 @@
 ;;;; Illustration of multiple threads competing to update an atom.
 ;;;;
 ;;;; - Each thread uses `swap!` with a function that runs for a long time.
-;;;;   (I'm calling the function a "swap function".)
 ;;;;
-;;;; - Clojure allows each thread to be optimistic.
-;;;;   - So multiple swap functions run concurrently.
+;;;; - Terminology: I'm calling the function passed to `swap!` a "swap function".
+;;;;
+;;;; - Clojure allows each thread that calls `swap!` to be optimistic.
+;;;;   - So multiple swap functions run concurrently (for the same atom).
 ;;;;
 ;;;; - When a swap function finishes:
 ;;;;   - If the current value of the atom is the same as the value when the
 ;;;;     function started
+;;;;     (this means that this swap function did its work based on the
+;;;;     current value)
 ;;;;     then
 ;;;;         the new value is swapped in
 ;;;;     else
@@ -131,7 +134,18 @@
 ;;;; ___________________________________________________________________________
 
 ;;;; TODO:
+
+;;;; You are using atoms, futures and agents above. Shit.
+
 ;;;; - Look at your notes
 ;;;; - More on atoms?
+;;;;   - When to use atoms
+;;;;   - When not to use atoms -- not when you can use functional stuff!
+;;;;     - give an example of a bad use
+;;;;
+;;;; - How long will it take to go through what you have so far?
+;;;;
 ;;;; - Refs
+;;;;   - and STM
+;;;;
 ;;;; - Single big atoms vs multiple small refs

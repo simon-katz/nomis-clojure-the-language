@@ -111,22 +111,28 @@
 
 (defn demo-competition-to-modify-atom []
   (let [n-attempts-atom (atom 0)]
-    (dotimes [_ n-competitors]
-      (.start (Thread. (fn []
-                         (swap! competing-updates-atom
-                                (fn [n]
-                                  (swap! n-attempts-atom inc)
-                                  (Thread/sleep (rand-int 200))
-                                  (inc n)))))))
-    (loop []
-      (println [@competing-updates-atom
-                @n-attempts-atom])
-      (when (< @competing-updates-atom n-competitors)
-        (Thread/sleep 1000)
-        (recur)))
-    (println "Finished. n-attempts =" @n-attempts-atom)
-    [@competing-updates-atom
-     @n-attempts-atom]))
+    (letfn [(create-competing-threads []
+              (dotimes [_ n-competitors]
+                (.start (Thread. (fn []
+                                   (swap! competing-updates-atom
+                                          (fn [n]
+                                            (swap! n-attempts-atom inc)
+                                            (Thread/sleep (rand-int 200))
+                                            (inc n))))))))
+            (report-on-what-is-happenning []
+              (loop []
+                (println [@competing-updates-atom
+                          @n-attempts-atom])
+                (when (< @competing-updates-atom n-competitors)
+                  (Thread/sleep 1000)
+                  (recur))))
+            (wrap-up-and-result []
+              (println "Finished. n-attempts =" @n-attempts-atom)
+              [@competing-updates-atom
+               @n-attempts-atom])]
+      (create-competing-threads)
+      (report-on-what-is-happenning)
+      (wrap-up-and-result))))
 
 (fact "About concurrency and atoms"
   (let [[final-value n-attempts] (demo-competition-to-modify-atom)]

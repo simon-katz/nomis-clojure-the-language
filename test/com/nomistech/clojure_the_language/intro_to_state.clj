@@ -10,11 +10,11 @@
 ;;;; References
 ;;;; - There are a fair few types of reference.
 ;;;;   - atoms, refs, vars, agents, promises, futures...
-;;;; - Some are for managing state.
-;;;; - Some are for managing concurrency.
+;;;; - Some are primarily for managing state.
+;;;; - Some are primarily for managing concurrency.
 ;;;; - Some combine the two.
 
-;;;; Here we will look at two reference types, both for managing state
+;;;; Here we will look at two reference types, both for managing state.
 ;;;; - Atoms
 ;;;; - Refs (confusing names! A ref is one kind of reference.)
 
@@ -44,7 +44,7 @@
 (fact @my-number-atom => 64)
 
 
-;; Maps in atoms
+;;;; Maps in atoms
 
 (def my-map-atom (atom {}))
 
@@ -60,8 +60,13 @@
                        :address {:line-1 "78 Green Lane"
                                  :line-2 "New Town"}})
 
+(swap! my-map-atom assoc-in [:address :line-1] "780 Green Lane")
+(fact @my-map-atom => {:first-name "Bob"
+                       :address {:line-1 "780 Green Lane"
+                                 :line-2 "New Town"}})
+
 ;;;; ___________________________________________________________________________
-;;;; `compare-and-set!`
+;;;; Atoms: `compare-and-set!`
 
 (fact @my-number-atom => 64)
 (fact (compare-and-set! my-number-atom 99 42) => false)
@@ -71,7 +76,7 @@
 (fact @my-number-atom => 42)
 
 ;;;; ___________________________________________________________________________
-;;;; `reset!`
+;;;; Atoms: `reset!`
 
 (reset! my-number-atom 100)
 (fact @my-number-atom => 100)

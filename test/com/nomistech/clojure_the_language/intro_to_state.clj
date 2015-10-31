@@ -2,10 +2,7 @@
   (:require [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
-
-;;;; Concurrency and state management without locks.
-;;;; Focus on sane management of state.
-;;;; Sane concurrency follows.
+;;;; State management and concurrency and without locks.
 
 ;;;; References
 ;;;; - There are a fair few types of reference.
@@ -34,14 +31,14 @@
 
 ;;;; Supplying args to the swap function:
 
-(swap! my-number-atom + 1) ; (+ 2 1)
-(fact @my-number-atom => 3)
+(swap! my-number-atom + 10) ; (+ 2 10)
+(fact @my-number-atom => 12)
 
-(swap! my-number-atom + 1) ; (+ 3 1)
-(fact @my-number-atom => 4)
+(swap! my-number-atom + 10) ; (+ 12 10)
+(fact @my-number-atom => 22)
 
-(swap! my-number-atom + 10 20 30) ; (+ 4 10 20 30)
-(fact @my-number-atom => 64)
+(swap! my-number-atom + 10 20 30) ; (+ 22 10 20 30)
+(fact @my-number-atom => 82)
 
 
 ;;;; Maps in atoms
@@ -68,11 +65,11 @@
 ;;;; ___________________________________________________________________________
 ;;;; Atoms: `compare-and-set!`
 
-(fact @my-number-atom => 64)
+(fact @my-number-atom => 82)
 (fact (compare-and-set! my-number-atom 99 42) => false)
-(fact @my-number-atom => 64)
+(fact @my-number-atom => 82)
 
-(fact (compare-and-set! my-number-atom 64 42) => true)
+(fact (compare-and-set! my-number-atom 82 42) => true)
 (fact @my-number-atom => 42)
 
 ;;;; ___________________________________________________________________________

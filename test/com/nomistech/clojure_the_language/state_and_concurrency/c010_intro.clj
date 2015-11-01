@@ -7,10 +7,7 @@
 ;;;; References
 ;;;; - There are a fair few types of reference.
 ;;;;   - atoms, refs, vars, agents, promises, futures...
+;;;;     - confusing names! A ref is one kind of reference.
 ;;;; - Some are primarily for managing state.
 ;;;; - Some are primarily for managing concurrency.
 ;;;; - Some combine the two.
-;;;;
-;;;; Here we will look at two reference types, both for managing state.
-;;;; - Atoms
-;;;; - Refs (confusing names! A ref is one kind of reference.)

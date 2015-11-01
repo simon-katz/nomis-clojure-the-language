@@ -124,18 +124,13 @@
     (fact final-value => n-competitors)
     (fact (> n-attempts n-competitors) => truthy)))
 
-;;;; ___________________________________________________________________________
-
 ;;;; TODO:
+;;;;
 ;;;; - Look at your notes
+;;;;
 ;;;; - More on atoms?
 ;;;;   - When to use atoms
 ;;;;   - When not to use atoms -- not when you can use functional stuff!
 ;;;;     - give an example of a bad use
 ;;;;
 ;;;; - How long will it take to go through what you have so far?
-;;;;
-;;;; - Refs
-;;;;   - and STM
-;;;;
-;;;; - Single big atoms vs multiple small refs

@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.state-and-concurrency.c020-atoms
+(ns com.nomistech.clojure-the-language.c-400-state-and-concurrency.s-020-atoms
   (:require [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________

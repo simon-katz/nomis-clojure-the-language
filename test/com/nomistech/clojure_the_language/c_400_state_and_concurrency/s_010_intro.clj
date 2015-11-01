@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.state-and-concurrency.c010-intro
+(ns com.nomistech.clojure-the-language.c-400-state-and-concurrency.s-010-intro
   (:require [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________

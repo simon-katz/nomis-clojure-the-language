@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.state-and-concurrency.c030-refs
+(ns com.nomistech.clojure-the-language.c-400-state-and-concurrency.s-030-refs
   (:require [midje.sweet :refer :all]))
 
 ;;;; TODO:

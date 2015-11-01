@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.macros.c010-macro-basics
+(ns com.nomistech.clojure-the-language.c-700-macros.s-010-macro-basics
   (:require [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________

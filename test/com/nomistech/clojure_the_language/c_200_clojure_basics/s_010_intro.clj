@@ -2,3 +2,5 @@
   (:require [midje.sweet :refer :all]))
 
 ;;;; See Intro to Clojure blog post.
+
+;;;; Including bracketed prefix notation for calling functions.

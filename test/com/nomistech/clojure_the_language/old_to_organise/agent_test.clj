@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.agent-test
+(ns com.nomistech.clojure-the-language.old-to-organise.agent-test
   (:require [midje.sweet :refer :all]))
 
 (fact

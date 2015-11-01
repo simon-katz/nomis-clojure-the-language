@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.reducers-rumford-test
+(ns com.nomistech.clojure-the-language.old-to-organise.reducers-rumford-test
   (:require [clojure.core.reducers :as r]
             [clojure.string :as string]
             [midje.sweet :refer :all]))

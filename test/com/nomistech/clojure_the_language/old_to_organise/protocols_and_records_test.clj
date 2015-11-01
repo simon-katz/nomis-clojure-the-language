@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.protocols-and-records-test
+(ns com.nomistech.clojure-the-language.old-to-organise.protocols-and-records-test
   (:require [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________

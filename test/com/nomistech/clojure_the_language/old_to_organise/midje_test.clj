@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.midje-test
+(ns com.nomistech.clojure-the-language.old-to-organise.midje-test
   (:require [midje.sweet :refer :all]
             ;; [com.nomistech.clojure-the-language.midje :refer :all]
             ))

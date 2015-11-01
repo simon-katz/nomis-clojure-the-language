@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.take-while-ascending-etc-test
+(ns com.nomistech.clojure-the-language.old-to-organise.take-while-ascending-etc-test
   (:require [midje.sweet :refer :all]))
 
 

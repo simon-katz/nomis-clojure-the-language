@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.type-hints-test
+(ns com.nomistech.clojure-the-language.old-to-organise.type-hints-test
   (:require [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________

@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.clojure-fundamentals-test
+(ns com.nomistech.clojure-the-language.old-to-organise.clojure-fundamentals-test
   (:require [clojure.test]
             [clojure.zip :as zip]
             [com.nomistech.clojure-the-language.utils.utils :as u]

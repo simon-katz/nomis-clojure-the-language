@@ -1,5 +1,5 @@
-(ns com.nomistech.clojure-the-language.core-match-101-basics
-  (:require ;; [com.nomistech.clojure-the-language.core-match-101-basics :refer :all]
+(ns com.nomistech.clojure-the-language.old-to-organise.core-match-101-basics
+  (:require ;; [com.nomistech.clojure-the-language.old-to-organise.core-match-101-basics :refer :all]
             [midje.sweet :refer :all]
             [clojure.core.match :refer [match]]))
 

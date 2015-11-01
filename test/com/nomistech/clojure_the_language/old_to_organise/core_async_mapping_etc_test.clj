@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.core-async-mapping-etc-test
+(ns com.nomistech.clojure-the-language.old-to-organise.core-async-mapping-etc-test
   (:require
    ;; [com.nomistech.clojure-the-language.core-async-mapping-etc :refer :all]
    [clojure.core.async :as a

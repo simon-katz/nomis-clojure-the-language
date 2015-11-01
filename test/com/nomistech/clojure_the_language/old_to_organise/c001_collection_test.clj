@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.c001-collection-test
+(ns com.nomistech.clojure-the-language.old-to-organise.c001-collection-test
   (:require [midje.sweet :refer :all]
             [clojure.set]))
 

@@ -8,5 +8,5 @@
             [clojure.tools.namespace.move :refer :all]
             [midje.repl :refer :all]))
 
-(defn move-ns-dev-src-test [old-sym new-sym source-path]
+(defn u-move-ns-dev-src-test [old-sym new-sym source-path]
   (move-ns old-sym new-sym source-path ["dev" "src" "test"]))

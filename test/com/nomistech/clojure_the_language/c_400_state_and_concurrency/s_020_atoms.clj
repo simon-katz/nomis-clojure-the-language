@@ -2,7 +2,10 @@
   (:require [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
-;;;; Atoms: `atom`, `deref`, `@` and `swap!`
+;;;; Atoms basics
+
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+;;;; `atom`, `deref`, `@` and `swap!`
 
 (def my-number-atom (atom 0))
 
@@ -15,6 +18,7 @@
 (swap! my-number-atom inc) ; (inc 1)
 (fact @my-number-atom => 2)
 
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; Supplying args to the swap function:
 
 (swap! my-number-atom + 10) ; (+ 2 10)
@@ -26,7 +30,7 @@
 (swap! my-number-atom + 10 20 30) ; (+ 22 10 20 30)
 (fact @my-number-atom => 82)
 
-
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; Maps in atoms
 
 (def my-map-atom (atom {}))
@@ -48,8 +52,8 @@
 (fact @my-map-atom => {:first-name "Bob"
                        :address {:line-1 "37 High Street"}})
 
-;;;; ___________________________________________________________________________
-;;;; Atoms: `compare-and-set!`
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+;;;; `compare-and-set!`
 
 (fact @my-number-atom => 82)
 (fact (compare-and-set! my-number-atom 99 42) => false)

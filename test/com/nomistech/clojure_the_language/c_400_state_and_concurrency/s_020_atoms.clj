@@ -25,8 +25,12 @@
   (swap! my-number-atom dec) => 2)
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-;;;; Supplying args to the swap function:
-;;;; (Note: I'm making up the name "swap function".)
+;;;; We need a name for the function that `swap!` calls
+;;;; - We'll use the term "data function"
+;;;;   - The book /Clojure Applied/ uses this
+
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+;;;; Supplying args to the data function:
 
 (do (swap! my-number-atom + 10)
     ;; does this: (+ 2 10)
@@ -86,23 +90,23 @@
 ;;;;
 ;;;; - Each thread uses `swap!` with a function that runs for a long time.
 ;;;;
-;;;; - Terminology: I'm calling the function passed to `swap!` a "swap function".
+;;;; - Terminology: I'm calling the function passed to `swap!` a "data function".
 ;;;;
 ;;;; - Clojure allows each thread that calls `swap!` to be optimistic.
-;;;;   - So multiple swap functions run concurrently (for the same atom).
+;;;;   - So multiple data functions run concurrently (for the same atom).
 ;;;;
-;;;; - When a swap function finishes:
+;;;; - When a data function finishes:
 ;;;;   - If the current value of the atom is the same as the value when the
 ;;;;     function started
-;;;;     (this means that this swap function did its work based on the
+;;;;     (this means that this data function did its work based on the
 ;;;;     current value)
 ;;;;     then
 ;;;;         the new value is swapped in
 ;;;;     else
-;;;;         the swap function is retried
-;;;;         (using the current value as input to the swap function).
+;;;;         the data function is retried
+;;;;         (using the current value as input to the data function).
 ;;;;
-;;;; - Another atom is used to keep track of how many times the swap function
+;;;; - Another atom is used to keep track of how many times the data function
 ;;;;   is called.
 
 (def competing-updates-atom (atom 0))

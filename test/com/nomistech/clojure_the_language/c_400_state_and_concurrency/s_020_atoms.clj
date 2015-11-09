@@ -82,17 +82,25 @@
 ;;;; ___________________________________________________________________________
 ;;;; Atoms and concurrency
 
-;;;; When a data function returns the new value:
-;;;; - If the current value of the atom is the same as the value when the
-;;;;   function started
-;;;;   (this means that this data function did its work based on the
-;;;;   current value)
-;;;;   then
-;;;;       the new value is swapped in
-;;;;   else
-;;;;       the data function is retried
-;;;;       (using the current value as input to the data function).
+;;;; Overview:
+;;;; - Atoms don't block. `swap!` retries if necessary.
+
+;;;; Details:
 ;;;;
+;;;; - When a data function returns the new value:
+;;;;   - If the current value of the atom is the same as the value when the
+;;;;     function started
+;;;;     then
+;;;;         -- (this means that this data function did its work based on the
+;;;;         -- current value)
+;;;;         `swap!` replaces the value of the atom with the new value
+;;;;         `swap!` returns the new value
+;;;;     else
+;;;;         -- (this means that the atom was updated by something else)
+;;;;         `swap!` retries running the data function
+;;;;         (using the current value as input to the data function).
+;;;;
+;;;; - So the data function should not have side effects.
 
 ;;;; ___________________________________________________________________________
 ;;;; Illustration of multiple threads competing to update an atom.

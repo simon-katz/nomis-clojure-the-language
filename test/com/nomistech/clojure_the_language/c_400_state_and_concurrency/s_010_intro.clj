@@ -25,6 +25,7 @@
 ;;;;   - refs (confusing -- a ref is a kind of reference)
 ;;;;   - vars
 ;;;;   - agents (also about when computation happens)
+;;;; - A particular value at a particular time
 ;;;;
 ;;;; Managing when computation happens
 ;;;;   - futures

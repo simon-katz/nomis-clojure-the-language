@@ -111,14 +111,15 @@
 
 (defn demo-competition-to-modify-atom []
   (let [n-attempts-atom (atom 0)]
-    (letfn [(create-competing-threads []
+    (letfn [(long-running-inc [n]
+              (swap! n-attempts-atom inc)
+              (Thread/sleep (rand-int 100))
+              (inc n))
+            (long-running-inc-on-atom []
+              (swap! competing-updates-atom long-running-inc))
+            (create-competing-threads []
               (dotimes [_ n-competitors]
-                (.start (Thread. (fn []
-                                   (swap! competing-updates-atom
-                                          (fn [n]
-                                            (swap! n-attempts-atom inc)
-                                            (Thread/sleep (rand-int 100))
-                                            (inc n))))))))
+                (.start (Thread. long-running-inc-on-atom))))
             (report-on-what-is-happening []
               (loop []
                 (println [@competing-updates-atom

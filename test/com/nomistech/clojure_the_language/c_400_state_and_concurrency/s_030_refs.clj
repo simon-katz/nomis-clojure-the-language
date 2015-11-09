@@ -39,11 +39,31 @@
 ;;;; `ensure`
 
 ;;;; ___________________________________________________________________________
-;;;; TODO:
+;;;; Single big atoms vs multiple small refs
+
+;;;; Our bank account example could be done with an atom:
+
+(def bank-accounts-atom
+  (atom {:account-1 100
+         :account-2 200}))
+
+(fact
+  (let [amount 20]
+    (swap! bank-accounts-atom (fn [m]
+                                (-> m
+                                    (update :account-1 + amount)
+                                    (update :account-2 - amount)))))
+  => {:account-1 120
+      :account-2 180})
+
+;;;; How to choose between atoms and refs?
 ;;;;
-;;;; - Look at your notes
+;;;; - Me:
+;;;;   - Atoms are simpler and faster -- if they are good enough, use them
 ;;;;
-;;;; - Refs
-;;;;   - and STM
-;;;;
-;;;; - Single big atoms vs multiple small refs
+;;;; - From /Seven Concurrency Models in Seven Weeks/
+;;;;   - Style & personal preference -- whatever seems clearest
+;;;;   - Performance
+;;;;     - testing of the alternatives with a stopwatch and load-test suite
+;;;;   -  Atoms suffice for most problems
+;;;;   -  Use the simplest approach that works

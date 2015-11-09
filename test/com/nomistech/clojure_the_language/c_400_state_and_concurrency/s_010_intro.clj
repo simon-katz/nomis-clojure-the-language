@@ -11,23 +11,30 @@
 ;;;; - and sane concurrency
 
 ;;;; Reference types
+;;;;
 ;;;; - Each reference type provides a way of doing stateful and/or concurrent
 ;;;;   things
+;;;;
 ;;;; - Some are primarily for managing state
-;;;; - Some are primarily for managing concurrency
+;;;;   - atoms
+;;;;   - refs (confusing -- a ref is a kind of reference)
+;;;;   - vars
+;;;;
+;;;; - Some are primarily for managing when computation happens
+;;;;   - futures
+;;;;   - delays
+;;;;   - promises
+;;;;
 ;;;; - Some combine the two
+;;;;   - agents
+;;;;
 ;;;; - Without using locks
-
-;;;; Kinds of reference type
-;;;; - atoms
-;;;; - refs (confusing -- a ref is a kind of reference)
-;;;; - vars
-;;;; - agents
-;;;; - futures
-;;;; - delays
-;;;; - promises
 
 
 ;;;; From /Programming Clojure/:
-;;;;     A state is the value of an identity at a point in time.
+;;;;     "A state is the value of an identity at a point in time."
 ;;;; - That's a pithy summary
+
+;;;; From /Clojure Programming/:
+;;;;     "In Clojure, there is a clear distinction between state and identity."
+;;;;     "These concepts are almost universally conflated"

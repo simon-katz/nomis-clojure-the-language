@@ -5,7 +5,7 @@
 ;;;; Atoms basics
 
 ;;;; Atoms
-;;;; - The most basic reference type
+;;;; - The most basic reference type -- fast
 ;;;; - Characteristics:
 ;;;;   - Shared between threads
 ;;;;   - Synchronous

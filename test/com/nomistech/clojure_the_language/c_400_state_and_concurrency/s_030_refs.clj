@@ -11,8 +11,7 @@
 ;;;;   - Synchronous
 ;;;;   - Coordinated (change to multiple identities)
 ;;;;   - Retryable
-
-;;;; (So, refs are like atoms except that refs are coordinated.)
+;;;;   - (So, refs are like atoms except that refs are coordinated.)
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;;;; `ref`, `dosync`, `alter`

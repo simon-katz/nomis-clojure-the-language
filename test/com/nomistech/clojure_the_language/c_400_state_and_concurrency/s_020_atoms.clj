@@ -12,11 +12,11 @@
 (fact (deref my-number-atom) => 0)
 (fact @my-number-atom => 0)
 
-(swap! my-number-atom inc) ; does this: (inc 0)
-(fact @my-number-atom => 1)
+(do (swap! my-number-atom inc) ; does this: (inc 0)
+    (fact @my-number-atom => 1))
 
-(swap! my-number-atom inc) ; does this: (inc 1)
-(fact @my-number-atom => 2)
+(do (swap! my-number-atom inc) ; does this: (inc 1)
+    (fact @my-number-atom => 2))
 
 (fact "`swap` returns the new value of the atom"
   (swap! my-number-atom inc) => 3
@@ -25,46 +25,46 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; Supplying args to the swap function:
 
-(swap! my-number-atom + 10) ; does this: (+ 2 10)
-(fact @my-number-atom => 12)
+(do (swap! my-number-atom + 10) ; does this: (+ 2 10)
+    (fact @my-number-atom => 12))
 
-(swap! my-number-atom + 10) ; does this: (+ 12 10)
-(fact @my-number-atom => 22)
+(do (swap! my-number-atom + 10) ; does this: (+ 12 10)
+    (fact @my-number-atom => 22))
 
-(swap! my-number-atom + 10 20 30) ; does this: (+ 22 10 20 30)
-(fact @my-number-atom => 82)
+(do (swap! my-number-atom + 10 20 30) ; does this: (+ 22 10 20 30)
+    (fact @my-number-atom => 82))
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-;;;; Maps in atoms
+;;;; Storing maps in atoms
 
 (def my-map-atom (atom {}))
 
-(swap! my-map-atom assoc :first-name "Alice")
-;; does this: (assoc {} :first-name "Alice"}
-(fact @my-map-atom => {:first-name "Alice"})
+(do (swap! my-map-atom assoc :first-name "Alice")
+    ;; does this: (assoc {} :first-name "Alice"}
+    (fact @my-map-atom => {:first-name "Alice"}))
 
-(swap! my-map-atom assoc :first-name "Bob")
-;; does this: (assoc {:first-name "Alice"} :first-name "Bob")
-(fact @my-map-atom => {:first-name "Bob"})
+(do (swap! my-map-atom assoc :first-name "Bob")
+    ;; does this: (assoc {:first-name "Alice"} :first-name "Bob")
+    (fact @my-map-atom => {:first-name "Bob"}))
 
-(swap! my-map-atom assoc-in [:address :line-1] "78 Green Lane")
-;; does this: (assoc-in {:first-name "Bob"} [:address :line-1] "78 Green Lane")
-(fact @my-map-atom => {:first-name "Bob"
-                       :address {:line-1 "78 Green Lane"}})
+(do (swap! my-map-atom assoc-in [:address :line-1] "78 Green Lane")
+    ;; does this: (assoc-in {:first-name "Bob"} [:address :line-1] "78 Green Lane")
+    (fact @my-map-atom => {:first-name "Bob"
+                           :address {:line-1 "78 Green Lane"}}))
 
-(swap! my-map-atom assoc-in [:address :line-1] "37 High Street")
-(fact @my-map-atom => {:first-name "Bob"
-                       :address {:line-1 "37 High Street"}})
+(do (swap! my-map-atom assoc-in [:address :line-1] "37 High Street")
+    (fact @my-map-atom => {:first-name "Bob"
+                           :address {:line-1 "37 High Street"}}))
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; `compare-and-set!`
 
-(fact @my-number-atom => 82)
-(fact (compare-and-set! my-number-atom 99 42) => false)
-(fact @my-number-atom => 82)
+(do (fact @my-number-atom => 82)
+    (fact (compare-and-set! my-number-atom 99 42) => false)
+    (fact @my-number-atom => 82))
 
-(fact (compare-and-set! my-number-atom 82 42) => true)
-(fact @my-number-atom => 42)
+(do (fact (compare-and-set! my-number-atom 82 42) => true)
+    (fact @my-number-atom => 42))
 
 ;;;; ___________________________________________________________________________
 ;;;; Atoms: `reset!`

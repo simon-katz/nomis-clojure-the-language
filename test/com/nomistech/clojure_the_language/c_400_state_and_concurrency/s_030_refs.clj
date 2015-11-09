@@ -59,7 +59,7 @@
 ;;;; How to choose between atoms and refs?
 ;;;;
 ;;;; - Me:
-;;;;   - Atoms are simpler and faster -- if they are good enough, use them
+;;;;   - Atoms are simpler -- if they are good enough, use them
 ;;;;
 ;;;; - From /Seven Concurrency Models in Seven Weeks/
 ;;;;   - Style & personal preference -- whatever seems clearest

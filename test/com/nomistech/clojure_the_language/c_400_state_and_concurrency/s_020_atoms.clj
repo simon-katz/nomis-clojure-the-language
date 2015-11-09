@@ -12,10 +12,12 @@
 (fact (deref my-number-atom) => 0)
 (fact @my-number-atom => 0)
 
-(do (swap! my-number-atom inc) ; does this: (inc 0)
+(do (swap! my-number-atom inc)
+    ;; does this: (inc 0)
     (fact @my-number-atom => 1))
 
-(do (swap! my-number-atom inc) ; does this: (inc 1)
+(do (swap! my-number-atom inc)
+    ;; does this: (inc 1)
     (fact @my-number-atom => 2))
 
 (fact "`swap` returns the new value of the atom"
@@ -24,14 +26,18 @@
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; Supplying args to the swap function:
+;;;; (Note: I'm making up the name "swap function".)
 
-(do (swap! my-number-atom + 10) ; does this: (+ 2 10)
+(do (swap! my-number-atom + 10)
+    ;; does this: (+ 2 10)
     (fact @my-number-atom => 12))
 
-(do (swap! my-number-atom + 10) ; does this: (+ 12 10)
+(do (swap! my-number-atom + 10)
+    ;; does this: (+ 12 10)
     (fact @my-number-atom => 22))
 
-(do (swap! my-number-atom + 10 20 30) ; does this: (+ 22 10 20 30)
+(do (swap! my-number-atom + 10 20 30)
+    ;; does this: (+ 22 10 20 30)
     (fact @my-number-atom => 82))
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -48,7 +54,8 @@
     (fact @my-map-atom => {:first-name "Bob"}))
 
 (do (swap! my-map-atom assoc-in [:address :line-1] "78 Green Lane")
-    ;; does this: (assoc-in {:first-name "Bob"} [:address :line-1] "78 Green Lane")
+    ;; does this:
+    ;;   (assoc-in {:first-name "Bob"} [:address :line-1] "78 Green Lane")
     (fact @my-map-atom => {:first-name "Bob"
                            :address {:line-1 "78 Green Lane"}}))
 

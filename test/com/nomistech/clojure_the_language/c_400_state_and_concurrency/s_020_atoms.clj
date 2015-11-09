@@ -82,23 +82,25 @@
 ;;;; ___________________________________________________________________________
 ;;;; Atoms and concurrency
 
+;;;; When a data function returns the new value:
+;;;; - If the current value of the atom is the same as the value when the
+;;;;   function started
+;;;;   (this means that this data function did its work based on the
+;;;;   current value)
+;;;;   then
+;;;;       the new value is swapped in
+;;;;   else
+;;;;       the data function is retried
+;;;;       (using the current value as input to the data function).
+;;;;
+
+;;;; ___________________________________________________________________________
 ;;;; Illustration of multiple threads competing to update an atom.
 ;;;;
 ;;;; - Each thread uses `swap!` with a function that runs for a long time.
 ;;;;
 ;;;; - Clojure allows each thread that calls `swap!` to be optimistic.
 ;;;;   - So multiple data functions run concurrently (for the same atom).
-;;;;
-;;;; - When a data function returns the new value:
-;;;;   - If the current value of the atom is the same as the value when the
-;;;;     function started
-;;;;     (this means that this data function did its work based on the
-;;;;     current value)
-;;;;     then
-;;;;         the new value is swapped in
-;;;;     else
-;;;;         the data function is retried
-;;;;         (using the current value as input to the data function).
 ;;;;
 ;;;; - Another atom is used to keep track of how many times the data function
 ;;;;   is called.

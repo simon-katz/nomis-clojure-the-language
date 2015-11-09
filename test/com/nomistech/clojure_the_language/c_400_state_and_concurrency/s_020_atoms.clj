@@ -118,11 +118,11 @@
               (swap! n-attempts-atom inc)
               (Thread/sleep (rand-int 100))
               (inc n))
-            (long-running-inc-on-atom []
+            (long-running-inc-on-atom! []
               (swap! competing-updates-atom long-running-inc))
             (create-competing-threads []
               (dotimes [_ n-competitors]
-                (.start (Thread. long-running-inc-on-atom))))
+                (.start (Thread. long-running-inc-on-atom!))))
             (report-on-what-is-happening []
               (loop []
                 (println (get-info))

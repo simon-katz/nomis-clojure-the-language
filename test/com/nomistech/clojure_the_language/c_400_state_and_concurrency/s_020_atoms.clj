@@ -39,7 +39,7 @@
 ;;;;   - The book /Clojure Applied/ uses this
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-;;;; Supplying args to the data function:
+;;;; Supplying additional args to the data function:
 
 (do (swap! my-number-atom + 10)
     ;; does this: (+ 2 10)

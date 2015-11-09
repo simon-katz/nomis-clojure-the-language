@@ -111,7 +111,10 @@
 
 (defn demo-competition-to-modify-atom []
   (let [n-attempts-atom (atom 0)]
-    (letfn [(long-running-inc [n]
+    (letfn [(get-info []
+              [@competing-updates-atom
+               @n-attempts-atom])
+            (long-running-inc [n]
               (swap! n-attempts-atom inc)
               (Thread/sleep (rand-int 100))
               (inc n))
@@ -122,18 +125,13 @@
                 (.start (Thread. long-running-inc-on-atom))))
             (report-on-what-is-happening []
               (loop []
-                (println [@competing-updates-atom
-                          @n-attempts-atom])
+                (println (get-info))
                 (when (< @competing-updates-atom n-competitors)
                   (Thread/sleep 1000)
-                  (recur))))
-            (wrap-up-and-result []
-              (println "Finished. n-attempts =" @n-attempts-atom)
-              [@competing-updates-atom
-               @n-attempts-atom])]
+                  (recur))))]
       (create-competing-threads)
       (report-on-what-is-happening)
-      (wrap-up-and-result))))
+      (get-info))))
 
 (fact "About concurrency and atoms"
   (let [[final-value n-attempts] (demo-competition-to-modify-atom)]

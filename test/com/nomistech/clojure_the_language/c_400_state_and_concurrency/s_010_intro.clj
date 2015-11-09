@@ -6,7 +6,7 @@
 
 ;;;; Clojure is an impure functional language
 ;;;; - It supports side effects
-;;;;
+
 ;;;; A managed approach to state
 ;;;; - Code to change state is localised
 ;;;; - Most code is purely functional
@@ -32,13 +32,11 @@
 ;;;;   - delays
 ;;;;   - promises
 
-;;;; ___________________________________________________________________________
-;;;; Things you could expand on (vut probably want examples first):
-
-;;;; From /Programming Clojure/:
+;;;; State and identity:
+;;;;
+;;;; - From /Programming Clojure/:
 ;;;;     "A state is the value of an identity at a point in time."
-;;;; - That's a pithy summary
-
-;;;; From /Clojure Programming/:
+;;;;
+;;;; - From /Clojure Programming/:
 ;;;;     "In Clojure, there is a clear distinction between state and identity."
 ;;;;     "These concepts are almost universally conflated"

@@ -4,6 +4,15 @@
 ;;;; ___________________________________________________________________________
 ;;;; Atoms basics
 
+;;;; Atoms
+;;;; - The most basic reference type
+;;;; - Characteristics:
+;;;;   - Shared between threads
+;;;;   - Synchronous
+;;;;   - Not coordinated (affects a single identity)
+;;;;   - Retryable
+;;;; - Atomic compare-and-set modification
+
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; `atom`, `deref`, `@` and `swap!`
 

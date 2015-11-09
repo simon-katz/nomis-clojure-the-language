@@ -36,13 +36,9 @@
     ;; does this: (+ 2 10)
     (fact @my-number-atom => 12))
 
-(do (swap! my-number-atom + 10)
-    ;; does this: (+ 12 10)
-    (fact @my-number-atom => 22))
-
-(do (swap! my-number-atom + 10 20 30)
-    ;; does this: (+ 22 10 20 30)
-    (fact @my-number-atom => 82))
+(do (swap! my-number-atom + 1 2 3 4 5)
+    ;; does this: (+ 12 1 2 3 4 5)
+    (fact @my-number-atom => 27))
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; Storing maps in atoms
@@ -70,11 +66,11 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; `compare-and-set!`
 
-(do (fact @my-number-atom => 82)
+(do (fact @my-number-atom => 27)
     (fact (compare-and-set! my-number-atom 99 42) => false)
-    (fact @my-number-atom => 82))
+    (fact @my-number-atom => 27))
 
-(do (fact (compare-and-set! my-number-atom 82 42) => true)
+(do (fact (compare-and-set! my-number-atom 27 42) => true)
     (fact @my-number-atom => 42))
 
 ;;;; ___________________________________________________________________________

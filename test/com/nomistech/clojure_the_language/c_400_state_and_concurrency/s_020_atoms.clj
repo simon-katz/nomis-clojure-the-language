@@ -18,6 +18,10 @@
 (swap! my-number-atom inc) ; does this: (inc 1)
 (fact @my-number-atom => 2)
 
+(fact "`swap` returns the new value of the atom"
+  (swap! my-number-atom inc) => 3
+  (swap! my-number-atom dec) => 2)
+
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; Supplying args to the swap function:
 

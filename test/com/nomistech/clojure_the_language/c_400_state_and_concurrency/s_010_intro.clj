@@ -31,6 +31,8 @@
 ;;;;   - delays
 ;;;;   - promises
 
+;;;; ___________________________________________________________________________
+;;;; Things you could expand on (vut probably want examples first):
 
 ;;;; From /Programming Clojure/:
 ;;;;     "A state is the value of an identity at a point in time."

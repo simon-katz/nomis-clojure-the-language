@@ -86,12 +86,10 @@
 ;;;;
 ;;;; - Each thread uses `swap!` with a function that runs for a long time.
 ;;;;
-;;;; - Terminology: I'm calling the function passed to `swap!` a "data function".
-;;;;
 ;;;; - Clojure allows each thread that calls `swap!` to be optimistic.
 ;;;;   - So multiple data functions run concurrently (for the same atom).
 ;;;;
-;;;; - When a data function finishes:
+;;;; - When a data function returns the new value:
 ;;;;   - If the current value of the atom is the same as the value when the
 ;;;;     function started
 ;;;;     (this means that this data function did its work based on the

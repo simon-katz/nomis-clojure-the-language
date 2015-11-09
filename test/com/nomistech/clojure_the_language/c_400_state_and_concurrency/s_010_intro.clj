@@ -27,3 +27,7 @@
 ;;;; - delays
 ;;;; - promises
 
+
+;;;; From /Programming Clojure/:
+;;;;     A state is the value of an identity at a point in time.
+;;;; - That's a pithy summary

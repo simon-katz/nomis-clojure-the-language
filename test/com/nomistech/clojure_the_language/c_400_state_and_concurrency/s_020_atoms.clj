@@ -85,8 +85,8 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; `reset!`
 
-(reset! my-number-atom 100)
-(fact @my-number-atom => 100)
+(do (reset! my-number-atom 100)
+    (fact @my-number-atom => 100))
 
 ;;;; ___________________________________________________________________________
 ;;;; Atoms and concurrency

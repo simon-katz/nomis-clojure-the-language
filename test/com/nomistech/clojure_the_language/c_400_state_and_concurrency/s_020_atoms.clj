@@ -145,14 +145,3 @@
   (let [[final-value n-attempts] (demo-competition-to-modify-atom)]
     (fact final-value => n-competitors)
     (fact (> n-attempts n-competitors) => truthy)))
-
-;;;; TODO:
-;;;;
-;;;; - Look at your notes
-;;;;
-;;;; - More on atoms?
-;;;;   - When to use atoms
-;;;;   - When not to use atoms -- not when you can use functional stuff!
-;;;;     - give an example of a bad use
-;;;;
-;;;; - How long will it take to go through what you have so far?

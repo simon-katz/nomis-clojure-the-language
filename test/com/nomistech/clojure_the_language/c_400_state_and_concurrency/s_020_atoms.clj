@@ -82,8 +82,8 @@
 (do (fact (compare-and-set! my-number-atom 27 42) => true)
     (fact @my-number-atom => 42))
 
-;;;; ___________________________________________________________________________
-;;;; Atoms: `reset!`
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+;;;; `reset!`
 
 (reset! my-number-atom 100)
 (fact @my-number-atom => 100)

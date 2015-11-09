@@ -42,12 +42,10 @@
 
 ;;;; Our bank account example could be done with an atom:
 
-(def bank-accounts-atom
-  (atom {:account-1 100
-         :account-2 200}))
-
 (fact
-  (let [amount 20]
+  (let [bank-accounts-atom (atom {:account-1 100
+                                  :account-2 200})
+        amount 20]
     (swap! bank-accounts-atom (fn [m]
                                 (-> m
                                     (update :account-1 + amount)

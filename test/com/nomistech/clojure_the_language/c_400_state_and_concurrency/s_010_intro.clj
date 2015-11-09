@@ -6,29 +6,30 @@
 
 ;;;; Clojure is an impure functional language
 ;;;; - It supports side effects
-
-;;;; Clojure has an approach to managing state
-;;;; - and sane concurrency
-
-;;;; Reference types
 ;;;;
-;;;; - Each reference type provides a way of doing stateful and/or concurrent
-;;;;   things
+;;;; A managed approach to state
+;;;; - Code to change state is localised
+;;;; - Most code is purely functional
+;;;; - State is used for things such as:
+;;;;   - domain model
+;;;;   - information about system resources
+;;;; - State is not used for low-level things like loop counters or other
+;;;;   control mechanisms
 ;;;;
-;;;; - Some are primarily for managing state
+;;;; Sane concurrency
+;;;; - Without using locks
+
+;;;; Managing state
+;;;; - Reference types
 ;;;;   - atoms
 ;;;;   - refs (confusing -- a ref is a kind of reference)
 ;;;;   - vars
+;;;;   - agents (also about when computation happens)
 ;;;;
-;;;; - Some are primarily for managing when computation happens
+;;;; Managing when computation happens
 ;;;;   - futures
 ;;;;   - delays
 ;;;;   - promises
-;;;;
-;;;; - Some combine the two
-;;;;   - agents
-;;;;
-;;;; - Without using locks
 
 
 ;;;; From /Programming Clojure/:

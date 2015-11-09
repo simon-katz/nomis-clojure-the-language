@@ -132,6 +132,10 @@
               [@competing-updates-atom
                @n-attempts-atom])
             (long-running-inc [n]
+              ;; Note that the following `swap!` is within another `swap!`'s
+              ;; data function, which violates the rule that data functions
+              ;; should not have side effects.
+              ;; But that's OK for keeping count of attempts.
               (swap! n-attempts-atom inc)
               (Thread/sleep (rand-int 100))
               (inc n))

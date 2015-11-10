@@ -52,7 +52,10 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; Storing maps in atoms
 
-;;;; Something about films
+;;;; When we have maps in atoms, we use functions like `assoc`, `assoc-in` and
+;;;; `update` for the data function.
+
+;;;; Something about films:
 
 (def jaws-atom (atom {}))
 

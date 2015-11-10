@@ -16,16 +16,16 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;;;; `ref`, `dosync`, `alter`
 
-(def bank-account-1-atom (ref 100))
-(def bank-account-2-atom (ref 200))
+(def bank-account-1-ref (ref 100))
+(def bank-account-2-ref (ref 200))
 
 (fact
   (let [amount 20]
     (dosync
-     (alter bank-account-1-atom + amount)
-     (alter bank-account-2-atom - amount))
-    [@bank-account-1-atom
-     @bank-account-2-atom])
+     (alter bank-account-1-ref + amount)
+     (alter bank-account-2-ref - amount))
+    [@bank-account-1-ref
+     @bank-account-2-ref])
   => [120
       180])
 

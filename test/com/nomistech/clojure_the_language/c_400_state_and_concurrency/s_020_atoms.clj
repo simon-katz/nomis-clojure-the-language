@@ -52,25 +52,42 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; Storing maps in atoms
 
-(def my-map-atom (atom {}))
+;;;; Something about films
 
-(do (swap! my-map-atom assoc :first-name "Alice")
-    ;; does this: (assoc {} :first-name "Alice"}
-    (fact @my-map-atom => {:first-name "Alice"}))
+(def jaws-atom (atom {}))
 
-(do (swap! my-map-atom assoc :first-name "Bob")
-    ;; does this: (assoc {:first-name "Alice"} :first-name "Bob")
-    (fact @my-map-atom => {:first-name "Bob"}))
+;; Set the title:
 
-(do (swap! my-map-atom assoc-in [:address :line-1] "78 Green Lane")
+(do (swap! jaws-atom assoc :title "Paws")
+    ;; does this: (assoc {} :title "Paws"}
+    (fact @jaws-atom => {:title "Paws"}))
+
+;; Whoops; we got the title wrong. Fix it:
+
+(do (swap! jaws-atom assoc :title "Jaws")
+    ;; does this: (assoc {:title "Paws"} :title "Jaws")
+    (fact @jaws-atom => {:title "Jaws"}))
+
+;; Set the director:
+
+(do (swap! jaws-atom assoc-in [:director :name] "Karl Zwicky")
     ;; does this:
-    ;;   (assoc-in {:first-name "Bob"} [:address :line-1] "78 Green Lane")
-    (fact @my-map-atom => {:first-name "Bob"
-                           :address {:line-1 "78 Green Lane"}}))
+    ;;   (assoc-in {:title "Jaws"} [:director :name] "Karl Zwicky")
+    (fact @jaws-atom => {:title "Jaws"
+                         :director {:name "Karl Zwicky"}}))
 
-(do (swap! my-map-atom assoc-in [:address :line-1] "37 High Street")
-    (fact @my-map-atom => {:first-name "Bob"
-                           :address {:line-1 "37 High Street"}}))
+;; Whoops; we got the director wrong. Fix it:
+
+(do (swap! jaws-atom assoc-in [:director :name] "Steven Spielberg")
+    (fact @jaws-atom => {:title "Jaws"
+                         :director {:name "Steven Spielberg"}}))
+
+;; Add more detail to the director:
+
+(do (swap! jaws-atom assoc-in [:director :date-of-birth] 1946)
+    (fact @jaws-atom => {:title "Jaws"
+                         :director {:name "Steven Spielberg"
+                                    :date-of-birth 1946}}))
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; `compare-and-set!`

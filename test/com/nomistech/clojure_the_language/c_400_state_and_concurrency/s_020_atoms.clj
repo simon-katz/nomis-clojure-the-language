@@ -52,26 +52,26 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; Storing maps in atoms
 
-;;;; When we have maps in atoms, we use functions like `assoc`, `assoc-in` and
-;;;; `update` for the data function.
+;;;; When we have maps in atoms, we use functions like `assoc`, `assoc-in`,
+;;;; `update` and `update-in` for the data function:
 
 ;;;; Something about films:
 
 (def jaws-atom (atom {}))
 
-;; Set the title:
+;; Set a value in the map (using `assoc`):
 
 (do (swap! jaws-atom assoc :title "Paws")
     ;; does this: (assoc {} :title "Paws"}
     (fact @jaws-atom => {:title "Paws"}))
 
-;; Whoops; we got the title wrong. Fix it:
+;; Whoops; we got the title wrong. Fix it (using `assoc`):
 
 (do (swap! jaws-atom assoc :title "Jaws")
     ;; does this: (assoc {:title "Paws"} :title "Jaws")
     (fact @jaws-atom => {:title "Jaws"}))
 
-;; A nested map for the director:
+;; Set up a nested map for the director (using `assoc-in`):
 
 (do (swap! jaws-atom assoc-in [:director :name] "Karl Zwicky")
     ;; does this:
@@ -79,27 +79,37 @@
     (fact @jaws-atom => {:title "Jaws"
                          :director {:name "Karl Zwicky"}}))
 
-;; Whoops; we got the director wrong. Fix it:
+;; Whoops; we got the director wrong. Fix it (using `assoc-in`):
 
 (do (swap! jaws-atom assoc-in [:director :name] "Steven Spielberg")
     (fact @jaws-atom => {:title "Jaws"
                          :director {:name "Steven Spielberg"}}))
 
-;; Add more detail to the director:
+;; Add more detail to the director (using `assoc-in`):
 
 (do (swap! jaws-atom assoc-in [:director :date-of-birth] 1946)
     (fact @jaws-atom => {:title "Jaws"
                          :director {:name "Steven Spielberg"
                                     :date-of-birth 1946}}))
 
-;; We can apply a function to part of a map in an atom:
+;; We can apply a function to part of a map in an atom (using `update`):
 
 (do (swap! jaws-atom assoc :n-likes 0)
-    (swap! jaws-atom update :n-likes inc)
-    (swap! jaws-atom update :n-likes inc)
+    (swap! jaws-atom update :n-likes + 2)
     (fact @jaws-atom => {:title "Jaws"
                          :director {:name "Steven Spielberg"
                                     :date-of-birth 1946}
+                         :n-likes 2}))
+
+;; We can apply a function to part of a nested map in an atom (using
+;; `update-in`):
+
+(do (swap! jaws-atom assoc-in [:director :n-movies-as-director] 52)
+    (swap! jaws-atom update-in [:director :n-movies-as-director] + 3)
+    (fact @jaws-atom => {:title "Jaws"
+                         :director {:name "Steven Spielberg"
+                                    :date-of-birth 1946
+                                    :n-movies-as-director 55}
                          :n-likes 2}))
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

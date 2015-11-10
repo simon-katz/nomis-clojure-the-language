@@ -149,7 +149,8 @@
             (report-on-what-is-happening []
               (loop []
                 (println (get-info))
-                (when (< @competing-updates-atom n-competitors)
+                (when (< @competing-updates-atom
+                         n-competitors)
                   (Thread/sleep 1000)
                   (recur))))]
       (create-competing-threads)

@@ -148,7 +148,7 @@
                 (.start (Thread. long-running-inc-on-atom!))))
             (report-on-what-is-happening []
               (loop []
-                (println (get-info))
+                (println "[value n-attempts] =" (get-info))
                 (when (< @competing-updates-atom
                          n-competitors)
                   (Thread/sleep 1000)

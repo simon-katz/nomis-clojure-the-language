@@ -68,7 +68,7 @@
     ;; does this: (assoc {:title "Paws"} :title "Jaws")
     (fact @jaws-atom => {:title "Jaws"}))
 
-;; Set the director:
+;; A nested map for the director:
 
 (do (swap! jaws-atom assoc-in [:director :name] "Karl Zwicky")
     ;; does this:
@@ -88,6 +88,16 @@
     (fact @jaws-atom => {:title "Jaws"
                          :director {:name "Steven Spielberg"
                                     :date-of-birth 1946}}))
+
+;; We can apply a function to part of a map in an atom:
+
+(do (swap! jaws-atom assoc :n-likes 0)
+    (swap! jaws-atom update :n-likes inc)
+    (swap! jaws-atom update :n-likes inc)
+    (fact @jaws-atom => {:title "Jaws"
+                         :director {:name "Steven Spielberg"
+                                    :date-of-birth 1946}
+                         :n-likes 2}))
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; `compare-and-set!`

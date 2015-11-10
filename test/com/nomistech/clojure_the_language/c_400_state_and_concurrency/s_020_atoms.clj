@@ -137,7 +137,9 @@
               ;; should not have side effects.
               ;; But that's OK for keeping count of attempts.
               (swap! n-attempts-atom inc)
+              ;; Be long-running:
               (Thread/sleep (rand-int 100))
+              ;; The "real" functionality:
               (inc n))
             (long-running-inc-on-atom! []
               (swap! competing-updates-atom long-running-inc))

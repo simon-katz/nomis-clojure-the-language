@@ -2,7 +2,7 @@
   (:require [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
-;;;; State management and concurrency and without locks
+;;;; State and Concurrency
 
 ;;;; Clojure is an impure functional language
 ;;;; - It supports side effects

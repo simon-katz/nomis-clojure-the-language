@@ -180,12 +180,10 @@
               (dotimes [_ n-competitors]
                 (.start (Thread. long-running-inc-on-atom!))))
             (report-on-what-is-happening []
-              (loop []
-                (println "[value n-attempts] =" (get-info))
-                (when (< @competing-updates-atom
-                         n-competitors)
-                  (Thread/sleep 1000)
-                  (recur))))]
+              (while (< @competing-updates-atom
+                        n-competitors)
+                (Thread/sleep 1000)
+                (println "[value n-attempts] =" (get-info))))]
       (create-competing-threads)
       (report-on-what-is-happening)
       (get-info))))

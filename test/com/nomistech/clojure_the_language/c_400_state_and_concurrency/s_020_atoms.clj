@@ -155,11 +155,12 @@
 ;;;; - Another atom is used to keep track of how many times the data function
 ;;;;   is called.
 
-(def competing-updates-atom (atom 0))
+(def competing-updates-atom (atom nil))
 
 (def n-competitors 1000)
 
 (defn demo-competition-to-modify-atom []
+  (reset! competing-updates-atom 0)
   (let [n-attempts-atom (atom 0)]
     (letfn [(get-info []
               [@competing-updates-atom

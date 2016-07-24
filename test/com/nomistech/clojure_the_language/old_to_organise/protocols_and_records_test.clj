@@ -82,6 +82,8 @@
   (str (->MyRecord3 "plop" "plop plop"))
   => "==== MyRecord3 [4, 9] ====" )
 
+;; See alse com.nomistech.clojure-the-language.old-to-organise.type-hints-test
+
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Confusing stuff about protocols and inheritance ----

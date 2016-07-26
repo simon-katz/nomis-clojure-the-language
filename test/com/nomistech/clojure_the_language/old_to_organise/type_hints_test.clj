@@ -10,6 +10,11 @@
   (identity s))
 
 (fact
+  (f "foo")
+  => "foo" ; as expected
+  )
+
+(fact
   (f 42)
   => 42 ; even though not a String
   )

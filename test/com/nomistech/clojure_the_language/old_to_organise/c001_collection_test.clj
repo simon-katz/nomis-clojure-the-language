@@ -314,6 +314,8 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- Destructuring ----
 
+;;;; You also have destructuring stuff in com.nomistech.clojure-the-language.old-to-organise.clojure-fundamentals-test -- should combine
+
 (assert
  ;; vector-based destructuring...
  (let [my-list  '(1 2 3 4 5 6)

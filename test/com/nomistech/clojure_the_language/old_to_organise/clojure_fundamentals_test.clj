@@ -418,6 +418,8 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- Destructuring ----
 
+;;;; You also have destructuring stuff in com.nomistech.clojure-the-language.old-to-organise.c001-collection-test -- should combine 
+
 (let [[a [b c] & rest :as x] [1 [2 3] 4 5]]
   [x [a b c]])
 ;; => [[1 [2 3] 4 5] [1 2 3]]

@@ -455,6 +455,13 @@
   [a b])
 ;; => [1 2]
 
+(do
+  ;; Can use keywords inside :keys, but that is undocumented.
+  ;; - maybe an implementation detail -- probably shouldn't rely on it.
+  (let [{:keys [:a :b]} {:a 1 :b 2}]
+    [a b]))
+;; => [1 2]
+
 (let [{:syms [a b]} {'a 1 'b 2}]
   [a b])
 ;; => [1 2]

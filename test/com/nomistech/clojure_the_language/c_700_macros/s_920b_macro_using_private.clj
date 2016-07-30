@@ -11,4 +11,5 @@
   ;; This does not compile.
   ;; Jeez!
   ;; Clojure symbols/namespaces is fundamentally broken.
+  ;; (?) Is there ` way around this?
   (macro-definer/macro-whose-expansion-is-a-call-of-a-private-thing))

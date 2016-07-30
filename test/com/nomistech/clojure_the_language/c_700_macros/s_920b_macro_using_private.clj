@@ -28,7 +28,7 @@
     (macroexpand-1 '(macro-definer/expand-to-private-fun))
     => '(com.nomistech.clojure-the-language.c-700-macros.s-920a-macro-using-private/private-fun))
   (fact
-    ;; Cannot compile the call, because the `private-fun` is not publc.
+    ;; Cannot compile the call, because `private-fun` is not publc.
     ;; Jeez!
     ;; (?) Is there ` way around this?
     #_(macro-definer/expand-to-private-fun)))

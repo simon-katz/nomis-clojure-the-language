@@ -61,16 +61,30 @@
                              ["a-3" "b-3" "c-3" "d-3" "e-3"]]
             f               (let [f (File. "test/_work-dir/plop.log")]
                               ;; Setting up some initial content makes things
-                              ;; work as I expect; not sure why this is needed.
+                              ;; work as I expect; without this my first line
+                              ;; is lost.
                               ;; jsk-2016-10-29
                               (spit f "this will be ignored\n")
                               f)               
             t-and-c         (tailer-and-channel f delay-ms)
-            result-ch       (a/thread (doall (tailer-and-channel->seq t-and-c)))
-            expected-result (apply concat lines-s)]
+            result-ch       (a/thread (doall (tailer-and-channel->seq t-and-c)))]
         (spit-lines-s f lines-s sleep-ms)
         (stop-tailer-and-channel t-and-c)
         (a/<!! result-ch)
-        => expected-result))
+        => ["a-1"
+            "b-1"
+            "c-1"
+            "d-1"
+            "e-1"
+            "a-2"
+            "b-2"
+            "c-2"
+            "d-2"
+            "e-2"
+            "a-3"
+            "b-3"
+            "c-3"
+            "d-3"
+            "e-3"]))
 
 ;; TODO Check that bug: https://issues.apache.org/jira/browse/IO-399

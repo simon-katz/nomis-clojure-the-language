@@ -56,9 +56,9 @@
 
 (fact (let [delay-ms        100
             sleep-ms        (+ delay-ms 10)
-            lines-s         [["a-1" "b-1" "c-1" "d-1" "e-1"]
-                             ["a-2" "b-2" "c-2" "d-2" "e-2"]
-                             ["a-3" "b-3" "c-3" "d-3" "e-3"]]
+            lines-s         [["I met" "her in" "a" "pool" "room"]
+                             ["Her" " name" "I" "didn't" "catch"]
+                             ["She" "looked" " like" "something" "special"]]
             f               (let [f (File. "test/_work-dir/plop.log")]
                               ;; Setting up some initial content makes things
                               ;; work as I expect; without this my first line
@@ -71,20 +71,8 @@
         (spit-lines-s f lines-s sleep-ms)
         (stop-tailer-and-channel t-and-c)
         (a/<!! result-ch)
-        => ["a-1"
-            "b-1"
-            "c-1"
-            "d-1"
-            "e-1"
-            "a-2"
-            "b-2"
-            "c-2"
-            "d-2"
-            "e-2"
-            "a-3"
-            "b-3"
-            "c-3"
-            "d-3"
-            "e-3"]))
+        => ["I met" "her in" "a" "pool" "room"
+            "Her" " name" "I" "didn't" "catch"
+            "She" "looked" " like" "something" "special"]))
 
 ;; TODO Check that bug: https://issues.apache.org/jira/browse/IO-399

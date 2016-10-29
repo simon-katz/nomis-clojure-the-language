@@ -56,23 +56,47 @@
 
 (fact (let [delay-ms        100
             sleep-ms        (+ delay-ms 10)
-            lines-s         [["I met" "her in" "a" "pool" "room"]
-                             ["Her" " name" "I" "didn't" "catch"]
-                             ["She" "looked" " like" "something" "special"]]
+            lines-s         [["I met her in a pool room"
+                              "Her name I didn't catch"
+                              "She looked like something special"
+                              "The kind who'd understand"
+                              "The room was almost spinning"]
+                             ["She pulled another smile"
+                              "She had the grace like pleasure"
+                              "She had a certain style"
+                              "Sunlight on the lino"
+                              "Woke me with a shake"]
+                             ["I looked around to find her"
+                              "But she'd gone"
+                              "Goodbye girl"
+                              "Goodbye girl"
+                              "Goodbye girl"]]
             f               (let [f (File. "test/_work-dir/plop.log")]
                               ;; Setting up some initial content makes things
                               ;; work as I expect; without this my first line
                               ;; is lost.
                               ;; jsk-2016-10-29
-                              (spit f "this will be ignored\n")
+                              (spit f "this will be ignored this will be ignored this will be ignored this will be ignored\n")
                               f)               
             t-and-c         (tailer-and-channel f delay-ms)
             result-ch       (a/thread (doall (tailer-and-channel->seq t-and-c)))]
         (spit-lines-s f lines-s sleep-ms)
         (stop-tailer-and-channel t-and-c)
         (a/<!! result-ch)
-        => ["I met" "her in" "a" "pool" "room"
-            "Her" " name" "I" "didn't" "catch"
-            "She" "looked" " like" "something" "special"]))
+        => ["I met her in a pool room"
+            "Her name I didn't catch"
+            "She looked like something special"
+            "The kind who'd understand"
+            "The room was almost spinning"
+            "She pulled another smile"
+            "She had the grace like pleasure"
+            "She had a certain style"
+            "Sunlight on the lino"
+            "Woke me with a shake"
+            "I looked around to find her"
+            "But she'd gone"
+            "Goodbye girl"
+            "Goodbye girl"
+            "Goodbye girl"]))
 
 ;; TODO Check that bug: https://issues.apache.org/jira/browse/IO-399

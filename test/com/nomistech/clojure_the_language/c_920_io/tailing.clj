@@ -11,6 +11,11 @@
    (when-let [v (a/<!! c)]
      (cons v (chan->seq c)))))
 
+(defn tailer-and-channel->seq [t-and-c]
+  (-> t-and-c
+      :channel
+      chan->seq))
+
 (defn tailer-listener [c]
   (reify TailerListener
     (init [this tailer] ())
@@ -19,7 +24,6 @@
     (fileRotated [this]
       (println "Rotation detected"))
     (^void handle [this ^String line]
-     (println "Processing:" line)
      (a/>!! c line))
     (^void handle [this ^Exception i]
      (println (str "exception: " i)))))
@@ -33,21 +37,23 @@
     {:channel c
      :tailer  tailer}))
 
-(fact (let [lines                    ["a" "b" "c" "d" "e"]
-            file                     (File. "test/_work-dir/plop.log")
-            {:keys [channel tailer]} (tailer-and-channel file 100)
-            result-ch                (a/thread (doall (chan->seq channel)))]
+(defn stop-tailer-and-channel [{:keys [channel tailer]}]
+  (.stop tailer)
+  (a/close! channel))
+
+(fact (let [lines     ["a" "b" "c" "d" "e"]
+            file      (File. "test/_work-dir/plop.log")
+            t-and-c   (tailer-and-channel file 100)
+            result-ch (a/thread (doall (tailer-and-channel->seq t-and-c)))]
         (Thread/sleep 1000)
         (spit file "")
         (spit file (str (str/join "\n" lines)
                         "\n"))
         (Thread/sleep 1000)
         (println "Stopping")
-        (.stop tailer)
-        (a/close! channel)
+        (stop-tailer-and-channel t-and-c)
         (a/<!! result-ch)
         => lines))
-
 
 ;; TODO
 ;; Check that bug.

@@ -76,6 +76,7 @@
                         ;; work as I expect; without this my first line
                         ;; is lost.
                         ;; jsk-2016-10-29
+                        (io/make-parents f)
                         (spit f "this will be ignored this will be ignored this will be ignored this will be ignored\n")
                         f)               
             t-and-c   (tailer-and-channel file delay-ms)

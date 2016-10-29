@@ -32,7 +32,7 @@
      (println (str "exception: " i)))))
 
 (defn tailer-and-channel [file delay-ms]
-  (let [c (a/chan)
+  (let [c      (a/chan)
         tailer (Tailer/create file
                               (tailer-listener c)
                               delay-ms
@@ -44,32 +44,33 @@
   (.stop tailer)
   (a/close! channel))
 
-(defn delete-and-spit-with-waits [f content sleep-ms]
-  (io/delete-file f)
+(defn spit-lines-s [f lines-s sleep-ms]
   (Thread/sleep sleep-ms)
-  (spit f content)
-  (Thread/sleep sleep-ms))
+  (doseq [lines lines-s]
+    (spit f "")
+    (doseq [line lines]
+      (spit f
+            (str line "\n")
+            :append true)
+      (Thread/sleep sleep-ms))))
 
 (fact (let [delay-ms        100
-            sleep-ms        500 ; (+ delay-ms 100)
-            lines           ["a" "b" "c" "d" "e"]
-            file-content    (str (str/join "\n" lines)
-                                 "\n")
-            file            (File. "test/_work-dir/plop.log")
-            t-and-c         (tailer-and-channel file delay-ms)
+            sleep-ms        (+ delay-ms 10)
+            lines-s         [["a-1" "b-1" "c-1" "d-1" "e-1"]
+                             ["a-2" "b-2" "c-2" "d-2" "e-2"]
+                             ["a-3" "b-3" "c-3" "d-3" "e-3"]]
+            f               (let [f (File. "test/_work-dir/plop.log")]
+                              ;; Setting up some initial content makes things
+                              ;; work as I expect; not sure why this is needed.
+                              ;; jsk-2016-10-29
+                              (spit f "this will be ignored\n")
+                              f)               
+            t-and-c         (tailer-and-channel f delay-ms)
             result-ch       (a/thread (doall (tailer-and-channel->seq t-and-c)))
-            n-rotations     3
-            expected-result (apply concat (repeat n-rotations lines))]
-        (Thread/sleep sleep-ms)
-        (dotimes [_ n-rotations]
-          (delete-and-spit-with-waits file file-content sleep-ms))
+            expected-result (apply concat lines-s)]
+        (spit-lines-s f lines-s sleep-ms)
         (stop-tailer-and-channel t-and-c)
         (a/<!! result-ch)
         => expected-result))
 
-;; TODO
-;; Check that bug.
-;;
-;; Called if a file rotation is detected.
-;; This method is called before the file is reopened, and fileNotFound may be
-;; called if the new file has not yet been created.
+;; TODO Check that bug: https://issues.apache.org/jira/browse/IO-399

@@ -7,6 +7,8 @@
            (org.apache.commons.io.input TailerListener
                                         Tailer)))
 
+;; Internals
+
 (defn tailer-listener [c]
   (reify TailerListener
     (init [this tailer] ())
@@ -21,6 +23,8 @@
     (^void handle [this ^Exception i]
      (println (str "exception: " i)))))
 
+;; API
+
 (defn make-tailer-and-channel [file delay-ms]
   (let [c      (a/chan)
         tailer (Tailer/create file
@@ -33,9 +37,11 @@
 (defn channel [t-and-c]
   (::channel t-and-c))
 
-(defn stop-tailer-and-channel [{:keys [::channel ::tailer]}]
+(defn stop-tailer-and-channel! [{:keys [::channel ::tailer]}]
   (.stop tailer)
   (a/close! channel))
+
+;; Tests
 
 (defn spit-lines-s [f lines-s sleep-ms]
   (Thread/sleep sleep-ms)
@@ -73,7 +79,7 @@
             t-and-c   (make-tailer-and-channel file delay-ms)
             result-ch (a/thread (doall (tailer-and-channel->seq t-and-c)))]
         (spit-lines-s file lines-s sleep-ms)
-        (stop-tailer-and-channel t-and-c)
+        (stop-tailer-and-channel! t-and-c)
         (a/<!! result-ch)
         => ["I met" "her" "in a" "pool room" "her name" "I didn't" "catch"
             "she" "looked" "like" "something special"]))

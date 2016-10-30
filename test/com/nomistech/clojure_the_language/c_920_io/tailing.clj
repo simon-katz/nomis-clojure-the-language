@@ -7,16 +7,6 @@
            (org.apache.commons.io.input TailerListener
                                         Tailer)))
 
-(defn chan->seq [c]
-  (lazy-seq
-   (when-let [v (a/<!! c)]
-     (cons v (chan->seq c)))))
-
-(defn tailer-and-channel->seq [t-and-c]
-  (-> t-and-c
-      :channel
-      chan->seq))
-
 (defn tailer-listener [c]
   (reify TailerListener
     (init [this tailer] ())
@@ -31,16 +21,19 @@
     (^void handle [this ^Exception i]
      (println (str "exception: " i)))))
 
-(defn tailer-and-channel [file delay-ms]
+(defn make-tailer-and-channel [file delay-ms]
   (let [c      (a/chan)
         tailer (Tailer/create file
                               (tailer-listener c)
                               delay-ms
                               true)]
-    {:channel c
-     :tailer  tailer}))
+    {::channel c
+     ::tailer  tailer}))
 
-(defn stop-tailer-and-channel [{:keys [channel tailer]}]
+(defn channel [t-and-c]
+  (::channel t-and-c))
+
+(defn stop-tailer-and-channel [{:keys [::channel ::tailer]}]
   (.stop tailer)
   (a/close! channel))
 
@@ -53,6 +46,16 @@
             (str line "\n")
             :append true)
       (Thread/sleep sleep-ms))))
+
+(defn chan->seq [c]
+  (lazy-seq
+   (when-let [v (a/<!! c)]
+     (cons v (chan->seq c)))))
+
+(defn tailer-and-channel->seq [t-and-c]
+  (-> t-and-c
+      channel
+      chan->seq))
 
 (fact (let [delay-ms  100
             sleep-ms  (+ delay-ms 10)
@@ -67,7 +70,7 @@
                         (io/make-parents f)
                         (spit f "this will be ignored this will be ignored this will be ignored this will be ignored\n")
                         f)               
-            t-and-c   (tailer-and-channel file delay-ms)
+            t-and-c   (make-tailer-and-channel file delay-ms)
             result-ch (a/thread (doall (tailer-and-channel->seq t-and-c)))]
         (spit-lines-s file lines-s sleep-ms)
         (stop-tailer-and-channel t-and-c)

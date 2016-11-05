@@ -6,7 +6,6 @@
              ]
             [clojure.tools.namespace.repl :refer :all]
             [clojure.tools.namespace.move :refer :all]
-            [nomis-tailer.core :as tailer]
             [midje.repl :refer :all]))
 
 ;;;; ___________________________________________________________________________
@@ -14,8 +13,3 @@
 
 (defn u-move-ns-dev-src-test [old-sym new-sym source-path]
   (move-ns old-sym new-sym source-path ["dev" "src" "test"]))
-
-
-(def ch (tailer/make-tailer-and-channel (java.io.File. "plop") 1000))
-
-(print (clojure.core.async/<!! (tailer/channel ch)))

@@ -3,7 +3,6 @@
                  [cheshire "5.4.0"]
                  [org.clojure/core.match "0.3.0-alpha4"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
-                 [com.nomistech/nomis-tailer "0.1.0"]
                  [prismatic/schema "1.0.5"]]
   :repl-options {:init-ns user}
   :profiles {:dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]

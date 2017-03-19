@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.c-910-schema.s-010-schema-basics
+(ns com.nomistech.clojure-the-language.c-800-libraries.s-200-schema.ss-010-schema-basics
   (:require [midje.sweet :refer :all]
             [schema.core :as s]))
 
@@ -14,7 +14,8 @@
 
 (fact
   (let [x {:a 1
-           :b 2 :c 3}]
+           :b 2
+           :c 3}]
     (s/validate ABEtc x) => x))
 
 (fact

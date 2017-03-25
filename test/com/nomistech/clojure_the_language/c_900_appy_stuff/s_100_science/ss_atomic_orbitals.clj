@@ -55,16 +55,30 @@
              (successive-funcalls (rest fs)
                                   vv))))))
 
-(defn successive-differences [s]
+(defn successive-differences
+  "The successive differences in `s`.
+  `s` is a sequence of numbers."
+  [s]
   (map - (rest s) s))
 
-(defn successive-differences-incl-0 [s]
+(defn successive-differences-incl-0
+  "Zero consed on to the successive differences in `s`.
+  `s` is a sequence of numbers."
+  [s]
   (cons 0 (successive-differences s)))
 
 ;;;; ___________________________________________________________________________
 
+(fact (successive-differences [1 10 100 1000])
+  => [9 90 900])
+
+(fact (successive-differences-incl-0 [1 10 100 1000])
+  => [0 9 90 900])
+
 (fact (successive-funcalls [inc - /] 9)
   => [10 -10 -1/10])
+
+;;;; ___________________________________________________________________________
 
 (fact (successive-funcalls [successive-differences-incl-0
                             successive-differences-incl-0

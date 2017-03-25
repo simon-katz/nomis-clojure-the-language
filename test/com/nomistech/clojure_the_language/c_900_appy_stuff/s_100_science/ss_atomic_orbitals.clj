@@ -46,15 +46,6 @@
 
 ;;;; ___________________________________________________________________________
 
-(defn successive-funcalls [fs v]
-  (lazy-seq
-   (if (empty? fs)
-     '()
-     (let [vv ((first fs) v)]
-       (cons vv
-             (successive-funcalls (rest fs)
-                                  vv))))))
-
 (defn successive-differences
   "The successive differences in `s`.
   `s` is a sequence of numbers."
@@ -66,6 +57,15 @@
   `s` is a sequence of numbers."
   [s]
   (cons 0 (successive-differences s)))
+
+(defn successive-funcalls [fs v]
+  (lazy-seq
+   (if (empty? fs)
+     '()
+     (let [vv ((first fs) v)]
+       (cons vv
+             (successive-funcalls (rest fs)
+                                  vv))))))
 
 ;;;; ___________________________________________________________________________
 

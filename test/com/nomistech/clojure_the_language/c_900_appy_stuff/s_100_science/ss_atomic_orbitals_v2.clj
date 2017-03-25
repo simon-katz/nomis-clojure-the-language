@@ -1,7 +1,13 @@
 (ns com.nomistech.clojure-the-language.c-900-appy-stuff.s-100-science.ss-atomic-orbitals-v2
   (:require [midje.sweet :refer :all]))
 
-(def +extra-orbitals-in-shell+
+;;;; The approach here builds a model (`+possible-orbitals-in-shell+`) and
+;;;; then uses that for computation.
+;;;; Easy to follow.
+;;;; We could take that further and build models of atoms rather than of
+;;;; individual shells, but that seems OTT for our purposes.
+
+(def +extra-possible-orbitals-in-shell+
   "For each shell, starting with a notional shell 0 which has no orbitals...
   the number of extra orbitals of each type when compared to the previous shell."
   [{}
@@ -13,20 +19,20 @@
    {:f 7}
    {}])
 
-(def +orbitals-in-shell+
+(def +possible-orbitals-in-shell+
   "For each shell, starting with a notional shell 0 which has no orbitals...
-  the number of orbitals of each type."
+  the number of possible orbitals of each type."
   (reductions (fn [orbitals-in-previous-shell
                    extra-orbitals-in-this-shell]
                 (merge-with + ; in case physics changes (just `merge` would do)
                             orbitals-in-previous-shell
                             extra-orbitals-in-this-shell))
-              +extra-orbitals-in-shell+))
+              +extra-possible-orbitals-in-shell+))
 
 (def +max-orbitals-in-shell+
   "For each shell, starting with a notional shell 0 which has no orbitals...
   the maximum number of orbitals in that shell."
-  (for [m +orbitals-in-shell+]
+  (for [m +possible-orbitals-in-shell+]
     (apply + (for [[_ v] m] v))))
 
 (def +max-orbitals-across-all-shells+
@@ -53,7 +59,7 @@
 
 ;;;; ___________________________________________________________________________
 
-(fact +orbitals-in-shell+
+(fact +possible-orbitals-in-shell+
   => [{}
       {:s 1}
       {:s 1 :p 3}

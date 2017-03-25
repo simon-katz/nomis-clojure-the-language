@@ -1,7 +1,10 @@
 (ns com.nomistech.clojure-the-language.c-900-appy-stuff.s-100-science.ss-atomic-orbitals-v1
   (:require [midje.sweet :refer :all]))
 
-(def +extra-orbitals-in-shell+
+;;;; The approach here quickly gets into numbers and differences betwen numbers.
+;;;; Hard to follow.
+
+(def +extra-possible-orbitals-in-shell+
   "For each shell, starting with a notional shell 0 which has no orbitals...
   the number of extra orbitals of each type when compared to the previous shell."
   [{}
@@ -17,7 +20,7 @@
   "For each shell, starting with a notional shell 0 which has no orbitals...
   the maximum number of extra orbitals in that shell when compared to the
   previous shell."
-  (for [m +extra-orbitals-in-shell+]
+  (for [m +extra-possible-orbitals-in-shell+]
     (if (empty? m)
       0
       (apply + (for [[k v] m]

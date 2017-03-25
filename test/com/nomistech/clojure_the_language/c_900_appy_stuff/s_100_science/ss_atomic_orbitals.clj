@@ -2,7 +2,8 @@
   (:require [midje.sweet :refer :all]))
 
 (def +orbitals-extra-at-energy-level+
-  [{:s 1}
+  [{}
+   {:s 1}
    {:p 3}
    {}
    {:d 5}
@@ -11,12 +12,11 @@
    {}])
 
 (def +n-orbitals-extra-at-energy-level-diffs+
-  (cons 0
-        (for [m +orbitals-extra-at-energy-level+]
-          (if (empty? m)
-            0
-            (apply + (for [[k v] m]
-                       v))))))
+  (for [m +orbitals-extra-at-energy-level+]
+    (if (empty? m)
+      0
+      (apply + (for [[k v] m]
+                 v)))))
 
 (def +n-electrons-extra-at-energy-level-diffs+
   (map (partial * 2)

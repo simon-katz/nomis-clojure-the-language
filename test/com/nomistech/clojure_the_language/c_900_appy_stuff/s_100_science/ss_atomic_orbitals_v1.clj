@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.c-900-appy-stuff.s-100-science.ss-atomic-orbitals
+(ns com.nomistech.clojure-the-language.c-900-appy-stuff.s-100-science.ss-atomic-orbitals-v1
   (:require [midje.sweet :refer :all]))
 
 (def +extra-orbitals-in-shell+

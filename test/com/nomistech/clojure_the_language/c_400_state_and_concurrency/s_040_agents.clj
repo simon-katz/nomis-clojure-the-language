@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.old-to-organise.agent-test
+(ns com.nomistech.clojure-the-language.c-400-state-and-concurrency.s-040-agents
   (:require [midje.sweet :refer :all]))
 
 (fact

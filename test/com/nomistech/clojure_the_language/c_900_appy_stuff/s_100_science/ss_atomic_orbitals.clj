@@ -1,8 +1,22 @@
 (ns com.nomistech.clojure-the-language.c-900-appy-stuff.s-100-science.ss-atomic-orbitals
   (:require [midje.sweet :refer :all]))
 
+(def +orbitals-extra-at-energy-level+
+  [{:s 1}
+   {:p 3}
+   {}
+   {:d 5}
+   {}
+   {:f 7}
+   {}])
+
 (def +n-orbitals-extra-at-energy-level-diffs+
-  [0 1 3 0 5 0 7 0])
+  (cons 0
+        (for [m +orbitals-extra-at-energy-level+]
+          (if (empty? m)
+            0
+            (apply + (for [[k v] m]
+                       v))))))
 
 (def +n-electrons-extra-at-energy-level-diffs+
   (map (partial * 2)

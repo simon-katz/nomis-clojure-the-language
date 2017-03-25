@@ -1,30 +1,30 @@
 (ns com.nomistech.clojure-the-language.c-900-appy-stuff.s-100-science.ss-atomic-orbitals
   (:require [midje.sweet :refer :all]))
 
-(def +n-orbitals-extra-at-energy-level-diffs-incl-0+
+(def +n-orbitals-extra-at-energy-level-diffs+
   [0 1 3 0 5 0 7 0])
 
-(def +n-electrons-extra-at-energy-level-diffs-incl-0+
+(def +n-electrons-extra-at-energy-level-diffs+
   (map (partial * 2)
-       +n-orbitals-extra-at-energy-level-diffs-incl-0+))
+       +n-orbitals-extra-at-energy-level-diffs+))
 
-(def +n-electrons-extra-at-energy-level-incl-0+
-  (->> +n-electrons-extra-at-energy-level-diffs-incl-0+
+(def +n-electrons-extra-at-energy-level+
+  (->> +n-electrons-extra-at-energy-level-diffs+
        (reductions +)))
 
-(def +noble-gases-atomic-numbers-incl-0+
-  (->> +n-electrons-extra-at-energy-level-incl-0+
+(def +noble-gases-atomic-numbers+
+  (->> +n-electrons-extra-at-energy-level+
        (reductions +)))
 
 ;;;; ___________________________________________________________________________
 
-(fact +n-electrons-extra-at-energy-level-diffs-incl-0+
+(fact +n-electrons-extra-at-energy-level-diffs+
   => [0 2 6 0 10 0 14 0])
 
-(fact +n-electrons-extra-at-energy-level-incl-0+
+(fact +n-electrons-extra-at-energy-level+
   => [0 2 8 8 18 18 32 32])
 
-(fact +noble-gases-atomic-numbers-incl-0+
+(fact +noble-gases-atomic-numbers+
   => [0 2 10 18 36 54 86 118])
 
 ;;;; ___________________________________________________________________________
@@ -53,13 +53,13 @@
                             successive-differences-incl-0
                             (fn [s] (map #(/ % 2)
                                          s))]
-                           +noble-gases-atomic-numbers-incl-0+)
-  => [+n-electrons-extra-at-energy-level-incl-0+
-      +n-electrons-extra-at-energy-level-diffs-incl-0+
-      +n-orbitals-extra-at-energy-level-diffs-incl-0+])
+                           +noble-gases-atomic-numbers+)
+  => [+n-electrons-extra-at-energy-level+
+      +n-electrons-extra-at-energy-level-diffs+
+      +n-orbitals-extra-at-energy-level-diffs+])
 
 (fact (successive-funcalls [successive-differences-incl-0
                             successive-differences-incl-0]
-                           +noble-gases-atomic-numbers-incl-0+)
+                           +noble-gases-atomic-numbers+)
   => [[0 2 8 8 18 18 32 32]
       [0 2 6 0 10 0 14 0]])

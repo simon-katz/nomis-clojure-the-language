@@ -47,18 +47,25 @@
 ;;;; ___________________________________________________________________________
 
 (defn successive-differences
-  "The successive differences in `s`.
-  `s` is a sequence of numbers."
+  "`s` is a sequence of numbers.
+  Returns the successive differences of the numbers."
   [s]
   (map - (rest s) s))
 
 (defn successive-differences-incl-0
-  "Zero consed on to the successive differences in `s`.
-  `s` is a sequence of numbers."
+  "`s` is a sequence of numbers.
+  Returns zero consed on to the successive differences of the numbers."
   [s]
   (cons 0 (successive-differences s)))
 
 (defn successive-funcalls [fs v]
+  "`fs` is a sequence of functions.
+  Let's call the functions f1, f2, f3, etc.
+  Returns a sequence (r1 r2 r3 ...) where
+    r1 = (f1 v)
+    r2 = (f2 r1)
+    r3 = (f3 r2)
+    etc."
   (lazy-seq
    (if (empty? fs)
      '()

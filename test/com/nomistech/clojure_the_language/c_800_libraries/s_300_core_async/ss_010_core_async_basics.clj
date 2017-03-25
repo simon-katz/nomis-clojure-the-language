@@ -1,9 +1,7 @@
-(ns com.nomistech.clojure-the-language.old-to-organise.core-async-101-basics
-  (:require
-   ;; [com.nomistech.clojure-the-language.old-to-organise.core-async-101-basics :refer :all]
-   [clojure.core.async :as a :refer :all
-    :exclude [map into reduce merge partition partition-by take]]
-   [midje.sweet :refer :all]))
+(ns com.nomistech.clojure-the-language.c-800-libraries.s-300-core-async.ss-010-core-async-basics
+  (:require [clojure.core.async :as a :refer :all
+             :exclude [map into reduce merge partition partition-by take]]
+            [midje.sweet :refer :all]))
 
 (comment ; maybe turn some of this into tests
 

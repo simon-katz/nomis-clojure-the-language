@@ -36,11 +36,12 @@
   (->> +max-extra-electrons-in-shell+
        (reductions +)))
 
-(def +noble-gases-atomic-numbers+
-  "The atomic numbers of the noble gases, with a 0 at the start.
-  Computed as follows:
-  For each shell, starting with a notional shell 0 which has no orbitals...
-  the maximum number of electrons in total, across all shells."
+(def +max-electrons-across-all-shells+
+  "For each shell, starting with a notional shell 0 which has no orbitals...
+  the maximum number of electrons in total, across this shell and all
+  lower-energy shells.
+  These numbers are the atomic numbers of the noble gases, with a 0 at the
+  start."
   (->> +max-electrons-in-shell+
        (reductions +)))
 
@@ -55,7 +56,7 @@
 (fact +max-electrons-in-shell+
   => [0 2 8 8 18 18 32 32])
 
-(fact +noble-gases-atomic-numbers+
+(fact +max-electrons-across-all-shells+
   => [0 2 10 18 36 54 86 118])
 
 ;;;; ___________________________________________________________________________
@@ -101,13 +102,13 @@
                             successive-differences-incl-0
                             (fn [s] (map #(/ % 2)
                                          s))]
-                           +noble-gases-atomic-numbers+)
+                           +max-electrons-across-all-shells+)
   => [+max-electrons-in-shell+
       +max-extra-electrons-in-shell+
       +max-extra-orbitals-in-shell+])
 
 (fact (successive-funcalls [successive-differences-incl-0
                             successive-differences-incl-0]
-                           +noble-gases-atomic-numbers+)
+                           +max-electrons-across-all-shells+)
   => [[0 2 8 8 18 18 32 32]
       [0 2 6 0 10 0 14 0]])

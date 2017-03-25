@@ -66,13 +66,9 @@
     r2 = (f2 r1)
     r3 = (f3 r2)
     etc."
-  (lazy-seq
-   (if (empty? fs)
-     '()
-     (let [vv ((first fs) v)]
-       (cons vv
-             (successive-funcalls (rest fs)
-                                  vv))))))
+  (rest (reductions (fn [v f] (f v))
+                    v
+                    fs)))
 
 ;;;; ___________________________________________________________________________
 

@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.old-to-organise.cheshire-test
+(ns com.nomistech.clojure-the-language.c-800-libraries.s-800-web.ss-010-cheshire
   (:require [cheshire.core :refer :all]
             [com.nomistech.clojure-the-language.utils.utils :as u]
             [midje.sweet :refer :all]))

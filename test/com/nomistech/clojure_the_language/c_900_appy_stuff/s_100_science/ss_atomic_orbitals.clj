@@ -4,25 +4,25 @@
 (def +n-orbitals-extra-at-energy-level-diffs-incl-0+
   [0 1 3 0 5 0 7 0])
 
-(def +n-orbitals-extra-at-energy-level-incl-0+
-  (->> +n-orbitals-extra-at-energy-level-diffs-incl-0+
-       (reductions +)))
+(def +n-electrons-extra-at-energy-level-diffs-incl-0+
+  (map (partial * 2)
+       +n-orbitals-extra-at-energy-level-diffs-incl-0+))
 
-(def +n-orbitals-up-to-energy-level-incl-0+
-  (->> +n-orbitals-extra-at-energy-level-incl-0+
+(def +n-electrons-extra-at-energy-level-incl-0+
+  (->> +n-electrons-extra-at-energy-level-diffs-incl-0+
        (reductions +)))
 
 (def +noble-gases-atomic-numbers-incl-0+
-  (map (partial * 2)
-       +n-orbitals-up-to-energy-level-incl-0+))
+  (->> +n-electrons-extra-at-energy-level-incl-0+
+       (reductions +)))
 
 ;;;; ___________________________________________________________________________
 
-(fact +n-orbitals-extra-at-energy-level-incl-0+
-  => [0 1 4 4 9 9 16 16])
+(fact +n-electrons-extra-at-energy-level-diffs-incl-0+
+  => [0 2 6 0 10 0 14 0])
 
-(fact +n-orbitals-up-to-energy-level-incl-0+
-  => [0 1 5 9 18 27 43 59])
+(fact +n-electrons-extra-at-energy-level-incl-0+
+  => [0 2 8 8 18 18 32 32])
 
 (fact +noble-gases-atomic-numbers-incl-0+
   => [0 2 10 18 36 54 86 118])
@@ -49,13 +49,13 @@
 (fact (successive-funcalls [inc - /] 9)
   => [10 -10 -1/10])
 
-(fact (successive-funcalls [(fn [s] (map #(/ % 2)
-                                         s))
+(fact (successive-funcalls [successive-differences-incl-0
                             successive-differences-incl-0
-                            successive-differences-incl-0]
+                            (fn [s] (map #(/ % 2)
+                                         s))]
                            +noble-gases-atomic-numbers-incl-0+)
-  => [+n-orbitals-up-to-energy-level-incl-0+
-      +n-orbitals-extra-at-energy-level-incl-0+
+  => [+n-electrons-extra-at-energy-level-incl-0+
+      +n-electrons-extra-at-energy-level-diffs-incl-0+
       +n-orbitals-extra-at-energy-level-diffs-incl-0+])
 
 (fact (successive-funcalls [successive-differences-incl-0

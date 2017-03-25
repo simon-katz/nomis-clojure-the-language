@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.c-800-libraries.s-100-midje.minutiae.ns-unmap
+(ns com.nomistech.clojure-the-language.c-800-libraries.s-100-midje.ss-900-minutiae-100-ns-unmap
   (:require [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________

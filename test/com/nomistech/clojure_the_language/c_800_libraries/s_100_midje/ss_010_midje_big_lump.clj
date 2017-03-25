@@ -1,7 +1,5 @@
-(ns com.nomistech.clojure-the-language.old-to-organise.midje-test
-  (:require [midje.sweet :refer :all]
-            ;; [com.nomistech.clojure-the-language.midje :refer :all]
-            ))
+(ns com.nomistech.clojure-the-language.c-800-libraries.s-100-midje.ss-010-midje-big-lump
+  (:require [midje.sweet :refer :all]))
 
 ;;;; Most of these facts evaluate to `true`. A few examples fail and
 ;;;; evaluate to `false`. I only show results when false.

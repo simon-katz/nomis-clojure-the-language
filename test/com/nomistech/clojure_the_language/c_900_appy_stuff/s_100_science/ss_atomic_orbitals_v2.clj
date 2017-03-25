@@ -42,12 +42,6 @@
   (->> +max-orbitals-in-shell+
        (reductions +)))
 
-(def +max-electrons-in-shell+
-  "For each shell, starting with a notional shell 0 which has no orbitals...
-  the maximum number of electrons in that shell."
-  (map (partial * 2)
-       +max-orbitals-in-shell+))
-
 (def +max-electrons-across-all-shells+
   "For each shell, starting with a notional shell 0 which has no orbitals...
   the maximum number of electrons in total, across this shell and all
@@ -74,9 +68,6 @@
 
 (fact +max-orbitals-across-all-shells+
   => [0 1 5 9 18 27 43 59])
-
-(fact +max-electrons-in-shell+
-  => [0 2 8 8 18 18 32 32])
 
 (fact +max-electrons-across-all-shells+
   => [0 2 10 18 36 54 86 118])

@@ -18,6 +18,9 @@
 
 ;;;; ___________________________________________________________________________
 
+(fact +n-orbitals-extra-at-energy-level-diffs+
+  => [0 1 3 0 5 0 7 0])
+
 (fact +n-electrons-extra-at-energy-level-diffs+
   => [0 2 6 0 10 0 14 0])
 

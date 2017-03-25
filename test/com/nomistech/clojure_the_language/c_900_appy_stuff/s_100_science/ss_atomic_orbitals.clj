@@ -1,7 +1,9 @@
 (ns com.nomistech.clojure-the-language.c-900-appy-stuff.s-100-science.ss-atomic-orbitals
   (:require [midje.sweet :refer :all]))
 
-(def +orbitals-extra-at-energy-level+
+(def +extra-orbitals-in-shell+
+  "For each shell, starting with a notional shell 0 which has no orbitals...
+  the number of extra orbitals of each type when compared to the previous shell."
   [{}
    {:s 1}
    {:p 3}
@@ -11,34 +13,46 @@
    {:f 7}
    {}])
 
-(def +n-orbitals-extra-at-energy-level-diffs+
-  (for [m +orbitals-extra-at-energy-level+]
+(def +max-extra-orbitals-in-shell+
+  "For each shell, starting with a notional shell 0 which has no orbitals...
+  the maximum number of extra orbitals in that shell when compared to the
+  previous shell."
+  (for [m +extra-orbitals-in-shell+]
     (if (empty? m)
       0
       (apply + (for [[k v] m]
                  v)))))
 
-(def +n-electrons-extra-at-energy-level-diffs+
+(def +max-extra-electrons-in-shell+
+  "For each shell, starting with a notional shell 0 which has no orbitals...
+  the maximum number of extra electrons in that shell when compared to the
+  previous shell."
   (map (partial * 2)
-       +n-orbitals-extra-at-energy-level-diffs+))
+       +max-extra-orbitals-in-shell+))
 
-(def +n-electrons-extra-at-energy-level+
-  (->> +n-electrons-extra-at-energy-level-diffs+
+(def +max-electrons-in-shell+
+  "For each shell, starting with a notional shell 0 which has no orbitals...
+  the maximum number of electrons in that shell."
+  (->> +max-extra-electrons-in-shell+
        (reductions +)))
 
 (def +noble-gases-atomic-numbers+
-  (->> +n-electrons-extra-at-energy-level+
+  "The atomic numbers of the noble gases, with a 0 at the start.
+  Computed as follows:
+  For each shell, starting with a notional shell 0 which has no orbitals...
+  the maximum number of electrons in total, across all shells."
+  (->> +max-electrons-in-shell+
        (reductions +)))
 
 ;;;; ___________________________________________________________________________
 
-(fact +n-orbitals-extra-at-energy-level-diffs+
+(fact +max-extra-orbitals-in-shell+
   => [0 1 3 0 5 0 7 0])
 
-(fact +n-electrons-extra-at-energy-level-diffs+
+(fact +max-extra-electrons-in-shell+
   => [0 2 6 0 10 0 14 0])
 
-(fact +n-electrons-extra-at-energy-level+
+(fact +max-electrons-in-shell+
   => [0 2 8 8 18 18 32 32])
 
 (fact +noble-gases-atomic-numbers+
@@ -88,9 +102,9 @@
                             (fn [s] (map #(/ % 2)
                                          s))]
                            +noble-gases-atomic-numbers+)
-  => [+n-electrons-extra-at-energy-level+
-      +n-electrons-extra-at-energy-level-diffs+
-      +n-orbitals-extra-at-energy-level-diffs+])
+  => [+max-electrons-in-shell+
+      +max-extra-electrons-in-shell+
+      +max-extra-orbitals-in-shell+])
 
 (fact (successive-funcalls [successive-differences-incl-0
                             successive-differences-incl-0]

@@ -18,20 +18,26 @@
                  (range n)))))
 
 (fact "Demo of chunked sequences -- in chunks of size 32"
-  (do (with-out-str (doall (demo-chunked 1)))
-      => ".")
-  (do (with-out-str (doall (demo-chunked 2)))
-      => "..")
-  (do (with-out-str (doall (demo-chunked 31)))
-      => "...............................")
-  (do (with-out-str (doall (demo-chunked 32)))
-      => "................................")
-  (do (with-out-str (doall (demo-chunked 33)))
-      => "................................")
-  (do (with-out-str (doall (demo-chunked 34)))
-      => "................................")
-  (do (with-out-str (doall (demo-chunked 1000)))
-      => "................................"))
+  (letfn [(string--of-n-dots [n]
+            (apply str (for [_ (range n)] \.)))]
+    (do (string--of-n-dots 2)
+        => "..")
+    (let [dots-31 (string--of-n-dots 31)
+          dots-32 (string--of-n-dots 32)]
+      (do (with-out-str (doall (demo-chunked 1)))
+          => ".")
+      (do (with-out-str (doall (demo-chunked 2)))
+          => "..")
+      (do (with-out-str (doall (demo-chunked 31)))
+          => dots-31)
+      (do (with-out-str (doall (demo-chunked 32)))
+          => dots-32)
+      (do (with-out-str (doall (demo-chunked 33)))
+          => dots-32)
+      (do (with-out-str (doall (demo-chunked 34)))
+          => dots-32)
+      (do (with-out-str (doall (demo-chunked 1000)))
+          => dots-32))))
 
 ;;; Built-in functions use chunk-buffer and chunk-cons:
 ;;;

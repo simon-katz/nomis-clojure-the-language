@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.chunked-sequences-test
+(ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-370-chunked-sequences
   (:require [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________

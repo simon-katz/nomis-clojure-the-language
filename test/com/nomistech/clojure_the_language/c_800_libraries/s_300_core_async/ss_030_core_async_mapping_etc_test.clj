@@ -78,11 +78,14 @@
     (chan->seq c))
   => [0 100 200 300 400])
 
-(fact "Transducers do nothing when there is no buffer (when buffer size is 0)"
+(fact "New: Fixed buffers must have size > 0
+       (Was: Transducers do nothing when there is no buffer (when buffer size is 0))"
   (let [c (a/chan 0 (map (partial * 100)))]
     (a/onto-chan c [0 1 2 3 4])
     (chan->seq c))
-  => [0 1 2 3 4])
+  =>
+  ;; [0 1 2 3 4] ; was the "transducers do nothing" bit
+  throws)
 
 (fact "A `filter` transducer"
   (let [c (a/chan 1 (filter even?))]

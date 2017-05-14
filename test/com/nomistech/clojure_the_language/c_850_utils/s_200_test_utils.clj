@@ -113,4 +113,5 @@
                                     nil)
                                   :timeout-ms 70)]
       [res @cnt-atom])
-    => [false 3]))
+    => (just [false
+              #(<= % 3)])))

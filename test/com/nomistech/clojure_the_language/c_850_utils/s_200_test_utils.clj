@@ -4,14 +4,6 @@
             [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
-;;;; ---- nomis-pp-classpath ----
-
-(defn nomis-pp-classpath []
-  (clojure.pprint/pprint
-   (clojure.string/split (System/getProperty "java.class.path")
-                         #":")))
-
-;;;; ___________________________________________________________________________
 ;;;; ---- canonicalise-line-endings ----
 
 (defn canonicalise-line-endings [s]
@@ -131,3 +123,11 @@
                                   :delay-ms  100)]
       [res @cnt-atom])
     => [false 1]))
+
+;;;; ___________________________________________________________________________
+;;;; ---- nomis-pp-classpath ----
+
+(defn nomis-pp-classpath []
+  (clojure.pprint/pprint
+   (clojure.string/split (System/getProperty "java.class.path")
+                         #":")))

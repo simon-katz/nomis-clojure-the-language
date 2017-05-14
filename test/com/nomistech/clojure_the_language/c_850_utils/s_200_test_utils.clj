@@ -1,13 +1,37 @@
 (ns com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils
   (:require [clojure.core.async :as a]
             [clojure.string :as str]
+            [taoensso.timbre :as timbre]
             [midje.sweet :refer :all]))
+
+;;;; ___________________________________________________________________________
+;;;; ---- with-ignore-logging ----
+
+(defn with-ignore-logging* [fun]
+  ;; Clojure symbols and namespaces are broken (IMHO).
+  ;; This has to be public, otherwise uses of `with-ignore-logging` fail.
+  (timbre/with-log-level :warn
+    (fun)))
+
+(defmacro with-ignore-logging [[] & body]
+  `(with-ignore-logging* (fn [] ~@body)))
+
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+(fact "`with-ignore-logging` works"
+  (with-out-str
+    (with-ignore-logging []
+      (timbre/info "Hi")
+      (print "Bye")))
+  => "Bye")
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- canonicalise-line-endings ----
 
 (defn canonicalise-line-endings [s]
   (str/replace s "\r\n" "\n"))
+
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 (fact "`canonicalise-line-endings` works"
   (fact (canonicalise-line-endings "a\nb\r\nc\rd") => "a\nb\nc\rd"))

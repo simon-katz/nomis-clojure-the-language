@@ -12,6 +12,8 @@
      ~@other-forms
      result#))
 
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 (fact "`do1` works"
 
   (fact "Fails to compile when there are no forms"
@@ -58,6 +60,8 @@
          ~form-2
        ~@other-forms)))
 
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 (fact "`do2` works"
 
   (fact "Fails to compile when there are no forms"
@@ -102,6 +106,8 @@
             (finally 
               ~after))))
 
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 (fact "with-extras works"
 
   (fact "without an exception"
@@ -133,6 +139,8 @@
 (defn member? [item coll]
   (some #{item} coll))
 
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 (fact "`member?` works"
   (fact "Returns truthy if the item is in the collection"
     (member? :b [:a :b :c]) => truthy)
@@ -148,6 +156,8 @@
 
 (defn submap?-v2 [m1 m2]
   (clojure.set/subset? (set m1) (set m2)))
+
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 (fact "`submap?` works"
   (do
@@ -184,6 +194,8 @@
   (if (every? map? vals)
     (apply merge-with deep-merge vals)
     (last vals)))
+
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 (fact "`deep-merge` works"
 
@@ -251,6 +263,8 @@
   [pred coll]
   (first (positions pred coll)))
 
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 (fact "`position` and `positions` tests"
       (fact "`position` tests"
             (position even? []) => nil
@@ -275,6 +289,8 @@
   ;;     (time (dotimes [i 1000000] (last-index-of-char-in-string \c "abcdef")))
   ;;     "Elapsed time: 18.44 msecs"
   (.lastIndexOf string (int char)))
+
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 (fact "`last-index-of-char-in-string` tests"
       (fact (last-index-of-char-in-string \c "") => -1

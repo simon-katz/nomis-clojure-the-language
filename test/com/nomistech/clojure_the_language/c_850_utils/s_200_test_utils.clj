@@ -28,6 +28,8 @@
    (when-let [v (a/<!! c)]
      (cons v (chan->seq c)))))
 
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 (fact "`chan->seq` works"
   
   (fact "can take elements before the channel closes"
@@ -80,6 +82,8 @@
             (do
               (a/<!! (a/timeout delay-ms))
               (recur (inc cnt)))))))))
+
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 (fact "`wait-for-condition` works"
   

@@ -3,6 +3,7 @@
             [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- nomis-pp-classpath ----
 
 (defn nomis-pp-classpath []
   (clojure.pprint/pprint
@@ -10,6 +11,7 @@
                          #":")))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- chan->seq ----
 
 (defn chan->seq [c]
   (lazy-seq
@@ -35,3 +37,70 @@
             (a/close! c))
       (chan->seq c))
     => [1 2 3]))
+
+;;;; ___________________________________________________________________________
+;;;; ---- wait-for-condition ----
+
+(defn wait-for-condition
+  "Waits for `test-fun` to return a logical true value, and, if that happens,
+  returns that logical true value.
+  Calls `test-fun` immediately and, after it returns, `delay-ms` later, and
+  so on.
+  After `timeout-ms`, returns logical false.
+  Blocks when waiting."
+  [test-fun & {:keys [timeout-ms
+                      delay-ms
+                      debug?]
+               :or {timeout-ms 1000
+                    delay-ms   50}}]
+  (let [timeout (a/timeout timeout-ms)
+        timed-out? (fn []
+                     (let [zero-timeout (a/timeout 0)
+                           [_ c] (a/alts!! [timeout
+                                            zero-timeout]
+                                           :priority true)]
+                       (= c timeout)))]
+    (loop [cnt 1]
+      (let [finished? (test-fun)]
+        (when debug? (println "cnt =" cnt "time =" (System/currentTimeMillis)))
+        (if finished?
+          finished?
+          (if (timed-out?)
+            false
+            (do
+              (a/<!! (a/timeout delay-ms))
+              (recur (inc cnt)))))))))
+
+(fact "`wait-for-condition` works"
+  
+  (fact "works when `test-fun` eventually returns logical true"
+    (let [v (atom :not-done)]
+      (future
+        (Thread/sleep 70)
+        (reset! v :done))
+      (wait-for-condition #(if (= @v :done)
+                             :we-are-done
+                             false)))
+    => :we-are-done)
+
+  (fact "only one call when `test-fun` immediately returns logical true"
+    (let [cnt-atom (atom 0)
+          res (wait-for-condition (fn []
+                                    (swap! cnt-atom inc)
+                                    :we-are-done))]
+      [res @cnt-atom])
+    => [:we-are-done 1])
+
+  (fact "timeout when `test-fun` always returns logical false"
+    (wait-for-condition (fn [] (rand-nth [nil false]))
+                        :timeout-ms 70)
+    => false)
+
+  (fact "correct call count when `test-fun` always returns logical false"
+    (let [cnt-atom (atom 0)
+          res (wait-for-condition (fn []
+                                    (swap! cnt-atom inc)
+                                    nil)
+                                  :timeout-ms 70)]
+      [res @cnt-atom])
+    => [false 3]))

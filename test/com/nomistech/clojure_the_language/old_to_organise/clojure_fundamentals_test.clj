@@ -34,7 +34,7 @@
 ;;;; doseq allows nested iteration
 
 (fact
-  (u/remove-any-carriage-return-chars
+  (u/canonicalise-line-endings
    (with-out-str
      (doseq [x [1 2]
              y [:a :b :c]]
@@ -52,7 +52,7 @@
 ;;;; doseq allows earlier bindings to be used by later bindings
 
 (fact
-  (u/remove-any-carriage-return-chars
+  (u/canonicalise-line-endings
    (with-out-str
      (doseq [x [[1 2] [:a :b :c]]
              y x]

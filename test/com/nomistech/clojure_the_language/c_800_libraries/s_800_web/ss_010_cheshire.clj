@@ -24,7 +24,7 @@
   "{\"baz\":\"1970-01-01\"}")
 
 (fact
-  (u/remove-any-carriage-return-chars
+  (u/canonicalise-line-endings
    (generate-string {:foo "bar" :baz {:eggplant [1 2 3]}} {:pretty true}))
   =>
   "{\n  \"foo\" : \"bar\",\n  \"baz\" : {\n    \"eggplant\" : [ 1, 2, 3 ]\n  }\n}")

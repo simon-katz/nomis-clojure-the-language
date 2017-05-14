@@ -1,8 +1,8 @@
 (ns com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils
   (:require [clojure.core.async :as a]
             [clojure.string :as str]
-            [taoensso.timbre :as timbre]
-            [midje.sweet :refer :all]))
+            [midje.sweet :refer :all]
+            [taoensso.timbre :as timbre]))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- with-ignore-logging ----

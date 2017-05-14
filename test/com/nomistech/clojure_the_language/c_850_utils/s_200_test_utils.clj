@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils
   (:require [clojure.core.async :as a]
+            [clojure.string :as str]
             [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
@@ -9,6 +10,15 @@
   (clojure.pprint/pprint
    (clojure.string/split (System/getProperty "java.class.path")
                          #":")))
+
+;;;; ___________________________________________________________________________
+;;;; ---- canonicalise-line-endings ----
+
+(defn canonicalise-line-endings [s]
+  (str/replace s "\r\n" "\n"))
+
+(fact "`canonicalise-line-endings` works"
+  (fact (canonicalise-line-endings "a\nb\r\nc\rd") => "a\nb\nc\rd"))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- chan->seq ----

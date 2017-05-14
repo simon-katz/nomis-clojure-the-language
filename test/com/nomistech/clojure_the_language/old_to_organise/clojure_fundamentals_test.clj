@@ -1,7 +1,7 @@
 (ns com.nomistech.clojure-the-language.old-to-organise.clojure-fundamentals-test
   (:require [clojure.test]
             [clojure.zip :as zip]
-            [com.nomistech.clojure-the-language.utils.utils :as u]
+            [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]
             [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
@@ -34,7 +34,7 @@
 ;;;; doseq allows nested iteration
 
 (fact
-  (u/canonicalise-line-endings
+  (tu/canonicalise-line-endings
    (with-out-str
      (doseq [x [1 2]
              y [:a :b :c]]
@@ -52,7 +52,7 @@
 ;;;; doseq allows earlier bindings to be used by later bindings
 
 (fact
-  (u/canonicalise-line-endings
+  (tu/canonicalise-line-endings
    (with-out-str
      (doseq [x [[1 2] [:a :b :c]]
              y x]

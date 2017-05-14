@@ -1,6 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-800-web.ss-010-cheshire
   (:require [cheshire.core :refer :all]
-            [com.nomistech.clojure-the-language.utils.utils :as u]
+            [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]
             [midje.sweet :refer :all]))
 
 (fact
@@ -24,7 +24,7 @@
   "{\"baz\":\"1970-01-01\"}")
 
 (fact
-  (u/canonicalise-line-endings
+  (tu/canonicalise-line-endings
    (generate-string {:foo "bar" :baz {:eggplant [1 2 3]}} {:pretty true}))
   =>
   "{\n  \"foo\" : \"bar\",\n  \"baz\" : {\n    \"eggplant\" : [ 1, 2, 3 ]\n  }\n}")

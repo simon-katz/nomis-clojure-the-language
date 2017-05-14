@@ -73,12 +73,12 @@
                                            :priority true)]
                        (= c timeout)))]
     (loop [cnt 1]
-      (let [finished? (test-fun)]
-        (when debug? (println "cnt =" cnt "time =" (System/currentTimeMillis)))
-        (if finished?
-          finished?
-          (if (timed-out?)
-            false
+      (if (timed-out?)
+        false
+        (let [finished? (test-fun)]
+          (when debug? (println "cnt =" cnt "time =" (System/currentTimeMillis)))
+          (if finished?
+            finished?
             (do
               (a/<!! (a/timeout delay-ms))
               (recur (inc cnt)))))))))
@@ -107,7 +107,8 @@
 
   (fact "timeout when `test-fun` always returns logical false"
     (wait-for-condition (fn [] (rand-nth [nil false]))
-                        :timeout-ms 70)
+                        :timeout-ms 70 ; make this test run fast
+                        )
     => false)
 
   (fact "correct call count when `test-fun` always returns logical false"
@@ -115,7 +116,18 @@
           res (wait-for-condition (fn []
                                     (swap! cnt-atom inc)
                                     nil)
-                                  :timeout-ms 70)]
+                                  :timeout-ms 70 ; make this test run fast
+                                  )]
       [res @cnt-atom])
     => (just [false
-              #(<= % 3)])))
+              #(<= % 3)]))
+
+  (fact "`:delay-ms` works"
+    (let [cnt-atom (atom 0)
+          res (wait-for-condition (fn []
+                                    (swap! cnt-atom inc)
+                                    nil)
+                                  :timeout-ms 70 ; make this test run fast
+                                  :delay-ms  100)]
+      [res @cnt-atom])
+    => [false 1]))

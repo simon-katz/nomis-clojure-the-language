@@ -1,5 +1,4 @@
-(ns com.nomistech.clojure-the-language.c-850-utils.s-100-utils
-  (:require [midje.sweet :refer :all]))
+(ns com.nomistech.clojure-the-language.c-850-utils.s-100-utils)
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- do1 ----

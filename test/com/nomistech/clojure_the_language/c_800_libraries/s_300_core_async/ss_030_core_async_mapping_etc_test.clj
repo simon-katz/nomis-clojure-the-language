@@ -1,9 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-300-core-async.ss-030-core-async-mapping-etc-test
-  (:require
-   ;; [com.nomistech.clojure-the-language.core-async-mapping-etc :refer :all]
-   [clojure.core.async :as a
-    :exclude [map into reduce merge partition partition-by take]]
-   [midje.sweet :refer :all]))
+  (:require [clojure.core.async :as a]
+            [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Utils

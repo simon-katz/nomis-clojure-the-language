@@ -16,7 +16,10 @@
              #":"))
 
 ;;;; ___________________________________________________________________________
-;;;; u-move-ns-dev-src-test
+;;;; ---- u-move-ns-dev-src-test ----
 
 (defn u-move-ns-dev-src-test [old-sym new-sym source-path]
   (move-ns old-sym new-sym source-path ["dev" "src" "test"]))
+
+;;;; ___________________________________________________________________________
+;;;; App-specific additional utilities for the REPL or command line

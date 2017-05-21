@@ -147,11 +147,3 @@
                                   :delay-ms  100)]
       [res @cnt-atom])
     => [false 1]))
-
-;;;; ___________________________________________________________________________
-;;;; ---- nomis-pp-classpath ----
-
-(defn nomis-pp-classpath []
-  (clojure.pprint/pprint
-   (clojure.string/split (System/getProperty "java.class.path")
-                         #":")))

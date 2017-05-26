@@ -75,6 +75,32 @@
         @side-effect-place => [1 2 3]))))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- econd ----
+
+(fact "`econd` works"
+  (fact "no clauses"
+    (econd)
+    => (throws RuntimeException))
+  (fact "many clauses"
+    (fact "last clause truthy"
+      (econd false 1
+             nil   2
+             :this-one 3)
+      => 3)
+    (fact "non-last clause truthy"
+      (econd false 1
+             nil   2
+             :this-one 3
+             :not-this-one 4)
+      => 3)
+    (fact "none truthy"
+      (econd false 1
+             nil   2
+             false 3
+             nil   4)
+      => (throws RuntimeException))))
+
+;;;; ___________________________________________________________________________
 ;;;; ---- map-keys ----
 
 (fact "`map-keys`" works

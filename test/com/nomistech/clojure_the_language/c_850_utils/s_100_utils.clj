@@ -25,6 +25,15 @@
        ~@other-forms)))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- econd ----
+
+(defmacro econd
+  "Like `cond`, except throws a RuntimeException if no clause matches."
+  [& clauses]
+  `(cond ~@clauses
+         :else (throw (RuntimeException. "econd has no matching clause"))))
+
+;;;; ___________________________________________________________________________
 ;;;; ---- map-keys ----
 
 (defn map-keys [f m]

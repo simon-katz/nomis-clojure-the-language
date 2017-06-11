@@ -39,10 +39,11 @@
   {:style/indent 1}
   [[& ns-alias-forms]
    & body]
-  `(do ~@(clojure.walk/prewalk #(replace-symbol-using-multiple-ns-alias-forms
-                                 %
-                                 ns-alias-forms)
-                               body)))
+  `(do
+     ~@(clojure.walk/prewalk #(replace-symbol-using-multiple-ns-alias-forms
+                               %
+                               ns-alias-forms)
+                             body)))
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

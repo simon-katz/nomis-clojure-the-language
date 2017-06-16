@@ -35,7 +35,10 @@
        ...]
   Symbols that have `alias-i` as their namespace have it replaced with
   `namepace-i`.  
-  Does not load any namespaces."
+  Does not load any namespaces.
+  Note: One might arrgue that this should load namespaces, but that would be
+  bad -- better not to have side effects that would make things confusing
+  when doing REPL-based development."
   {:style/indent 1}
   [[& ns-alias-forms]
    & body]

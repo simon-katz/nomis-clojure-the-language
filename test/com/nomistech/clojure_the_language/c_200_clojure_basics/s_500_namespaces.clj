@@ -28,7 +28,9 @@
           ns-alias-forms))
 
 (defmacro with-ns-aliases
-  "Replace the specified namespace aliases in `form`.
+  "(This is probably a bad idea -- if you think you need this, maybe you should
+  split your stuff into more than one namespaces instead.)
+  Replace the specified namespace aliases in `form`.
   `ns-alias-forms` is of the form:
       [[namespace-1 :as alias-1]
        [namespace-2 :as alias-2]

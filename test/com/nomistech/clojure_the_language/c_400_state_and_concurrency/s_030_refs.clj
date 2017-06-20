@@ -16,16 +16,16 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;;;; `ref`, `dosync`, `alter`
 
-(def bank-account-1-ref (ref 100))
-(def bank-account-2-ref (ref 200))
+(def *bank-account-1 (ref 100))
+(def *bank-account-2 (ref 200))
 
 (fact
   (let [amount 20]
     (dosync
-     (alter bank-account-1-ref + amount)
-     (alter bank-account-2-ref - amount))
-    [@bank-account-1-ref
-     @bank-account-2-ref])
+     (alter *bank-account-1 + amount)
+     (alter *bank-account-2 - amount))
+    [@*bank-account-1
+     @*bank-account-2])
   => [120
       180])
 
@@ -43,16 +43,16 @@
 
 ;;;; Our bank account example could be done with an atom:
 
-(def bank-accounts-atom
+(def *bank-accounts
   (atom {:account-1 100
          :account-2 200}))
 
 (fact
   (let [amount 20]
-    (swap! bank-accounts-atom (fn [m]
-                                (-> m
-                                    (update :account-1 + amount)
-                                    (update :account-2 - amount)))))
+    (swap! *bank-accounts (fn [m]
+                            (-> m
+                                (update :account-1 + amount)
+                                (update :account-2 - amount)))))
   => {:account-1 120
       :account-2 180})
 

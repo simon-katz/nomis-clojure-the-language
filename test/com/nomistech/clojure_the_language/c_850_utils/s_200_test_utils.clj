@@ -114,11 +114,11 @@
     => :we-are-done)
 
   (fact "only one call when `test-fun` immediately returns logical true"
-    (let [cnt-atom (atom 0)
+    (let [*cnt (atom 0)
           res (wait-for-condition (fn []
-                                    (swap! cnt-atom inc)
+                                    (swap! *cnt inc)
                                     :we-are-done))]
-      [res @cnt-atom])
+      [res @*cnt])
     => [:we-are-done 1])
 
   (fact "timeout when `test-fun` always returns logical false"
@@ -128,22 +128,22 @@
     => false)
 
   (fact "correct call count when `test-fun` always returns logical false"
-    (let [cnt-atom (atom 0)
+    (let [*cnt (atom 0)
           res (wait-for-condition (fn []
-                                    (swap! cnt-atom inc)
+                                    (swap! *cnt inc)
                                     nil)
                                   :timeout-ms 70 ; make this test run fast
                                   )]
-      [res @cnt-atom])
+      [res @*cnt])
     => (just [false
               #(<= % 3)]))
 
   (fact "`:delay-ms` works"
-    (let [cnt-atom (atom 0)
+    (let [*cnt (atom 0)
           res (wait-for-condition (fn []
-                                    (swap! cnt-atom inc)
+                                    (swap! *cnt inc)
                                     nil)
                                   :timeout-ms 70 ; make this test run fast
                                   :delay-ms  100)]
-      [res @cnt-atom])
+      [res @*cnt])
     => [false 1]))

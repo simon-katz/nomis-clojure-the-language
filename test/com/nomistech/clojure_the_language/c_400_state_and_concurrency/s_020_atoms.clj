@@ -21,10 +21,10 @@
 (fact (deref *my-number) => 0)
 (fact @*my-number => 0)
 
-(do (swap! *my-number inc) ; does this: (inc 0)
+(do (swap! *my-number inc) ; replace the value with: (inc 0)
     (fact @*my-number => 1))
 
-(do (swap! *my-number inc) ; does this: (inc 1)
+(do (swap! *my-number inc) ; replace the value with: (inc 1)
     (fact @*my-number => 2))
 
 (fact "`swap` returns the new value of the atom"
@@ -39,10 +39,10 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 ;;;; Supplying additional args to the data function:
 
-(do (swap! *my-number + 10) ; does this: (+ 2 10)
+(do (swap! *my-number + 10) ; replace the value with: (+ 2 10)
     (fact @*my-number => 12))
 
-(do (swap! *my-number + 1 2 3 4 5) ; does this: (+ 12 1 2 3 4 5)
+(do (swap! *my-number + 1 2 3 4 5) ; replace the value with: (+ 12 1 2 3 4 5)
     (fact @*my-number => 27))
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

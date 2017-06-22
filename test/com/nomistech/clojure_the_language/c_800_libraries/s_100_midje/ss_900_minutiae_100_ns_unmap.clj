@@ -5,6 +5,10 @@
 ;;;; Midje and `ns-unmap` don't play nicely together, because Midje holds on
 ;;;; to the old var.
 
+
+;;;; Huh? What's this all about? And isn't this at least partly about symbol
+;;;; resolution happening before evaluation (of the whole top-level form)?
+
 (do ; This is OK:
   (ns-unmap *ns* 'x1)
   (def x1 43)

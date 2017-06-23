@@ -6,8 +6,10 @@
 ;;;; to the old var.
 
 
-;;;; Huh? What's this all about? And isn't this at least partly about symbol
-;;;; resolution happening before evaluation (of the whole top-level form)?
+;;;; You were trying to test `ns-unmap`, and ran into this.
+;;;; But this is to do with symbol resolution happening before evaluation (of
+;;;; the whole top-level form) -- it's not particularly an interaction between
+;;;; Midge and `ns-unmap`.
 
 (do ; This is OK:
   (ns-unmap *ns* 'x1)

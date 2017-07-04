@@ -4,6 +4,7 @@
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/core.async "0.3.442"] 
                  [org.clojure/core.match "0.3.0-alpha4"]
+                 [slingshot "0.12.2"]
                  [prismatic/schema "1.0.5"]]
   :repl-options {:init-ns user}
   :profiles {:dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]

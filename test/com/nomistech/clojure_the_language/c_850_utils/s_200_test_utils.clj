@@ -2,6 +2,7 @@
   (:require [clojure.core.async :as a]
             [clojure.string :as str]
             [midje.sweet :refer :all]
+            [slingshot.slingshot :as slingshot :refer [throw+ try+]]
             [taoensso.timbre :as timbre]))
 
 ;;;; ___________________________________________________________________________
@@ -147,3 +148,34 @@
                                   :delay-ms  100)]
       [res @*cnt])
     => [false 1]))
+
+
+;;;; ___________________________________________________________________________
+;;;; ---- slingshot-exception ----
+
+(defn slingshot-exception [object]
+  (try
+    (throw+ object)
+    (catch Throwable e
+      e)))
+
+;;;; ___________________________________________________________________________
+;;;; ---- make-slingshot-predicate ----
+
+(defn make-slingshot-predicate
+  "Returns a predicate that returns true for a Slingshot exception
+  produced by `(slingshot/throw+ object)`."
+  [object]
+  (fn [e]
+    (let [throw-context (slingshot/get-throw-context e)]
+      (= object (:object throw-context)))))
+
+;;;; _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+(fact "`make-slingshot-predicate` works"
+  (throw+ {:a 1
+           :b 2
+           :c 3})
+  => (throws (make-slingshot-predicate {:a 1
+                                        :b 2
+                                        :c 3})))

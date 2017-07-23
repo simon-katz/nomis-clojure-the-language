@@ -145,6 +145,7 @@
   (first (positions pred coll)))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- unchunk ----
 
 (defn unchunk
   ;; Copied from Stuart Sierra comment at https://stackoverflow.com/questions/3407876/how-do-i-avoid-clojures-chunking-behavior-for-lazy-seqs-that-i-want-to-short-ci

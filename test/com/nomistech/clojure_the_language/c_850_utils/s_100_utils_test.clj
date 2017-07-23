@@ -284,6 +284,46 @@
     (positions even? [11 13 14 14 15]) => [2 3]))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- unchunk ----
+
+(fact "`unchunk` works"
+  (let [my-chunked-seq (range 10)]
+
+    (fact "`my-chunked-seq` is indeed chunked"
+
+      (fact
+        (chunked-seq? my-chunked-seq)
+        => true)
+      
+      (fact
+        (chunked-seq? (-> my-chunked-seq
+                          rest))
+        => true)
+      
+      (fact
+        (chunked-seq? (-> my-chunked-seq
+                          rest
+                          rest))
+        => true))
+    
+    (fact "`(unchunk my-chunked-seq)` is not chunked"
+      
+      (fact
+        (chunked-seq? (unchunk my-chunked-seq))
+        => false)
+      
+      (fact
+        (chunked-seq? (-> (unchunk my-chunked-seq)
+                          rest))
+        => false)
+      
+      (fact
+        (chunked-seq? (-> (unchunk my-chunked-seq)
+                          rest
+                          rest))
+        => false))))
+
+;;;; ___________________________________________________________________________
 ;;;; ---- last-index-of-char-in-string ----
 
 (fact "`last-index-of-char-in-string` works"

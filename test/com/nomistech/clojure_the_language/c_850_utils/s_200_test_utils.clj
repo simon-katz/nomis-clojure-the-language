@@ -6,6 +6,17 @@
             [taoensso.timbre :as timbre]))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- canonicalise-line-endings ----
+
+(defn canonicalise-line-endings [s]
+  (str/replace s "\r\n" "\n"))
+
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+(fact "`canonicalise-line-endings` works"
+  (fact (canonicalise-line-endings "a\nb\r\nc\rd") => "a\nb\nc\rd"))
+
+;;;; ___________________________________________________________________________
 ;;;; ---- with-ignore-logging ----
 
 (defn f-with-ignore-logging [level-to-show fun]
@@ -51,11 +62,12 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 (defn ^:private do-test-logging []
-  (with-out-str
-    (with-test-log-config {}
-      (timbre/info  "My info")
-      (timbre/warn  "My warn")
-      (print "My normal output"))))
+  (canonicalise-line-endings
+   (with-out-str
+     (with-test-log-config {}
+       (timbre/info  "My info")
+       (timbre/warn  "My warn")
+       (print "My normal output")))))
 
 (fact "`with-ignore-logging` works"
   
@@ -73,17 +85,6 @@
                  ["My info"
                   "My warn"
                   "My normal output"])))
-
-;;;; ___________________________________________________________________________
-;;;; ---- canonicalise-line-endings ----
-
-(defn canonicalise-line-endings [s]
-  (str/replace s "\r\n" "\n"))
-
-;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-(fact "`canonicalise-line-endings` works"
-  (fact (canonicalise-line-endings "a\nb\r\nc\rd") => "a\nb\nc\rd"))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- chan->seq ----

@@ -22,7 +22,7 @@
 
 ;;;; ___________________________________________________________________________
 
-(defn demo-pmap-fun [my-pmap my-range]
+(defn demo-pmap-like-fun [my-pmap my-range]
   (doseq [i (map (partial * 2) (range 18))]
     (print i
            "Expected time ~="
@@ -38,8 +38,8 @@
 ;;;; `pmap` works as expected on unchunked sequences.
 
 #_
-(demo-pmap-fun pmap
-               (comp u/unchunk range))
+(demo-pmap-like-fun pmap
+                    (comp u/unchunk range))
 
 ;;; Time increases in accordance with the number of processors, as expected:
 ;;;
@@ -68,8 +68,8 @@
 ;;;;  See https://dev.clojure.org/jira/browse/CLJ-862
 
 #_
-(demo-pmap-fun pmap
-               range)
+(demo-pmap-like-fun pmap
+                    range)
 
 ;;; Time increases when we have more than 32 things, which is the chunk size
 ;;; in Clojure.
@@ -95,11 +95,11 @@
 ;;; 34 Expected time ~= 30.0  "Elapsed time: 12.483698 msecs"
 
 ;;;; ___________________________________________________________________________
-;;;; Let's try Claypoole
+;;;; Claypoole's `pmap` works as expected on a chunked sequences.
 
 #_
-(demo-pmap-fun (partial cp/pmap 6)
-               range)
+(demo-pmap-like-fun (partial cp/pmap 6)
+                    range)
 
 ;;; Time increases in accordance with the number of threads, as expected:
 ;;;
@@ -121,3 +121,9 @@
 ;;; 30 Expected time ~= 25.0  "Elapsed time: 30.773396 msecs"
 ;;; 32 Expected time ~= 30.0  "Elapsed time: 33.618415 msecs"
 ;;; 34 Expected time ~= 30.0  "Elapsed time: 32.72781 msecs"
+
+;;;; ___________________________________________________________________________
+;;;; For parallel HTTP requests, use either Claypoole or http-kit.
+
+;;;; Use http-kit if you don't want one thread per connection.
+;;;; See https://stackoverflow.com/questions/21448884/clojure-executing-a-bunch-of-http-requests-in-parallel-pmap

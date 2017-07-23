@@ -71,9 +71,11 @@
 (demo-pmap-like-fun pmap
                     range)
 
-;;; Time increases when we have more than 32 things, which is the chunk size
-;;; in Clojure.
-;;; This is not as expected:
+;;; Time increases when we have more than 32 things.
+;;; This is not as expected.
+;;; What's the 32?
+;;; - Maybe it's the size of the thread pool that's being used.
+;;; - It's the chunk size of chunked sequences, so it could be that.
 ;;;
 ;;; 0 Expected time ~= 0.0  "Elapsed time: 0.018093 msecs"
 ;;; 2 Expected time ~= 5.0  "Elapsed time: 5.189774 msecs"

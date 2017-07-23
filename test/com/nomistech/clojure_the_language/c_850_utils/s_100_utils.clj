@@ -145,6 +145,17 @@
   (first (positions pred coll)))
 
 ;;;; ___________________________________________________________________________
+
+(defn unchunk
+  ;; Copied from Stuart Sierra comment at https://stackoverflow.com/questions/3407876/how-do-i-avoid-clojures-chunking-behavior-for-lazy-seqs-that-i-want-to-short-ci
+  "Unchunk the sequence `s`"
+  [s]
+  (when (seq s)
+    (lazy-seq
+      (cons (first s)
+            (unchunk (next s))))))
+
+;;;; ___________________________________________________________________________
 ;;;; ---- last-index-of-char-in-string ----
 
 (defn last-index-of-char-in-string [^Character char ^String string]

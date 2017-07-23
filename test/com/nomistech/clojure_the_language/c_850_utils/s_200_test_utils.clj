@@ -53,7 +53,11 @@
                                {:output-fn
                                 (fn [data]
                                   (with-out-str
-                                    (apply print (:vargs data))))}}} 
+                                    (apply print
+                                           (-> (:level data)
+                                               name
+                                               str/upper-case)
+                                           (:vargs data))))}}} 
     (fun)))
 
 (defmacro with-test-log-config [{} & body]
@@ -75,15 +79,15 @@
     (with-ignore-logging {}
       (do-test-logging))
     => (str/join "\n"
-                 ["My warn"
+                 ["WARN My warn"
                   "My normal output"]))
   
   (fact "`:info` logging level"
     (with-ignore-logging {:level-to-show :info}
       (do-test-logging))
     => (str/join "\n"
-                 ["My info"
-                  "My warn"
+                 ["INFO My info"
+                  "WARN My warn"
                   "My normal output"])))
 
 ;;;; ___________________________________________________________________________

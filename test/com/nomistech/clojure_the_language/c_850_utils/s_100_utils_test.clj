@@ -272,24 +272,24 @@
 ;;;; ---- positions ----
 
 (fact "`position` and `positions` work"
-      (fact "`position` tests"
-            (position even? []) => nil
-            (position even? [12]) => 0
-            (position even? [11 13 14]) => 2
-            (position even? [11 13 14 14]) => 2)
-      (fact "`positions` tests"
-            (positions even? []) => []
-            (positions even? [12]) => [0]
-            (positions even? [11 13 14]) => [2]
-            (positions even? [11 13 14 14 15]) => [2 3]))
+  (fact "`position` tests"
+    (position even? []) => nil
+    (position even? [12]) => 0
+    (position even? [11 13 14]) => 2
+    (position even? [11 13 14 14]) => 2)
+  (fact "`positions` tests"
+    (positions even? []) => []
+    (positions even? [12]) => [0]
+    (positions even? [11 13 14]) => [2]
+    (positions even? [11 13 14 14 15]) => [2 3]))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- last-index-of-char-in-string ----
 
 (fact "`last-index-of-char-in-string` works"
-      (fact (last-index-of-char-in-string \c "") => -1
-            (last-index-of-char-in-string \c "xyz") => -1
-            (last-index-of-char-in-string \c "c") => 0
-            (last-index-of-char-in-string \c "abc") => 2
-            (last-index-of-char-in-string \c "abcde") => 2
-            (last-index-of-char-in-string \c "abcce") => 3))
+  (fact (last-index-of-char-in-string \c "") => -1
+    (last-index-of-char-in-string \c "xyz") => -1
+    (last-index-of-char-in-string \c "c") => 0
+    (last-index-of-char-in-string \c "abc") => 2
+    (last-index-of-char-in-string \c "abcde") => 2
+    (last-index-of-char-in-string \c "abcce") => 3))

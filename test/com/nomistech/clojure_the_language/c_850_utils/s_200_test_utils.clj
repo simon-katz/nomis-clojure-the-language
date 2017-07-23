@@ -8,23 +8,71 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- with-ignore-logging ----
 
-(defn with-ignore-logging* [fun]
-  ;; Clojure symbols and namespaces are broken (IMHO).
-  ;; This has to be public, otherwise uses of `with-ignore-logging` fail.
-  (timbre/with-log-level :warn
+(defn f-with-ignore-logging [level-to-show fun]
+  ;; Note #1:
+  ;; - The more conventional name `with-ignore-logging*` gives macro-style
+  ;;   indentation in Cider (version 0.14.0 at least). (Bah!)
+  ;; Note #2:
+  ;; - Clojure symbols and namespaces are broken (IMHO).
+  ;; - This has to be public, otherwise uses of `with-ignore-logging` fail.
+  (timbre/with-log-level level-to-show
     (fun)))
 
-(defmacro with-ignore-logging [[] & body]
-  `(with-ignore-logging* (fn [] ~@body)))
+(defmacro with-ignore-logging
+  "Suppress Timbre logging below `level-to-show`. The default is `:warn`, so
+  trace, debug and info are not logged, but warn, error, etc are logged.
+  The Timbre log levels, in ascending order, are:
+      :trace
+      :debug
+      :info
+      :warn
+      :error
+      :fatal
+      :report"
+  [{:keys [level-to-show]
+    :or {level-to-show :warn}} & body]
+  `(f-with-ignore-logging ~level-to-show
+                          (fn [] ~@body)))
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-(fact "`with-ignore-logging` works"
+(defn f-with-test-log-config [fun]
+  (timbre/with-merged-config {:appenders
+                              {:println
+                               {:output-fn
+                                (fn [data]
+                                  (with-out-str
+                                    (apply print (:vargs data))))}}} 
+    (fun)))
+
+(defmacro with-test-log-config [{} & body]
+  `(f-with-test-log-config (fn [] ~@body)))
+
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+(defn ^:private do-test-logging []
   (with-out-str
-    (with-ignore-logging []
-      (timbre/info "Hi")
-      (print "Bye")))
-  => "Bye")
+    (with-test-log-config {}
+      (timbre/info  "My info")
+      (timbre/warn  "My warn")
+      (print "My normal output"))))
+
+(fact "`with-ignore-logging` works"
+  
+  (fact "default logging level"
+    (with-ignore-logging {}
+      (do-test-logging))
+    => (str/join "\n"
+                 ["My warn"
+                  "My normal output"]))
+  
+  (fact "`:info` logging level"
+    (with-ignore-logging {:level-to-show :info}
+      (do-test-logging))
+    => (str/join "\n"
+                 ["My info"
+                  "My warn"
+                  "My normal output"])))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- canonicalise-line-endings ----

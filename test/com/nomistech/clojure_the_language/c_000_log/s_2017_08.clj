@@ -30,6 +30,7 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;;;; Inspect random things
 
+#_
 (clojure.inspector/inspect-tree {:a 1
                                  :b {:c 2
                                      :d {:e 3}}})
@@ -43,3 +44,17 @@
 (-> *e
     Throwable->map
     clojure.inspector/inspect-tree)
+
+
+;;;; ___________________________________________________________________________
+;;;; Whacky Clojure stuff
+
+;;;; See that talk from Clojure eXchange 2017
+
+;;;; Also...
+
+(fact "Using symbols as functions on non-associative things"
+  (fact "This seems weird"
+    ('+ 1 100) => 100)
+  (fact "It's like this, and not barfing at the bad thing being passed in"
+    ('+ {:a 1 :b 2} 100) => 100))

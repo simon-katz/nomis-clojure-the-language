@@ -1,10 +1,13 @@
-(ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec
+(ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-examples-from-clojure-org
   (:require [clojure.spec.alpha :as s]
             [midje.sweet :refer :all])
   (:import java.util.Date))
 
 ;;;; ___________________________________________________________________________
 ;;;; Stuff from https://clojure.org/guides/spec
+
+;;;; _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+;;;; Basics
 
 (fact "Intro to `conform`: spec X value -> value"
   (fact (s/conform even? 1000) => 1000)

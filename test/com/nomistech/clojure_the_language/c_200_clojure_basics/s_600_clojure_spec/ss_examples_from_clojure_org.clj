@@ -3,10 +3,9 @@
             [midje.sweet :refer :all])
   (:import java.util.Date))
 
-;;;; ___________________________________________________________________________
-;;;; Stuff from https://clojure.org/guides/spec
+;;;; Reference: This is mostly stuff from https://clojure.org/guides/spec
 
-;;;; _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+;;;; ___________________________________________________________________________
 ;;;; Basics
 
 (fact "Intro to `conform`: spec X value -> value"

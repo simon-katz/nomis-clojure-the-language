@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec
   (:require [clojure.spec.alpha :as s]
-            [midje.sweet :refer :all]))
+            [midje.sweet :refer :all])
+  (:import java.util.Date))
 
 ;;;; ___________________________________________________________________________
 ;;;; Stuff from https://clojure.org/guides/spec
@@ -12,3 +13,15 @@
 (fact "Intro to `valid?`: spec X value -> boolean"
   (fact (s/valid? even? 1000) => true)
   (fact (s/valid? even? 1001) => false))
+
+(fact "Can use arbitrary functions as specs"
+  (fact (s/valid? nil? nil) => true)
+  (fact (s/valid? string? "abc") => true)
+  (fact (s/valid? #(> % 5) 10) => true)
+  (fact (s/valid? #(> % 5) 0) => false)
+  (fact (s/valid? inst? (Date.)) => true))
+
+(fact "Can use sets as predicates (because sets are functions)"
+  (fact (s/valid? #{:club :diamond :heart :spade} :club) => true)
+  (fact (s/valid? #{:club :diamond :heart :spade} 42) => false)
+  (fact (s/valid? #{42} 42) => true))

@@ -136,41 +136,82 @@
 (fact [clojure.core/string?] => (just [(exactly clojure.core/string?)]))
 (fact {:a clojure.core/string?} => (just {:a (exactly clojure.core/string?)}))
 
+(fact {:a {:b clojure.core/string?}}
+  => (just {:a (just {:b (exactly clojure.core/string?)})}))
+
 ;; (s/explain-data ::name-or-id :foo)
 ;; =>
 ;; #:clojure.spec.alpha{:problems [{:path [:name]
-;;                                    :pred clojure.core/string?
-;;                                    :val :foo
-;;                                    :via [::name-or-id]
-;;                                    :in []}
-;;                                   {:path [:id]
-;;                                    :pred clojure.core/int?
-;;                                    :val :foo
-;;                                    :via [::name-or-id]
-;;                                    :in []}]
-;;                        :spec ::name-or-id
-;;                        :value :foo}
+;;                                  :pred clojure.core/string?
+;;                                  :val :foo
+;;                                  :via [::name-or-id]
+;;                                  :in []}
+;;                                 {:path [:id]
+;;                                  :pred clojure.core/int?
+;;                                  :val :foo
+;;                                  :via [::name-or-id]
+;;                                  :in []}]
+;;                      :spec ::name-or-id
+;;                      :value :foo}
 
 (fact (s/explain-data ::name-or-id :foo)
   =>
   (just
    {::s/problems (just
-                 [(just
-                   {:path [:name]
-                    ;; FIXME What's wrong here? (See temp notes above.)
-                    ;; :pred (exactly clojure.core/string?)
-                    :pred anything
-                    :val :foo
-                    :via [::name-or-id]
-                    :in []})
-                  (just
-                   {:path [:id]
-                    ;; FIXME What's wrong here? (See temp notes above.)
-                    ;; :pred (exactly clojure.core/int?)
-                    :pred anything
-                    :val :foo
-                    :via [::name-or-id]
-                    :in []})])
+                  [(just
+                    {:path [:name]
+                     ;; FIXME What's wrong here? (See temp notes above.)
+                     ;; :pred (exactly string?)
+                     :pred anything
+                     :val :foo
+                     :via [::name-or-id]
+                     :in []})
+                   (just
+                    {:path [:id]
+                     ;; FIXME What's wrong here? (See temp notes above.)
+                     ;; :pred (exactly int?)
+                     :pred anything
+                     :val :foo
+                     :via [::name-or-id]
+                     :in []})])
+    ::s/spec ::name-or-id
+    ::s/value :foo}))
+
+(fact (case 3
+        1 (s/explain-data ::name-or-id :foo)
+        2 {::s/problems [{:path [:name]
+                          :pred string?
+                          :val :foo
+                          :via [::name-or-id]
+                          :in []}]
+           ::s/spec ::name-or-id
+           ::s/value :foo}
+        3 (just
+           #:clojure.spec.alpha{:problems
+                                [{:path [:name]
+                                  :pred clojure.core/string?
+                                  :val :foo
+                                  :via
+                                  [:com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-examples-from-clojure-org/name-or-id]
+                                  :in []}
+                                 {:path [:id]
+                                  :pred clojure.core/int?
+                                  :val :foo
+                                  :via
+                                  [:com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-examples-from-clojure-org/name-or-id]
+                                  :in []}]
+                                :spec
+                                :com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-examples-from-clojure-org/name-or-id
+                                :value :foo}))
+  =>
+  (just
+   {::s/problems (just
+                  [(just
+                    {:path [:name]
+                     :pred (exactly string?)
+                     :val :foo
+                     :via [::name-or-id]
+                     :in []})])
     ::s/spec ::name-or-id
     ::s/value :foo}))
 

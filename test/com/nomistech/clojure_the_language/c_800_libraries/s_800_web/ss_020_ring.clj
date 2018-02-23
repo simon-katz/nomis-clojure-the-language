@@ -6,6 +6,12 @@
             [ring.util.response :refer [response]]))
 
 ;;;; ___________________________________________________________________________
+
+;;;; NOTES
+;;;; - In requests, "content-type: must be lower case, but `wrap-json-response`
+;;;;   produces "Content-Type". WTF?
+
+;;;; ___________________________________________________________________________
 ;;;; ---- Request test helpers ----
 
 (defn string->stream
@@ -14,14 +20,6 @@
    (-> s
        (.getBytes encoding)
        (java.io.ByteArrayInputStream.))))
-
-;; NOTES
-;; - content-type must be lower case.
-;;   - but `wrap-json-response` produces "Content-Type". WTF?
-
-(defn json->request [string]
-  {:headers {"content-type" "application/json; charset=utf-8"}
-   :body (string->stream string)})
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- wrap-json-response ----
@@ -62,7 +60,8 @@
       :body "Uploaded 'Fred'."})
 
 (fact "Wrapped handler with request whose body is JSON"
-  (app-002 (json->request "{\"user\":\"Fred\"}"))
+  (app-002 {:headers {"content-type" "application/json; charset=utf-8"}
+            :body (string->stream "{\"user\":\"Fred\"}")})
   => {:status 200
       :headers {}
       :body "Uploaded 'Fred'."})

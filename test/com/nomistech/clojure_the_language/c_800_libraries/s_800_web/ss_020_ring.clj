@@ -1,8 +1,27 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-800-web.ss-020-ring
-  (:require [midje.sweet :refer :all]
+  (:require [clojure.string :as str]
+            [midje.sweet :refer :all]
             [ring.middleware.json :refer [wrap-json-body
                                           wrap-json-response]]
             [ring.util.response :refer [response]]))
+
+;;;; ___________________________________________________________________________
+;;;; ---- Request test helpers ----
+
+(defn string->stream
+  ([s] (string->stream s "UTF-8"))
+  ([s encoding]
+   (-> s
+       (.getBytes encoding)
+       (java.io.ByteArrayInputStream.))))
+
+;; NOTES
+;; - content-type must be lower case.
+;;   - but `wrap-json-response` produces "Content-Type". WTF?
+
+(defn json->request [string]
+  {:headers {"content-type" "application/json; charset=utf-8"}
+   :body (string->stream string)})
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- wrap-json-response ----
@@ -29,7 +48,7 @@
 ;;;; ---- wrap-json-body ----
 
 (defn handler-002 [request]
-  (let [user (get-in request [:body "user"])]
+  (let [user (get-in request [:body :user] "<no user specified>")]
     (response (str "Uploaded '" user "'."))))
 
 (def app-002
@@ -37,13 +56,13 @@
                                :bigdecimals? true}))
 
 (fact
-  (handler-002 {:body {"user" "Fred"}})
+  (handler-002 {:body {:user "Fred"}})
   => {:status 200
       :headers {}
       :body "Uploaded 'Fred'."})
 
 (fact
-  (app-002 {:body {"user" "Fred"}})
+  (app-002 (json->request "{\"user\":\"Fred\"}"))
   => {:status 200
       :headers {}
       :body "Uploaded 'Fred'."})

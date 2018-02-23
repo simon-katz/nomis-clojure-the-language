@@ -21,28 +21,6 @@
        (java.io.ByteArrayInputStream.))))
 
 ;;;; ___________________________________________________________________________
-;;;; ---- wrap-json-response ----
-
-(defn handler-with-interesting-response [request]
-  (rur/response {:foo "bar"}))
-
-(def wrapped-handler-with-interesting-response
-  (-> handler-with-interesting-response
-      rmj/wrap-json-response))
-
-(fact "Handler with response whose body is Clojure data"
-  (handler-with-interesting-response {})
-  => {:status 200
-      :headers {}
-      :body {:foo "bar"}})
-
-(fact "Wrapped handler with response whose body is JSON"
-  (wrapped-handler-with-interesting-response {})
-  => {:status 200
-      :headers {"Content-Type" "application/json; charset=utf-8"}
-      :body "{\"foo\":\"bar\"}"})
-
-;;;; ___________________________________________________________________________
 ;;;; ---- wrap-json-body ----
 
 (defn handler-with-interesting-request [request]
@@ -67,3 +45,25 @@
   => {:status 200
       :headers {}
       :body "Uploaded 'Fred'."})
+
+;;;; ___________________________________________________________________________
+;;;; ---- wrap-json-response ----
+
+(defn handler-with-interesting-response [request]
+  (rur/response {:foo "bar"}))
+
+(def wrapped-handler-with-interesting-response
+  (-> handler-with-interesting-response
+      rmj/wrap-json-response))
+
+(fact "Handler with response whose body is Clojure data"
+  (handler-with-interesting-response {})
+  => {:status 200
+      :headers {}
+      :body {:foo "bar"}})
+
+(fact "Wrapped handler with response whose body is JSON"
+  (wrapped-handler-with-interesting-response {})
+  => {:status 200
+      :headers {"Content-Type" "application/json; charset=utf-8"}
+      :body "{\"foo\":\"bar\"}"})

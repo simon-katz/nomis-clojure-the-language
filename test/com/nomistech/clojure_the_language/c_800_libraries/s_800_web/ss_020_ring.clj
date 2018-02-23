@@ -67,3 +67,30 @@
   => {:status 200
       :headers {"Content-Type" "application/json; charset=utf-8"}
       :body "{\"foo\":\"bar\"}"})
+
+;;;; ___________________________________________________________________________
+;;;; ---- Wrapping requests and responses ----
+
+(defn handler-with-interesting-request-and-response [request]
+  (let [user (get-in request [:body :user] "<no user specified>")]
+    (rur/response {:uploaded-user user})))
+
+(def wrapped-handler-with-interesting-request-and-response
+  (-> handler-with-interesting-request-and-response
+      (rmj/wrap-json-body {:keywords? true
+                           :bigdecimals? true})
+      rmj/wrap-json-response))
+
+(fact "Handler with request whose body is Clojure data"
+  (handler-with-interesting-request-and-response {:body {:user "Fred"}})
+  => {:status 200
+      :headers {}
+      :body {:uploaded-user "Fred"}})
+
+(fact "Wrapped handler with request whose body is JSON"
+  (wrapped-handler-with-interesting-request-and-response
+   {:headers {"content-type" "application/json; charset=utf-8"}
+    :body (string->stream "{\"user\":\"Fred\"}")})
+  => {:status 200
+      :headers {"Content-Type" "application/json; charset=utf-8"}
+      :body "{\"uploaded-user\":\"Fred\"}"})

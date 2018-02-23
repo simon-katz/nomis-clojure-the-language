@@ -1,15 +1,14 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-800-web.ss-020-ring
   (:require [clojure.string :as str]
             [midje.sweet :refer :all]
-            [ring.middleware.json :refer [wrap-json-body
-                                          wrap-json-response]]
-            [ring.util.response :refer [response]]))
+            [ring.middleware.json :as rmj]
+            [ring.util.response :as rur]))
 
 ;;;; ___________________________________________________________________________
 
 ;;;; NOTES
 ;;;; - In requests, "content-type: must be lower case, but `wrap-json-response`
-;;;;   produces "Content-Type". WTF?
+;;;;   produces (capitalised) "Content-Type". WTF?
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Request test helpers ----
@@ -25,10 +24,10 @@
 ;;;; ---- wrap-json-response ----
 
 (defn handler-001 [request]
-  (response {:foo "bar"}))
+  (rur/response {:foo "bar"}))
 
 (def app-001
-  (wrap-json-response handler-001))
+  (rmj/wrap-json-response handler-001))
 
 (fact "Handler with response whose body is Clojure data"
   (handler-001 {})
@@ -47,11 +46,11 @@
 
 (defn handler-002 [request]
   (let [user (get-in request [:body :user] "<no user specified>")]
-    (response (str "Uploaded '" user "'."))))
+    (rur/response (str "Uploaded '" user "'."))))
 
 (def app-002
-  (wrap-json-body handler-002 {:keywords? true
-                               :bigdecimals? true}))
+  (rmj/wrap-json-body handler-002 {:keywords? true
+                                   :bigdecimals? true}))
 
 (fact "Handler with request whose body is Clojure data"
   (handler-002 {:body {:user "Fred"}})

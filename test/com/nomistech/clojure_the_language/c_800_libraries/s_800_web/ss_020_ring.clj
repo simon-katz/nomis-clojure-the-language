@@ -32,13 +32,13 @@
 (def app-001
   (wrap-json-response handler-001))
 
-(fact
+(fact "Handler with response whose body is Clojure data"
   (handler-001 {})
   => {:status 200
       :headers {}
       :body {:foo "bar"}})
 
-(fact
+(fact "Wrapped handler with response whose body is JSON"
   (app-001 {})
   => {:status 200
       :headers {"Content-Type" "application/json; charset=utf-8"}
@@ -55,13 +55,13 @@
   (wrap-json-body handler-002 {:keywords? true
                                :bigdecimals? true}))
 
-(fact
+(fact "Handler with request whose body is Clojure data"
   (handler-002 {:body {:user "Fred"}})
   => {:status 200
       :headers {}
       :body "Uploaded 'Fred'."})
 
-(fact
+(fact "Wrapped handler with request whose body is JSON"
   (app-002 (json->request "{\"user\":\"Fred\"}"))
   => {:status 200
       :headers {}

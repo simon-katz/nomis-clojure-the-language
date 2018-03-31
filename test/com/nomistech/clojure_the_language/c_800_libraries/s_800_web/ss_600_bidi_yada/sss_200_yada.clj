@@ -38,7 +38,7 @@
 ;; ;;;; - `yada/handler`
 ;; ;;;; - `yada/resource`
 
-(defn make-routes []
+(defn make-test-routes []
   ["/"
    
    [["hello-as-resource"
@@ -67,70 +67,65 @@
 
     [true (yada/as-resource nil)]]])
 
+(def test-port 7866)
+
+(defn make-test-url [path]
+  (str "http://localhost:"
+       test-port
+       path))
+
 (defn filter-response [response]
   (u/select-keys-recursively response
                              [[:headers ["Content-Type"]]
                               [:body]]))
 
-(def test-port 7866)
-
-(defn make-test-url [x]
-  (str "http://localhost:"
-       test-port
-       x))
-
-(defn get-and-filter [endpoint]
-  (-> (http-client/get endpoint)
-      filter-response))
-
-(defn get-json-and-filter [endpoint]
+(defn get-and-filter [endpoint get-options]
   (-> (http-client/get endpoint
-                       {:as :json})
+                       get-options)
       filter-response))
 
-(defn get-and-filter-using-x-and-temp-server [x]
-  (with-server {:routes (make-routes)
+(defn get-and-filter-using-path-and-temp-server [path get-options]
+  (with-server {:routes (make-test-routes)
                 :port test-port}
-    (-> x
+    (-> path
         make-test-url
-        get-and-filter)))
-
-(defn get-json-and-filter-using-x-and-temp-server [x]
-  (with-server {:routes (make-routes)
-                :port test-port}
-    (-> x
-        make-test-url
-        get-json-and-filter)))
+        (get-and-filter get-options))))
 
 ;;;; ___________________________________________________________________________
 
 (fact
-  (get-and-filter-using-x-and-temp-server "/hello-as-resource")
+  (get-and-filter-using-path-and-temp-server "/hello-as-resource"
+                                             {})
   => {:headers {"Content-Type" "text/plain;charset=utf-8"}
       :body "Hello World!"})
 
 (fact
-  (get-and-filter-using-x-and-temp-server "/hello-as-handler")
+  (get-and-filter-using-path-and-temp-server "/hello-as-handler"
+                                             {})
   => {:headers {"Content-Type" "text/plain;charset=utf-8"}
       :body "Hello World!"})
 
 (fact
-  (get-and-filter-using-x-and-temp-server "/some-plain-text")
+  (get-and-filter-using-path-and-temp-server "/some-plain-text"
+                                             {})
   => {:headers {"Content-Type" "text/plain"}
       :body "Some plain text"})
 
 (fact
-  (get-and-filter-using-x-and-temp-server "/an-edn-map-1")
+  (get-and-filter-using-path-and-temp-server "/an-edn-map-1"
+                                             {})
   => {:headers {"Content-Type" "application/edn"}
       :body "{:this-will-be :an-edn, :map {:hello \"World!\"}}\n"})
 
 (fact
-  (get-and-filter-using-x-and-temp-server "/an-edn-map-2")
+  (get-and-filter-using-path-and-temp-server "/an-edn-map-2"
+                                             {})
   => {:headers {"Content-Type" "application/edn"}
       :body "{:this-will-be :an-edn, :map {:hello \"World!\"}}\n"})
 
 (fact
-  (get-json-and-filter-using-x-and-temp-server "/a-json-map")
+  (get-and-filter-using-path-and-temp-server "/a-json-map"
+                                             {:as :json})
   => {:headers {"Content-Type" "application/json"}
       :body {:this-will-be "a-json"
              :map          {:hello "World!"}}})

@@ -1,6 +1,7 @@
 (defproject com.nomistech/clojure-the-language "0.1.0-SNAPSHOT"
   :dependencies [[bidi "2.1.3" :exclusions [ring/ring-core]]
                  [cheshire "5.8.0"]
+                 [clj-http "3.8.0" :exclusions [riddley]]
                  [com.climate/claypoole "1.1.4"]
                  [com.taoensso/timbre "4.10.0" :exclusions [io.aviso/pretty
                                                             org.clojure/tools.reader]]

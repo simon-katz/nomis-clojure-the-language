@@ -129,3 +129,10 @@
   => {:headers {"Content-Type" "application/json"}
       :body {:this-will-be "a-json"
              :map          {:hello "World!"}}})
+
+(fact
+  (get-and-filter-using-path-and-temp-server "/no-such-thing"
+                                             {:as :json})
+  => (throws (fn [e]
+               (= (-> e ex-data :status)
+                  404))))

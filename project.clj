@@ -1,7 +1,8 @@
 (defproject com.nomistech/clojure-the-language "0.1.0-SNAPSHOT"
   :dependencies [[cheshire "5.8.0"]
                  [com.climate/claypoole "1.1.4"]
-                 [com.taoensso/timbre "4.10.0"]
+                 [com.taoensso/timbre "4.10.0" :exclusions [io.aviso/pretty
+                                                            org.clojure/tools.reader]]
                  [org.clojure/clojure "1.9.0"]
                  [org.clojure/core.async "0.4.474"] 
                  [org.clojure/core.match "0.3.0-alpha5"]

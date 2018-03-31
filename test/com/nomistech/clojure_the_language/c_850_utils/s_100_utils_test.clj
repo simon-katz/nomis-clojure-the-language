@@ -258,6 +258,52 @@
     => {:a 101 :b 12 :c 3}))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- select-keys-recursively ----
+
+(fact "`select-keys-recursively` works"
+
+  (let [m {:k-1 "v-1"
+           :k-2 {:k-2-1 "v-2-1"
+                 :k-2-2 {:k-2-2-1 "v-2-2-1"
+                         :k-2-2-2 "v-2-2-2"
+                         :k-2-2-3 "v-2-2-3"}}
+           :k-3 "v-3"}]
+
+    (fact
+      (select-keys-recursively m [])
+      => {})
+
+    (fact
+      (select-keys-recursively m [[]])
+      => (throws))
+
+    (fact
+      (select-keys-recursively m [[:no-such-key]])
+      => {})
+
+    (fact
+      (select-keys-recursively m [[:k-1]])
+      => {:k-1 "v-1"})
+
+    (fact
+      (select-keys-recursively m [[:k-1]
+                                  [:k-2]])
+      => {:k-1 "v-1"
+          :k-2 {:k-2-1 "v-2-1"
+                :k-2-2 {:k-2-2-1 "v-2-2-1"
+                        :k-2-2-2 "v-2-2-2"
+                        :k-2-2-3 "v-2-2-3"}}})
+
+    (fact
+      (select-keys-recursively m [[:k-1]
+                                  [:k-2 [:k-2-2
+                                         [:k-2-2-1]
+                                         [:k-2-2-3]]]])
+      => {:k-1 "v-1"
+          :k-2 {:k-2-2 {:k-2-2-1 "v-2-2-1"
+                        :k-2-2-3 "v-2-2-3"}}})))
+
+;;;; ___________________________________________________________________________
 ;;;; ---- indexed ----
 
 (fact "`indexed` works"

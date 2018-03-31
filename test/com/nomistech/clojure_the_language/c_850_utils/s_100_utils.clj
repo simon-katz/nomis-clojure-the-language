@@ -116,6 +116,41 @@
     (last vals)))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- select-keys-recursively ----
+
+(defn select-keys-recursively
+  "Similar to `select-keys`, but with key paths digging in to a nested map.
+  `key-paths` is a sequence. Each element of `key-paths` begins with a key, k,
+  to be selected and is followed by a vector of key paths that specify the
+  things to be selected from the value corresponding to k.
+  Example:
+      (select-keys-recursively {:k-1 \"v-1\"
+                                :k-2 {:k-2-1 \"v-2-1\"
+                                      :k-2-2 {:k-2-2-1 \"v-2-2-1\"
+                                              :k-2-2-2 \"v-2-2-2\"
+                                              :k-2-2-3 \"v-2-2-3\"}}
+                                :k-3 \"v-3\"}
+                               [[:k-1]
+                                [:k-2 [:k-2-2
+                                        [:k-2-2-1]
+                                        [:k-2-2-3]]]])
+      => {:k-1 \"v-1\"
+          :k-2 {:k-2-2 {:k-2-2-1 \"v-2-2-1\"
+                        :k-2-2-3 \"v-2-2-3\"}}}"
+  [m key-paths]
+  (or (apply merge
+             (for [p key-paths]
+               (let [n (count p)]
+                 (case n
+                   0 (throw (Error. "Empty path in key-paths"))
+                   1 (select-keys m [(first p)])
+                   (if-not (contains? m (first p))
+                     {}
+                     {(first p) (select-keys-recursively (get m (first p))
+                                                         (rest p))})))))
+      {}))
+
+;;;; ___________________________________________________________________________
 ;;;; ---- indexed ----
 
 (defn indexed

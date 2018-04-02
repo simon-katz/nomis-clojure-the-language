@@ -32,11 +32,11 @@
 
 ;;;; ___________________________________________________________________________
 
-;; ;;;; TODO You've grabbed some examples that had no explanations, and you have
-;; ;;;; all of the following. Learn about them.
-;; ;;;; - `yada/as-resource`
-;; ;;;; - `yada/handler`
-;; ;;;; - `yada/resource`
+;;;; TODO You've grabbed some examples that had no explanations, and you have
+;;;; all of the following. Learn about them.
+;;;; - `yada/as-resource`
+;;;; - `yada/handler`
+;;;; - `yada/resource`
 
 (defn make-test-routes []
   ["/"

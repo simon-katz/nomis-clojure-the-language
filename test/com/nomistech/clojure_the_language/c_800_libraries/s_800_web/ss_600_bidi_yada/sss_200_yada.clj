@@ -38,6 +38,9 @@
 ;;;; - `yada/handler`
 ;;;; - `yada/resource`
 
+;;;; TODO Maybe tidy these tests.
+;;;; TODO Maybe do compojure-api instead.
+
 (defn make-test-routes []
   ["/"
    

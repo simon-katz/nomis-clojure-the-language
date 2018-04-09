@@ -43,13 +43,14 @@
        (rur/ok pizza))
 
      (c/GET "/hello-as-resource/:id" [id]
+       :return {:result String}
        :query-params [name :- String]
        :summary "An endpoint with a parameter in the URL and a query parameter"
-       (rur/ok (str "Hello "
-                    name
-                    ". The id is "
-                    id
-                    ".\n"))))))
+       (rur/ok {:result (str "Hello "
+                             name
+                             ". The id is "
+                             id
+                             ".\n")})))))
 
 ;;;; ___________________________________________________________________________
 ;;;; Example building on compojure-api template stuff -- tests
@@ -122,10 +123,10 @@
   (let [handler  (make-handler {})
         response (handler (mock/request :get
                                         "/api/hello-as-resource/1234?name=fred"))
-        body     (:body response)]
+        body     (parse-body (:body response))]
     (fact "status"
       (:status response)
       => 200)
     (fact "body"
-      body
+      (:result body)
       => "Hello fred. The id is 1234.\n")))

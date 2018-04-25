@@ -4,6 +4,8 @@
 ;;;; ___________________________________________________________________________
 ;;;; Chunked sequences
 
+;;;; See `com.nomistech.clojure-the-language.c-850-utils.s-100-utils/unchunk`.
+
 ;;;; See http://blog.fogus.me/2010/01/22/de-chunkifying-sequences-in-clojure/
 ;;;; (the content of which is included in The Joy of Clojure):
 

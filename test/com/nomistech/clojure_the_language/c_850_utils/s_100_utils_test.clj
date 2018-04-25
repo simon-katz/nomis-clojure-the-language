@@ -332,42 +332,60 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- unchunk ----
 
+(defmacro with-return-args-to-my-even?-and-my-identity
+  "Helper function for testing `unchunk`.
+  Execute `body` in a scope that defines `my-even?` and `my-identity` as
+  functions that are like `even?` and `identity`, except that they make a note
+  of their argument. After executing `body`, return a vector whose first element
+  is a sequence of all the arguments passed to `my-even?` (in successive calls)
+  and whose second element is a sequence of all the arguments passed to
+  `my-identity` (in successive calls)."
+  [& body]
+  `(let [~'even?-acc (atom [])
+         ~'identity?-acc (atom [])]
+     (letfn [(~'my-even? [x#]
+               (swap! ~'even?-acc conj x#)
+               (even? x#))
+             (~'my-identity [x#]
+               (swap! ~'identity?-acc conj x#)
+               x#)]
+       ~@body
+       [@~'even?-acc
+        @~'identity?-acc])))
+
 (fact "`unchunk` works"
   (let [my-chunked-seq (range 10)]
 
     (fact "`my-chunked-seq` is indeed chunked"
-
-      (fact
-        (chunked-seq? my-chunked-seq)
-        => true)
-      
-      (fact
-        (chunked-seq? (-> my-chunked-seq
-                          rest))
-        => true)
-      
-      (fact
-        (chunked-seq? (-> my-chunked-seq
-                          rest
-                          rest))
-        => true))
+      (fact (chunked-seq? my-chunked-seq) => true)
+      (fact (chunked-seq? (-> my-chunked-seq rest)) => true)
+      (fact (chunked-seq? (-> my-chunked-seq rest rest)) => true))
     
     (fact "`(unchunk my-chunked-seq)` is not chunked"
-      
-      (fact
-        (chunked-seq? (unchunk my-chunked-seq))
-        => false)
-      
-      (fact
-        (chunked-seq? (-> (unchunk my-chunked-seq)
-                          rest))
-        => false)
-      
-      (fact
-        (chunked-seq? (-> (unchunk my-chunked-seq)
-                          rest
-                          rest))
-        => false))))
+      (fact (chunked-seq? (unchunk my-chunked-seq)) => false)
+      (fact (chunked-seq? (-> (unchunk my-chunked-seq) rest)) => false)
+      (fact (chunked-seq? (-> (unchunk my-chunked-seq) rest rest)) => false))
+
+    (fact "unchunking a sequence doesn't change its value"
+      (= my-chunked-seq
+         (unchunk my-chunked-seq))))
+
+  (fact "A more explicit exploration of the values that are realised"
+    (fact "Without `unchunk`, `map` consumes elements we don't ultimately need"
+      (with-return-args-to-my-even?-and-my-identity
+        (every? my-even?
+                (map my-identity [2 4 6 7 8 10])))
+      =>
+      [[2 4 6 7]
+       [2 4 6 7 8 10]])
+    (fact "With `unchunk`, `map` only consumes elements we ultimately need"
+      (with-return-args-to-my-even?-and-my-identity
+        (every? my-even?
+                (map my-identity
+                     (unchunk [2 4 6 7 8 10]))))
+      =>
+      [[2 4 6 7]
+       [2 4 6 7]])))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- last-index-of-char-in-string ----

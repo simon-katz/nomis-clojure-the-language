@@ -183,13 +183,23 @@
 ;;;; ---- unchunk ----
 
 (defn unchunk
-  ;; Copied from Stuart Sierra comment at https://stackoverflow.com/questions/3407876/how-do-i-avoid-clojures-chunking-behavior-for-lazy-seqs-that-i-want-to-short-ci
-  "Unchunk the sequence `s`"
+  "Produce a fully-lazy sequence from `s`.
+  Sometimes Clojure sequences are not fully lazy.
+  See http://blog.fogus.me/2010/01/22/de-chunkifying-sequences-in-clojure/
+  for details.
+  See also Stuart Sierra comment at https://stackoverflow.com/questions/3407876/how-do-i-avoid-clojures-chunking-behavior-for-lazy-seqs-that-i-want-to-short-ci"
   [s]
-  (when (seq s)
-    (lazy-seq
-      (cons (first s)
-            (unchunk (next s))))))
+  ;; TODO Is there a reason to prefer one of these over the other?
+  ;;      - Isn't `rest` lazier than `next`?
+  ;;        - Add auto-test that would distinguish. (Or do you already have one?
+  (case 2
+    1 (when (seq s)
+        (lazy-seq
+         (cons (first s)
+               (unchunk (next s)))))
+    2 (lazy-seq
+       (when-let [[x] (seq s)]
+         (cons x (unchunk (rest s)))))))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- last-index-of-char-in-string ----

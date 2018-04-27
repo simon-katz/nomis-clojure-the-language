@@ -332,26 +332,30 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- unchunk ----
 
-(defmacro with-return-args-to-my-even?-and-my-identity
-  "Helper function for testing `unchunk`.
-  Execute `body` in a scope that defines `my-even?` and `my-identity` as
-  functions that are like `even?` and `identity`, except that they make a note
+(defn fun-with-return-args-to-even?-and-identity [fun]
+  (let [clj-even?     even?
+        clj-identity  identity
+        even?-acc     (atom [])
+        identity?-acc (atom [])]
+    (with-redefs [even? (fn [x]
+                          (swap! even?-acc conj x)
+                          (clj-even? x))
+                  identity (fn [x]
+                             (swap! identity?-acc conj x)
+                             x)]
+      (fun)
+      [@even?-acc
+       @identity?-acc])))
+
+(defmacro with-return-args-to-even?-and-identity
+  "Helper for testing `unchunk`.
+  Execute `body` in a scope that redefines `even?` and `identity to make a note
   of their argument. After executing `body`, return a vector whose first element
-  is a sequence of all the arguments passed to `my-even?` (in successive calls)
+  is a sequence of all the arguments passed to `even?` (in successive calls)
   and whose second element is a sequence of all the arguments passed to
-  `my-identity` (in successive calls)."
+  `identity` (in successive calls)."
   [& body]
-  `(let [~'even?-acc (atom [])
-         ~'identity?-acc (atom [])]
-     (letfn [(~'my-even? [x#]
-               (swap! ~'even?-acc conj x#)
-               (even? x#))
-             (~'my-identity [x#]
-               (swap! ~'identity?-acc conj x#)
-               x#)]
-       ~@body
-       [@~'even?-acc
-        @~'identity?-acc])))
+  `(fun-with-return-args-to-even?-and-identity (fn [] ~@body)))
 
 (fact "`unchunk` works"
   (let [my-chunked-seq (range 10)]
@@ -372,16 +376,16 @@
 
   (fact "A more explicit exploration of the values that are realised"
     (fact "Without `unchunk`, `map` consumes elements we don't ultimately need"
-      (with-return-args-to-my-even?-and-my-identity
-        (every? my-even?
-                (map my-identity [2 4 6 7 8 10])))
+      (with-return-args-to-even?-and-identity
+        (every? even?
+                (map identity [2 4 6 7 8 10])))
       =>
       [[2 4 6 7]
        [2 4 6 7 8 10]])
     (fact "With `unchunk`, `map` only consumes elements we ultimately need"
-      (with-return-args-to-my-even?-and-my-identity
-        (every? my-even?
-                (map my-identity
+      (with-return-args-to-even?-and-identity
+        (every? even?
+                (map identity
                      (unchunk [2 4 6 7 8 10]))))
       =>
       [[2 4 6 7]

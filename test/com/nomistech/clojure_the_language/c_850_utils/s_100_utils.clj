@@ -50,6 +50,38 @@
           [k (f v)])))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- transitive-closure ----
+
+(defn ^:private transitive-closure-helper [f visited sofar vs]
+  (letfn [(helper [visited sofar vs]
+            (if (empty? vs)
+              sofar
+              (let [next-vs (set (->> (mapcat f vs)
+                                      (remove visited)
+                                      (remove vs)))]
+                (recur (into visited next-vs)
+                       (into sofar next-vs)
+                       next-vs))))]
+    (helper visited sofar vs)))
+
+(defn transitive-closure
+  "The set of values obtained by starting with v, then applying f to v,
+  then applying f to each of the results, and so on. v and all
+  intermediate values are included in the result."
+  [f v]
+  (transitive-closure-helper f #{v} #{v} #{v}))
+
+;;;; ___________________________________________________________________________
+;;;; ---- transitive-closure-excluding-self ----
+
+(defn transitive-closure-excluding-self
+  "The set of values obtained by applying f to v,
+  then applying f to each of the results, and so on. All
+  intermediate values are included in the result."
+  [f v]
+  (transitive-closure-helper f #{v} #{} #{v}))
+
+;;;; ___________________________________________________________________________
 ;;;; ---- invert-function invert-relation ----
 
 (defn invert-function [f domain-subset]

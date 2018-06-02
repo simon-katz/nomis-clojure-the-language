@@ -121,6 +121,39 @@
       :b 3})
 
 ;;;; ___________________________________________________________________________
+;;;; ---- transitive-closure ----
+
+;; TODO: More substantial tests of `transitive-closure`, e.g. edge cases.
+
+(fact "`transitive-closure` works"
+  (transitive-closure (fn [x]
+                        (case x
+                          1 [1 2 3 4]
+                          2 [200 1]
+                          3 [300 1]
+                          4 [1]
+                          []))
+                      1)
+  => #{1 2 3 4 200 300})
+
+;;;; ___________________________________________________________________________
+;;;; ---- transitive-closure-excluding-self ----
+
+;; TODO: More substantial tests of `transitive-closure-excluding-self`,
+;;       e.g. edge cases.
+
+(fact "`transitive-closure-excluding-self` works"
+  (transitive-closure-excluding-self (fn [x]
+                                       (case x
+                                         1 [1 2 3 4]
+                                         2 [200 1]
+                                         3 [300 1]
+                                         4 [1]
+                                         []))
+                                     1)
+  => #{2 3 4 200 300})
+
+;;;; ___________________________________________________________________________
 ;;;; ---- invert-function invert-relation ----
 
 (fact "`invert-function` works"

@@ -1,7 +1,11 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-800-web.ss-020-ring
   (:require [clojure.string :as str]
+            [compojure.core :as cc]
+            [compojure.middleware :as cm]
             [midje.sweet :refer :all]
             [ring.middleware.json :as rmj]
+            [ring.middleware.keyword-params :as rmk]
+            [ring.middleware.params :as rmp]
             [ring.util.response :as rur]))
 
 ;;;; ___________________________________________________________________________
@@ -20,8 +24,66 @@
        (.getBytes encoding)
        (java.io.ByteArrayInputStream.))))
 
+(defn identity-handler [request]
+  request)
+
+(def my-request
+  {:headers {"content-type" "application/json; charset=utf-8"}
+   :query-string "q1=a&q2=b"
+   :body (string->stream "{\"user\":\"Fred\"}")})
+
 ;;;; ___________________________________________________________________________
-;;;; ---- wrap-json-body ----
+;;;; ---- rmp/wrap-params ----
+
+(fact ((-> identity-handler
+           rmp/wrap-params)
+       my-request)
+  => (just (merge my-request
+                  {:body         anything
+                   :form-params  {}
+                   :params       {"q1" "a"
+                                  "q2" "b"}
+                   :query-params {"q1" "a"
+                                  "q2" "b"}})))
+
+;;;; ___________________________________________________________________________
+;;;; ---- rmj/wrap-json-params ----
+
+(fact ((-> identity-handler
+           rmj/wrap-json-params)
+       my-request)
+  => (just (merge my-request
+                  {:body        anything
+                   :json-params {"user" "Fred"}
+                   :params      {"user" "Fred"}})))
+
+;;;; ___________________________________________________________________________
+
+;;;; TODO
+
+;;;; From MPS:
+
+(def mps-middlewares
+  [#(rmj/wrap-json-body %
+                        {:keywords? true
+                         :bigdecimals? true})
+   rmj/wrap-json-response
+   rmp/wrap-params
+   rmk/wrap-keyword-params])
+
+;;;; From minimal-clojure-service
+
+(defn minimal-clojure-service-handler
+  [routes]
+  (cm/wrap-canonical-redirect
+   (-> routes
+       (cc/wrap-routes rmj/wrap-json-params)
+       (cc/wrap-routes rmj/wrap-json-response)
+       (cc/wrap-routes rmp/wrap-params)
+       (cc/wrap-routes rmk/wrap-keyword-params))))
+
+;;;; ___________________________________________________________________________
+;;;; ---- rmj/wrap-json-body ----
 
 (defn handler-with-interesting-request [request]
   (let [user (get-in request [:body :user] "<no user specified>")]
@@ -47,7 +109,7 @@
       :body "Uploaded 'Fred'."})
 
 ;;;; ___________________________________________________________________________
-;;;; ---- wrap-json-response ----
+;;;; ---- rmj/wrap-json-response ----
 
 (defn handler-with-interesting-response [request]
   (rur/response {:foo "bar"}))

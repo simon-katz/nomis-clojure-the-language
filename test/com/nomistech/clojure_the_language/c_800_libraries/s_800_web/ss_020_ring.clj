@@ -40,42 +40,41 @@
   (instance? java.io.InputStream x))
 
 ;;;; ___________________________________________________________________________
-;;;; ---- rmp/wrap-params ----
+;;;; ---- Single wrappings ----
 
-(fact ((-> identity-handler
-           rmp/wrap-params)
-       (make-my-request))
-  => (just {:headers      {"content-type" "application/json; charset=utf-8"}
-            :query-string "q1=a&q2=b"
-            :body         input-stream?
-            :form-params  {}
-            :query-params {"q1" "a"
-                           "q2" "b"}
-            :params       {"q1" "a"
-                           "q2" "b"}}))
+(facts "Single wrappings"
+  
+  (fact "`rmp/wrap-params`"
+    ((-> identity-handler
+         rmp/wrap-params)
+     (make-my-request))
+    => (just {:headers      {"content-type" "application/json; charset=utf-8"}
+              :query-string "q1=a&q2=b"
+              :body         input-stream?
+              :form-params  {}
+              :query-params {"q1" "a"
+                             "q2" "b"}
+              :params       {"q1" "a"
+                             "q2" "b"}}))
+  
+  (fact "`rmj/wrap-json-params`"
+    ((-> identity-handler
+         rmj/wrap-json-params)
+     (make-my-request))
+    => (just {:headers      {"content-type" "application/json; charset=utf-8"}
+              :query-string "q1=a&q2=b"
+              :body         input-stream?
+              :json-params  {"user" "Fred"}
+              :params       {"user" "Fred"}}))
 
-;;;; ___________________________________________________________________________
-;;;; ---- rmj/wrap-json-params ----
-
-(fact ((-> identity-handler
-           rmj/wrap-json-params)
-       (make-my-request))
-  => (just {:headers      {"content-type" "application/json; charset=utf-8"}
-            :query-string "q1=a&q2=b"
-            :body         input-stream?
-            :json-params  {"user" "Fred"}
-            :params       {"user" "Fred"}}))
-
-;;;; ___________________________________________________________________________
-;;;; ---- rmj/wrap-json-body ----
-
-(fact ((-> identity-handler
-           (rmj/wrap-json-body {:keywords? true
-                                :bigdecimals? true}))
-       (make-my-request))
-  => {:headers      {"content-type" "application/json; charset=utf-8"}
-      :query-string "q1=a&q2=b"
-      :body         {:user "Fred"}})
+  (fact "`rmj/wrap-json-body`"
+    ((-> identity-handler
+         (rmj/wrap-json-body {:keywords? true
+                              :bigdecimals? true}))
+     (make-my-request))
+    => {:headers      {"content-type" "application/json; charset=utf-8"}
+        :query-string "q1=a&q2=b"
+        :body         {:user "Fred"}}))
 
 ;;;; ___________________________________________________________________________
 

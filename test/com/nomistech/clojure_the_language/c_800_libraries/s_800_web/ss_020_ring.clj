@@ -94,27 +94,13 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- rmj/wrap-json-body ----
 
-(defn handler-of-interesting-request [request]
-  (let [user (get-in request [:body :user] "<no user specified>")]
-    (rur/response (str "Uploaded '" user "'."))))
-
-(def wrapped-handler-of-interesting-request
-  (-> handler-of-interesting-request
-      (rmj/wrap-json-body {:keywords? true
-                           :bigdecimals? true})))
-
-(fact "Handler with request whose body is Clojure data"
-  (handler-of-interesting-request {:body {:user "Fred"}})
-  => {:status 200
-      :headers {}
-      :body "Uploaded 'Fred'."})
-
-(fact "Wrapped handler with request whose body is JSON"
-  (wrapped-handler-of-interesting-request
-   (make-my-request))
-  => {:status 200
-      :headers {}
-      :body "Uploaded 'Fred'."})
+(fact ((-> identity-handler
+           (rmj/wrap-json-body {:keywords? true
+                                :bigdecimals? true}))
+       (make-my-request))
+  => {:headers      {"content-type" "application/json; charset=utf-8"}
+      :query-string "q1=a&q2=b"
+      :body         {:user "Fred"}})
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- rmj/wrap-json-response ----

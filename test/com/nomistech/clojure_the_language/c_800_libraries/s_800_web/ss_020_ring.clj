@@ -43,7 +43,7 @@
 ;;;; ---- Single wrappings ----
 
 (facts "Single wrappings"
-  
+
   (fact "`rmp/wrap-params`"
     ((-> identity-handler
          rmp/wrap-params)
@@ -56,7 +56,7 @@
                              "q2" "b"}
               :params       {"q1" "a"
                              "q2" "b"}}))
-  
+
   (fact "`rmj/wrap-json-params`"
     ((-> identity-handler
          rmj/wrap-json-params)
@@ -94,29 +94,22 @@
                            :q2 "b"}}))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- `rmj/wrap-json-params` then `rmj/wrap-json-body` ----
 
-;;;; TODO
+(fact "`rmj/wrap-json-params` then `rmj/wrap-json-body` is no good"
+  ((-> identity-handler
+       rmj/wrap-json-body
+       rmj/wrap-json-params)
+   (make-my-request))
+  => (just {:headers      {"content-type" "application/json; charset=utf-8"}
+            :query-string "q1=a&q2=b"
+            :body         nil ; Not what I'd want
+            :json-params  {"user" "Fred"}
+            :params       {"user" "Fred"}}))
 
-;;;; From MPS:
+;;;; ___________________________________________________________________________
 
-(def mps-middlewares
-  [#(rmj/wrap-json-body %
-                        {:keywords? true
-                         :bigdecimals? true})
-   rmj/wrap-json-response
-   rmp/wrap-params
-   rmk/wrap-keyword-params])
-
-;;;; From minimal-clojure-service
-
-(defn minimal-clojure-service-handler
-  [routes]
-  (cm/wrap-canonical-redirect
-   (-> routes
-       (cc/wrap-routes rmj/wrap-json-params)
-       (cc/wrap-routes rmj/wrap-json-response)
-       (cc/wrap-routes rmp/wrap-params)
-       (cc/wrap-routes rmk/wrap-keyword-params))))
+;;;; TODO Still need to revisit the following.
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- rmj/wrap-json-response ----

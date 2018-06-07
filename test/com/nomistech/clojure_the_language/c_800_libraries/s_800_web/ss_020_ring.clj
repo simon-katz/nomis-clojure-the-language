@@ -77,6 +77,23 @@
         :body         {:user "Fred"}}))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- `rmk/wrap-keyword-params` ----
+
+(fact "`rmk/wrap-keyword-params`"
+  ((-> identity-handler
+       rmk/wrap-keyword-params
+       rmp/wrap-params)
+   (make-my-request))
+  => (just {:headers      {"content-type" "application/json; charset=utf-8"}
+            :query-string "q1=a&q2=b"
+            :body         input-stream?
+            :form-params  {}
+            :query-params {"q1" "a"
+                           "q2" "b"}
+            :params       {:q1 "a"
+                           :q2 "b"}}))
+
+;;;; ___________________________________________________________________________
 
 ;;;; TODO
 

@@ -67,6 +67,17 @@
             :params       {"user" "Fred"}}))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- rmj/wrap-json-body ----
+
+(fact ((-> identity-handler
+           (rmj/wrap-json-body {:keywords? true
+                                :bigdecimals? true}))
+       (make-my-request))
+  => {:headers      {"content-type" "application/json; charset=utf-8"}
+      :query-string "q1=a&q2=b"
+      :body         {:user "Fred"}})
+
+;;;; ___________________________________________________________________________
 
 ;;;; TODO
 
@@ -90,17 +101,6 @@
        (cc/wrap-routes rmj/wrap-json-response)
        (cc/wrap-routes rmp/wrap-params)
        (cc/wrap-routes rmk/wrap-keyword-params))))
-
-;;;; ___________________________________________________________________________
-;;;; ---- rmj/wrap-json-body ----
-
-(fact ((-> identity-handler
-           (rmj/wrap-json-body {:keywords? true
-                                :bigdecimals? true}))
-       (make-my-request))
-  => {:headers      {"content-type" "application/json; charset=utf-8"}
-      :query-string "q1=a&q2=b"
-      :body         {:user "Fred"}})
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- rmj/wrap-json-response ----

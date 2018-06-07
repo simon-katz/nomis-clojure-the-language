@@ -14,6 +14,8 @@
 ;;;; - In requests, "content-type: must be lower case, but `wrap-json-response`
 ;;;;   produces (capitalised) "Content-Type". WTF?
 
+;;;; TODO Add some `:form-params` tests.
+
 ;;;; ___________________________________________________________________________
 ;;;; ---- Request test helpers ----
 
@@ -30,9 +32,9 @@
 (defn make-my-request []
   ;; This is a function rather than a var, so for each call the return value's
   ;; `:body` stream can be consumed separately.
-  {:headers {"content-type" "application/json; charset=utf-8"}
+  {:headers      {"content-type" "application/json; charset=utf-8"}
    :query-string "q1=a&q2=b"
-   :body (string->stream "{\"user\":\"Fred\"}")})
+   :body         (string->stream "{\"user\":\"Fred\"}")})
 
 (defn input-stream? [x]
   (instance? java.io.InputStream x))
@@ -43,14 +45,14 @@
 (fact ((-> identity-handler
            rmp/wrap-params)
        (make-my-request))
-  => (just {:body         input-stream?
+  => (just {:headers      {"content-type" "application/json; charset=utf-8"}
+            :query-string "q1=a&q2=b"
+            :body         input-stream?
             :form-params  {}
-            :headers      {"content-type" "application/json; charset=utf-8"}
-            :params       {"q1" "a"
-                           "q2" "b"}
             :query-params {"q1" "a"
                            "q2" "b"}
-            :query-string "q1=a&q2=b"}))
+            :params       {"q1" "a"
+                           "q2" "b"}}))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- rmj/wrap-json-params ----
@@ -58,11 +60,11 @@
 (fact ((-> identity-handler
            rmj/wrap-json-params)
        (make-my-request))
-  => (just {:body         input-stream?
-            :headers      {"content-type" "application/json; charset=utf-8"}
+  => (just {:headers      {"content-type" "application/json; charset=utf-8"}
+            :query-string "q1=a&q2=b"
+            :body         input-stream?
             :json-params  {"user" "Fred"}
-            :params       {"user" "Fred"}
-            :query-string "q1=a&q2=b"}))
+            :params       {"user" "Fred"}}))
 
 ;;;; ___________________________________________________________________________
 

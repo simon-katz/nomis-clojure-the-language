@@ -85,23 +85,23 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- rmj/wrap-json-body ----
 
-(defn handler-with-interesting-request [request]
+(defn handler-of-interesting-request [request]
   (let [user (get-in request [:body :user] "<no user specified>")]
     (rur/response (str "Uploaded '" user "'."))))
 
-(def wrapped-handler-with-interesting-request
-  (-> handler-with-interesting-request
+(def wrapped-handler-of-interesting-request
+  (-> handler-of-interesting-request
       (rmj/wrap-json-body {:keywords? true
                            :bigdecimals? true})))
 
 (fact "Handler with request whose body is Clojure data"
-  (handler-with-interesting-request {:body {:user "Fred"}})
+  (handler-of-interesting-request {:body {:user "Fred"}})
   => {:status 200
       :headers {}
       :body "Uploaded 'Fred'."})
 
 (fact "Wrapped handler with request whose body is JSON"
-  (wrapped-handler-with-interesting-request
+  (wrapped-handler-of-interesting-request
    {:headers {"content-type" "application/json; charset=utf-8"}
     :body (string->stream "{\"user\":\"Fred\"}")})
   => {:status 200
@@ -133,24 +133,24 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- Wrapping requests and responses ----
 
-(defn handler-with-interesting-request-and-response [request]
+(defn handler-of-interesting-request-and-response [request]
   (let [user (get-in request [:body :user] "<no user specified>")]
     (rur/response {:uploaded-user user})))
 
-(def wrapped-handler-with-interesting-request-and-response
-  (-> handler-with-interesting-request-and-response
+(def wrapped-handler-of-interesting-request-and-response
+  (-> handler-of-interesting-request-and-response
       (rmj/wrap-json-body {:keywords? true
                            :bigdecimals? true})
       rmj/wrap-json-response))
 
 (fact "Handler with request whose body is Clojure data"
-  (handler-with-interesting-request-and-response {:body {:user "Fred"}})
+  (handler-of-interesting-request-and-response {:body {:user "Fred"}})
   => {:status 200
       :headers {}
       :body {:uploaded-user "Fred"}})
 
 (fact "Wrapped handler with request whose body is JSON"
-  (wrapped-handler-with-interesting-request-and-response
+  (wrapped-handler-of-interesting-request-and-response
    {:headers {"content-type" "application/json; charset=utf-8"}
     :body (string->stream "{\"user\":\"Fred\"}")})
   => {:status 200

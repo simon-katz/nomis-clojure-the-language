@@ -27,7 +27,9 @@
 (defn identity-handler [request]
   request)
 
-(def my-request
+(defn make-my-request []
+  ;; This is a function rather than a var, so for each call the return value's
+  ;; `:body` stream can be consumed separately.
   {:headers {"content-type" "application/json; charset=utf-8"}
    :query-string "q1=a&q2=b"
    :body (string->stream "{\"user\":\"Fred\"}")})
@@ -35,27 +37,29 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- rmp/wrap-params ----
 
-(fact ((-> identity-handler
-           rmp/wrap-params)
-       my-request)
-  => (just (merge my-request
-                  {:body         anything
-                   :form-params  {}
-                   :params       {"q1" "a"
-                                  "q2" "b"}
-                   :query-params {"q1" "a"
-                                  "q2" "b"}})))
+(let [req (make-my-request)]
+  (fact ((-> identity-handler
+             rmp/wrap-params)
+         req)
+    => (just (merge req
+                    {:body         anything
+                     :form-params  {}
+                     :params       {"q1" "a"
+                                    "q2" "b"}
+                     :query-params {"q1" "a"
+                                    "q2" "b"}}))))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- rmj/wrap-json-params ----
 
-(fact ((-> identity-handler
-           rmj/wrap-json-params)
-       my-request)
-  => (just (merge my-request
-                  {:body        anything
-                   :json-params {"user" "Fred"}
-                   :params      {"user" "Fred"}})))
+(let [req (make-my-request)]
+  (fact ((-> identity-handler
+             rmj/wrap-json-params)
+         req)
+    => (just (merge req
+                    {:body        anything
+                     :json-params {"user" "Fred"}
+                     :params      {"user" "Fred"}}))))
 
 ;;;; ___________________________________________________________________________
 
@@ -102,8 +106,7 @@
 
 (fact "Wrapped handler with request whose body is JSON"
   (wrapped-handler-of-interesting-request
-   {:headers {"content-type" "application/json; charset=utf-8"}
-    :body (string->stream "{\"user\":\"Fred\"}")})
+   (make-my-request))
   => {:status 200
       :headers {}
       :body "Uploaded 'Fred'."})

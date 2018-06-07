@@ -34,32 +34,35 @@
    :query-string "q1=a&q2=b"
    :body (string->stream "{\"user\":\"Fred\"}")})
 
+(defn input-stream? [x]
+  (instance? java.io.InputStream x))
+
 ;;;; ___________________________________________________________________________
 ;;;; ---- rmp/wrap-params ----
 
-(let [req (make-my-request)]
-  (fact ((-> identity-handler
-             rmp/wrap-params)
-         req)
-    => (just (merge req
-                    {:body         anything
-                     :form-params  {}
-                     :params       {"q1" "a"
-                                    "q2" "b"}
-                     :query-params {"q1" "a"
-                                    "q2" "b"}}))))
+(fact ((-> identity-handler
+           rmp/wrap-params)
+       (make-my-request))
+  => (just {:body         input-stream?
+            :form-params  {}
+            :headers      {"content-type" "application/json; charset=utf-8"}
+            :params       {"q1" "a"
+                           "q2" "b"}
+            :query-params {"q1" "a"
+                           "q2" "b"}
+            :query-string "q1=a&q2=b"}))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- rmj/wrap-json-params ----
 
-(let [req (make-my-request)]
-  (fact ((-> identity-handler
-             rmj/wrap-json-params)
-         req)
-    => (just (merge req
-                    {:body        anything
-                     :json-params {"user" "Fred"}
-                     :params      {"user" "Fred"}}))))
+(fact ((-> identity-handler
+           rmj/wrap-json-params)
+       (make-my-request))
+  => (just {:body         input-stream?
+            :headers      {"content-type" "application/json; charset=utf-8"}
+            :json-params  {"user" "Fred"}
+            :params       {"user" "Fred"}
+            :query-string "q1=a&q2=b"}))
 
 ;;;; ___________________________________________________________________________
 

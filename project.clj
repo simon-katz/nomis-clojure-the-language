@@ -6,7 +6,7 @@
                  [com.taoensso/timbre "4.10.0" :exclusions [io.aviso/pretty
                                                             org.clojure/tools.reader]]
                  [metosin/compojure-api "1.1.11"]
-                 [com.nomistech/clj-utils "0.2.0"]
+                 [com.nomistech/clj-utils "0.3.0"]
                  [org.clojure/clojure "1.9.0"]
                  [org.clojure/core.async "0.4.474"]
                  [org.clojure/core.match "0.3.0-alpha5"]

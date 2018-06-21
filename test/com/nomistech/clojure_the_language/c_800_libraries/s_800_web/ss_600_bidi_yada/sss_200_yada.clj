@@ -1,6 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-800-web.ss-600-bidi-yada.sss-200-yada
   (:require [clj-http.client :as http-client]
-            [com.nomistech.clojure-the-language.c-850-utils.s-100-utils :as u]
+            [com.nomistech.clj-utils :as nu]
             [midje.sweet :refer :all]
             [yada.yada :as yada]))
 
@@ -78,9 +78,9 @@
        path))
 
 (defn filter-response [response]
-  (u/select-keys-recursively response
-                             [[:headers ["Content-Type"]]
-                              [:body]]))
+  (nu/select-keys-recursively response
+                              [[:headers ["Content-Type"]]
+                               [:body]]))
 
 (defn get-and-filter [endpoint get-options]
   (-> (http-client/get endpoint

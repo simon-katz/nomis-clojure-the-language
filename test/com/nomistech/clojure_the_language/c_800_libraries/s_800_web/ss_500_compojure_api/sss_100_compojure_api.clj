@@ -1,7 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-800-web.ss-500-compojure-api.sss-100-compojure-api
   (:require [cheshire.core :as cheshire]
             [compojure.api.sweet :as c]
-            [com.nomistech.clojure-the-language.c-850-utils.s-100-utils :as u]
             [midje.sweet :refer :all]
             [ring.mock.request :as mock]
             [ring.util.http-response :as rur]

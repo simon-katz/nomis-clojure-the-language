@@ -1,6 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-400-state-and-concurrency.s-050-pmap-etc
   (:require [com.climate.claypoole :as cp]
-            [com.nomistech.clojure-the-language.c-850-utils.s-100-utils :as u]
+            [com.nomistech.clj-utils :as nu]
             [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
@@ -39,7 +39,7 @@
 
 #_
 (demo-pmap-like-fun pmap
-                    (comp u/unchunk range))
+                    (comp nu/unchunk range))
 
 ;;; Time increases in accordance with the number of processors, as expected:
 ;;;

@@ -83,6 +83,102 @@
 (assert (= (set (vals  {:a 1 :b 2 :c 3}))
            (set [1 2 3])))
 
+;;;; ------------------------------------------------
+;;;; ---- order of evaluation of map literals ----
+
+(fact "Order of evaluation of map literals"
+
+  (fact "Small maps are as you would expect"
+    (let [i (atom 0)]
+      {:k1 (swap! i inc)
+       :k2 (swap! i inc)
+       :k3 (swap! i inc)
+       :k4 (swap! i inc)
+       :k5 (swap! i inc)
+       :k6 (swap! i inc)
+       :k7 (swap! i inc)
+       :k8 (swap! i inc)})
+    => {:k1 1
+        :k2 2
+        :k3 3
+        :k4 4
+        :k5 5
+        :k6 6
+        :k7 7
+        :k8 8})
+
+  (fact "Larger maps might not be as you expect"
+    (let [i (atom 0)]
+      {:k1 (swap! i inc)
+       :k2 (swap! i inc)
+       :k3 (swap! i inc)
+       :k4 (swap! i inc)
+       :k5 (swap! i inc)
+       :k6 (swap! i inc)
+       :k7 (swap! i inc)
+       :k8 (swap! i inc)
+       :k9 (swap! i inc)})
+    =not=> {:k1 1
+            :k2 2
+            :k3 3
+            :k4 4
+            :k5 5
+            :k6 6
+            :k7 7
+            :k8 8
+            :k9 9})
+
+  (fact "Use `hash-map` if order of evaluation is important"
+    (let [i (atom 0)]
+      (hash-map :k1 (swap! i inc)
+                :k2 (swap! i inc)
+                :k3 (swap! i inc)
+                :k4 (swap! i inc)
+                :k5 (swap! i inc)
+                :k6 (swap! i inc)
+                :k7 (swap! i inc)
+                :k8 (swap! i inc)
+                :k9 (swap! i inc)))
+    => {:k1 1
+        :k2 2
+        :k3 3
+        :k4 4
+        :k5 5
+        :k6 6
+        :k7 7
+        :k8 8
+        :k9 9})
+
+  (fact "Or put values in a `let`"
+    (let [i (atom 0)
+          v1 (swap! i inc)
+          v2 (swap! i inc)
+          v3 (swap! i inc)
+          v4 (swap! i inc)
+          v5 (swap! i inc)
+          v6 (swap! i inc)
+          v7 (swap! i inc)
+          v8 (swap! i inc)
+          v9 (swap! i inc)]
+      {:k1 v1
+       :k2 v2
+       :k3 v3
+       :k4 v4
+       :k5 v5
+       :k6 v6
+       :k7 v7
+       :k8 v8
+       :k9 v9})
+    => {:k1 1
+        :k2 2
+        :k3 3
+        :k4 4
+        :k5 5
+        :k6 6
+        :k7 7
+        :k8 8
+        :k9 9}))
+
 ;;;; ___________________________________________________________________________
 ;;;; ---- sets ----
 

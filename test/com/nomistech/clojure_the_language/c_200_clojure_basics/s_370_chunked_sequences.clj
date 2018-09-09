@@ -1,5 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-370-chunked-sequences
-  (:require [midje.sweet :refer :all]))
+  (:require [clojure.core.reducers :as r]
+            [com.nomistech.clj-utils :as u]
+            [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Chunked sequences
@@ -65,3 +67,45 @@
 ;;           (chunk-cons (chunk b)
 ;;                       (when (comp i end)
 ;;                         (range i end step)))))))))
+
+
+(defmacro with-discard-output
+  [& body]
+  `(let [s# (new java.io.StringWriter)]
+     (binding [*out* s#]
+       ~@body)))
+
+
+(fact "Demo of chunked sequences"
+
+  (fact "The clojure.core chunking"
+    (letfn [(do-it []
+              (into [] (->> (range 10)
+                            (map (fn [x] (pr x) x))
+                            (take 3))))]
+
+      (fact "value" (with-discard-output (do-it)) => [0 1 2])
+      (fact "side effects" (with-out-str (do-it)) => "0123456789")))
+
+  (fact "`u/unchunk` gives laziness)"
+    (letfn [(do-it []
+              (into [] (->> (range 10)
+                            u/unchunk
+                            (map (fn [x] (pr x) x))
+                            (take 3))))]
+
+      (fact "value" (with-discard-output (do-it)) => [0 1 2])
+      (fact "side effects" (with-out-str (do-it)) => "012")))
+
+  (fact "Can unchunk with reducers -- but this is less lazy than `u/unchunk"
+    ;; You can use `reduce` (or other things) to get rid of chunking:
+    ;; - https://stuartsierra.com/2015/08/25/clojure-donts-lazy-effects
+    ;; But note that with reducers, at least, you get one more item processed
+    ;; than you need!
+    (letfn [(do-it []
+              (into [] (->> (range 10)
+                            (r/map (fn [x] (pr x) x))
+                            (r/take 3))))]
+
+      (fact "value" (with-discard-output (do-it)) => [0 1 2])
+      (fact "side effects" (with-out-str (do-it)) => "0123"))))

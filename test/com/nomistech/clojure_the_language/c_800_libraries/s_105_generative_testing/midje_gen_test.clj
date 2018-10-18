@@ -40,7 +40,8 @@
   (fact (sort v) => (sort (sort v))))
 
 (for-all "First element is min after sorting"
-    {:num-tests 100}
+    {:num-tests 100} ; TODO This options map must comne after the binding form
+                     ;      - check elsewhere too.
   [v (gen/not-empty (gen/vector gen/int))]
   (fact (apply min v)
     => (first (sort v))))

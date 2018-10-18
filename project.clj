@@ -18,7 +18,15 @@
                  [yada "1.2.15"]]
   :repl-options {:init-ns user}
   :profiles {:dev {:dependencies [[org.clojure/tools.namespace "0.3.0-alpha4"]
-                                  [midje "1.9.3" :exclusions [riddley]]
+                                  [org.clojure/core.rrb-vector
+                                   ;; TODO Added this when I upgraded to
+                                   ;;      midje 1.9.3 -- which caused many
+                                   ;;      boxed arithmetic warnings.
+                                   "0.0.13"
+                                   :scope "test"]
+                                  [midje "1.9.3"
+                                   :exclusions [riddley
+                                                org.clojure/core.rrb-vector]]
                                   [ring/ring-mock "0.3.2"]]
                    :source-paths ["dev"]
                    :plugins [[lein-midje "3.2.1"]]}})

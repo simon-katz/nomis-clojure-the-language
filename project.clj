@@ -18,7 +18,7 @@
                  [yada "1.2.11"]]
   :repl-options {:init-ns user}
   :profiles {:dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]
-                                  [midje "1.9.1" :exclusions [riddley]]
+                                  [midje "1.9.2" :exclusions [riddley]]
                                   [ring/ring-mock "0.3.2"]]
                    :source-paths ["dev"]
                    :plugins [[lein-midje "3.2.1"]]}})

@@ -143,7 +143,9 @@
 ;;;;      In fact I'd prefer a special syntax like `(satisfies ...)`
 ;;;;      rather than the special interpretaion of functions and regexs.
 
-(fact odd? =not=> odd?)
+;; The following changed in Midje 1.9.2 -- `odd?` now throws an exception
+;; if its argument is not an integer.
+;; (fact odd? =not=> odd?)
 ;; (even though you might expect
 ;; java.lang.IllegalArgumentException: Argument must be an integer)
 ;; as you get for (odd? odd?) -- I think Midje catches exceptions)

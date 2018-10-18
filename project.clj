@@ -21,7 +21,7 @@
                                   [org.clojure/core.rrb-vector
                                    ;; TODO Added this when I upgraded to
                                    ;;      midje 1.9.3 -- which caused many
-                                   ;;      boxed arithmetic warnings.
+                                   ;;      boxed math warnings.
                                    "0.0.13"
                                    :scope "test"]
                                   [midje "1.9.3"

@@ -44,3 +44,13 @@
   [v (gen/not-empty (gen/vector gen/int))]
   (fact (apply min v)
     => (first (sort v))))
+
+(comment
+  ;; A failing test.
+  (for-all "Prop sorted first less than last"
+      {:num-tests 100}
+    [v (gen/not-empty (gen/vector gen/int))]
+    (let [s (sort v)]
+      (fact (< (first s) (last s))
+        => truthy)))
+  )

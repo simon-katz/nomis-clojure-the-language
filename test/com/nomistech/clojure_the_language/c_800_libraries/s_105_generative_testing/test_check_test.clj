@@ -19,3 +19,12 @@
   (prop/for-all [v (gen/not-empty (gen/vector gen/int))]
                 (= (apply min v)
                    (first (sort v)))))
+
+(comment
+  ;; A failing test.
+  (defspec prop-sorted-first-less-than-last
+    100
+    (prop/for-all [v (gen/not-empty (gen/vector gen/int))]
+        (let [s (sort v)]
+          (< (first s) (last s)))))
+  )

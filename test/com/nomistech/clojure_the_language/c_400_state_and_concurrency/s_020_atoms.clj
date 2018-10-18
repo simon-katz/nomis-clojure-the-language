@@ -185,7 +185,7 @@
       (report-on-what-is-happening)
       (get-info))))
 
-(fact "About concurrency and atoms"
+(fact :slow "About concurrency and atoms"
   (let [[final-value n-attempts] (demo-competition-to-modify-atom)]
     (fact final-value => n-competitors)
     (fact (> n-attempts n-competitors) => truthy)))

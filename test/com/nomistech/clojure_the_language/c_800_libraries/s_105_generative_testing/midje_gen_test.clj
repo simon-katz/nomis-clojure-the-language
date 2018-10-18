@@ -30,3 +30,17 @@
     (fact "my-vals matches keys behavior"
       (my-vals str-map) => (vals str-map))))
 
+;;;; ___________________________________________________________________________
+;;;; From https://github.com/clojure/test.check and midje-ified
+
+;;;; See also `com.nomistech.clojure-the-language.c-800-libraries.s-105-generative-testing.test-check-test`
+
+(for-all "Sort is idempotent"
+    [v (gen/vector gen/int)]
+  (fact (sort v) => (sort (sort v))))
+
+(for-all "First element is min after sorting"
+    {:num-tests 100}
+  [v (gen/not-empty (gen/vector gen/int))]
+  (fact (apply min v)
+    => (first (sort v))))

@@ -54,3 +54,10 @@
       (fact (< (first s) (last s))
         => truthy)))
   )
+
+;;;; ___________________________________________________________________________
+;;;; More examples
+
+(for-all "Sorting a vector of length 0 or 1 returns the same value"
+    [v (gen/vector gen/int 0 1)]
+  (fact (sort v) => v))

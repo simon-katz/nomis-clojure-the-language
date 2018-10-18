@@ -71,19 +71,23 @@
            :info {:description "Compojure Api example"
                   :title "Compojure-api-play"
                   :version "0.0.1"}
-           :tags [{:description "some apis"
-                   :name "api"}]
+           :tags (just [{:description "some apis"
+                         :name "api"}]
+                       :in-any-order
+                       :gaps-ok)
            :basePath "/"
-           :consumes ["application/json"
-                      "application/x-yaml"
-                      "application/edn"
-                      "application/transit+json"
-                      "application/transit+msgpack"]
-           :produces ["application/json"
-                      "application/x-yaml"
-                      "application/edn"
-                      "application/transit+json"
-                      "application/transit+msgpack"]
+           :consumes (contains ["application/json"
+                                "application/edn"
+                                "application/transit+json"
+                                "application/transit+msgpack"]
+                               :in-any-order
+                               :gaps-ok)
+           :produces (contains ["application/json"
+                                "application/edn"
+                                "application/transit+json"
+                                "application/transit+msgpack"]
+                               :in-any-order
+                               :gaps-ok)
            :definitions map?
            :paths map?}))))
 

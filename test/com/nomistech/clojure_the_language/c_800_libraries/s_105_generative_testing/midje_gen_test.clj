@@ -40,17 +40,16 @@
   (fact (sort v) => (sort (sort v))))
 
 (for-all "First element is min after sorting"
-    {:num-tests 100} ; TODO This options map must comne after the binding form
-                     ;      - check elsewhere too.
-  [v (gen/not-empty (gen/vector gen/int))]
+    [v (gen/not-empty (gen/vector gen/int))]
+  {:num-tests 100}
   (fact (apply min v)
     => (first (sort v))))
 
 (comment
   ;; A failing test.
   (for-all "Prop sorted first less than last"
-      {:num-tests 100}
-    [v (gen/not-empty (gen/vector gen/int))]
+      [v (gen/not-empty (gen/vector gen/int))]
+    {:num-tests 10}
     (let [s (sort v)]
       (fact (< (first s) (last s))
         => truthy)))

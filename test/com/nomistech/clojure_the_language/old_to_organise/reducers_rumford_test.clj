@@ -318,17 +318,17 @@
 (defn ex7-make-visitors [n] (take n (repeatedly ex7-make-visitor)))
 
 ;;(def ex7-visitors (ex7-make-visitors 100))
-(def ex7-visitors (into [] (ex7-make-visitors 1000000)))
+;; (def ex7-visitors (into [] (ex7-make-visitors 1000000))) ; too slow to leave uncommented
 
 ;; Example 7 - count the visiting Brown children using reduce
 ;;(time (r/reduce + 0 (ex2-pipeline ex7-visitors)))
 ;; =>
-"Elapsed time: 238.448041 msecs"
+;; ;; "Elapsed time: 238.448041 msecs"
 
 ;; Example 7 - count the visiting Brown children using fold
 ;;(time (r/fold + (ex2-pipeline ex7-visitors)))
 ;; =>
-"Elapsed time: 64.788173 msecs"
+;; ;; "Elapsed time: 64.788173 msecs"
 
 
 ;; Example 7 - count the visiting Brown children using core map, filter and reduce
@@ -336,7 +336,7 @@
 ;;               (map #(if (= :child (:role %)) 1 0)
 ;;                    (filter #(= "brown" (string/lower-case (:family %))) ex7-visitors))))
 ;; =>
-"Elapsed time: 223.55717 msecs"
+;; ;; "Elapsed time: 223.55717 msecs"
 
 
 

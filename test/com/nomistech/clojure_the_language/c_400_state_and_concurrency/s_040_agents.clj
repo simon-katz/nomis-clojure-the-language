@@ -16,7 +16,7 @@
 
 (defn *non-negative [] (agent 0 :validator #(>= % 0)))
 
-(fact "On agents in a failed state, attempts to dispatch new actions fail."
+(fact :slow "On agents in a failed state, attempts to dispatch new actions fail."
   (let [a (*non-negative)]
     (send a dec)
     (Thread/sleep 100)

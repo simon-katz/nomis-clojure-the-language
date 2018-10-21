@@ -24,5 +24,9 @@
 ;;;; ___________________________________________________________________________
 ;;;; App-specific additional utilities for the REPL or command line
 
-(do (autotest :stop)
-    (autotest :filter (complement :slow)))
+(comment
+
+  (do (autotest :stop)
+      (autotest :filter (complement :slow)))
+
+  )

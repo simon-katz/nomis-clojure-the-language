@@ -162,14 +162,14 @@
                                          (map nil->sentynil))]
 
     (fact "Removing nil"
-      
+
       (fact "In Clojure 1.6"
         (let [wrapped-ch  (a/chan)
               wrapping-ch (a/remove> sentynil? wrapped-ch)]
           (a/onto-chan wrapping-ch values-from-who-knows-where)
           (chan->seq wrapped-ch))
         => [0 1 3])
-      
+
       (fact "In Clojure 1.7"
         (let [c (a/chan 1 (remove sentynil?))]
           (a/onto-chan c values-from-who-knows-where)
@@ -186,7 +186,7 @@
                    (do
                      ;; whatever is needed when channel is closed
                      ))))]
-        
+
         (fact "In Clojure 1.6 & Clojure 1.7"
           (let [c (a/chan)]
             (a/onto-chan c values-from-who-knows-where)

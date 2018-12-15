@@ -418,7 +418,7 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- Destructuring ----
 
-;;;; You also have destructuring stuff in com.nomistech.clojure-the-language.c-200-clojure-basics.s-300-collections -- should combine 
+;;;; You also have destructuring stuff in com.nomistech.clojure-the-language.c-200-clojure-basics.s-300-collections -- should combine
 
 (let [[a [b c] & rest :as x] [1 [2 3] 4 5]]
   [x [a b c]])
@@ -551,13 +551,13 @@
 ;;     clojure.lang.Keyword [:a :b]}
 
 (group-by (juxt :a :b)
-         [{:a 1 :b 1 :c 101}
-          {:a 1 :b 1 :c 102}
-          {:a 1 :b 1 :c 103}
-          {:a 1 :b 2 :c 201}
-          {:a 2 :b 1 :c 301}
-          {:a 2 :b 1 :c 302}
-          {:a 2 :b 2 :c 401}])
+          [{:a 1 :b 1 :c 101}
+           {:a 1 :b 1 :c 102}
+           {:a 1 :b 1 :c 103}
+           {:a 1 :b 2 :c 201}
+           {:a 2 :b 1 :c 301}
+           {:a 2 :b 1 :c 302}
+           {:a 2 :b 2 :c 401}])
 ;; => {[2 1] [{:a 2 :c 301 :b 1}
 ;;            {:a 2 :c 302 :b 1}]
 ;;     [2 2] [{:a 2 :c 401 :b 2}]
@@ -650,4 +650,3 @@
 ;;                   "Product #5" 500,
 ;;                   "Product #2" 200,
 ;;                   "Product #1" 100}}
-

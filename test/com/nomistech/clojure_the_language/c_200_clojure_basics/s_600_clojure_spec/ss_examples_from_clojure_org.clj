@@ -124,10 +124,10 @@
 
 (fact (s/explain-data ::suit 42)
   => {::s/problems [{:path []
-                  :pred #{:spade :heart :diamond :club}
-                  :val 42
-                  :via [::suit]
-                  :in []}]
+                     :pred #{:spade :heart :diamond :club}
+                     :val 42
+                     :via [::suit]
+                     :in []}]
       ::s/spec ::suit
       ::s/value 42})
 

@@ -348,9 +348,9 @@
 
 (defn index [coll]
   (cond
-   (map? coll) (seq coll)
-   (set? coll) (map vector coll coll)
-   :else (map vector (iterate inc 0) coll)))
+    (map? coll) (seq coll)
+    (set? coll) (map vector coll coll)
+    :else (map vector (iterate inc 0) coll)))
 
 (defn pos [pred? coll]
   (for [[i v] (index coll) :when (pred? v)] i))
@@ -373,7 +373,7 @@
    (=
     ;; ...of a list
     (let [[a b c & d :as z] my-list] {:a a :b b :c c :d d :z z})
-    ;; ...of a vector 
+    ;; ...of a vector
     (let [[a b c & d :as z] my-vector] {:a a :b b :c c :d d :z z})
     ;;
     '{:a 1
@@ -486,9 +486,9 @@
 
 ;;;; ___________________________________________________________________________
 ;; ---- From http://clojure.org/sequences: ----
-;; 
+;;
 ;; The Seq library
-;; 
+;;
 ;; This is a sampling of the primary sequence functions, grouped
 ;; broadly by their capabilities. Some functions can be used in
 ;; different ways and so appear in more than one group. There are many
@@ -776,7 +776,7 @@
 
 (assert (= (into () (map inc '(1 2 3)))
            '(4 3 2)
-            [4 3 2]))
+           [4 3 2]))
 
 (assert (= (into [] (map inc '(1 2 3)))
            [2 3 4]

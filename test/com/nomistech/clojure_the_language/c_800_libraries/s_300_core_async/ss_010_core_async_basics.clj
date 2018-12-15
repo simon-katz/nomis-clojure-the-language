@@ -21,7 +21,7 @@
 
 
   ;; go blocks and IOC 'threads'
-  ;; 
+  ;;
   ;; go is a macro that takes its body and examines it for any channel
   ;; operations. It will turn the body into a state machine.
   ;;

@@ -17,7 +17,7 @@
    {:home :north :family "smith" :name "stan" :age 35 :sex :m :role :parent}
    {:home :north :family "smith" :name "simon" :age 7 :sex :m :role :child}
    {:home :north :family "smith" :name "sadie" :age 5 :sex :f :role :child}
-   
+
    {:home :south :family "jones" :name "jill" :age 45 :sex :f :role :parent}
    {:home :south :family "jones" :name "jeff" :age 45 :sex :m :role :parent}
    {:home :south :family "jones" :name "jackie" :age 19 :sex :f :role :child}
@@ -27,7 +27,7 @@
    {:home :west :family "brown" :name "billie" :age 55 :sex :f :role :parent}
    {:home :west :family "brown" :name "brian" :age 23 :sex :m :role :child}
    {:home :west :family "brown" :name "bettie" :age 29 :sex :f :role :child}
-   
+
    {:home :east :family "williams" :name "walter" :age 23 :sex :m :role :parent}
    {:home :east :family "williams" :name "wanda" :age 3 :sex :f :role :child}])
 
@@ -203,10 +203,10 @@
 ;; Example 5 - count the number of children
 (def ex5-no-children-on-or-below-the-equator
   (r/reduce + 0
-          (ex0-map-to-value-1
-           (ex5-select-people-on-or-below-equator
-            (ex5-map-home-to-latitude-and-longitude
-             (ex3-select-children village))))))
+            (ex0-map-to-value-1
+             (ex5-select-people-on-or-below-equator
+              (ex5-map-home-to-latitude-and-longitude
+               (ex3-select-children village))))))
 
 
 ;; Example 5 - sum the ages of children
@@ -215,10 +215,10 @@
 
 (def ex5-sum-of-ages-of-children-on-or-below-the-equator
   (r/reduce + 0
-          (ex5-select-age
-           (ex5-select-people-on-or-below-equator
-            (ex5-map-home-to-latitude-and-longitude
-             (ex3-select-children village))))))
+            (ex5-select-age
+             (ex5-select-people-on-or-below-equator
+              (ex5-map-home-to-latitude-and-longitude
+               (ex3-select-children village))))))
 
 ;; Example 5 - calculate the average age of children on or below the equator
 (def ex5-averge-age-of-children-on-or-below-the-equator
@@ -271,20 +271,20 @@
 
 ;; Example 6 - time reduce adding up Example 5's ages
 #_(time (r/reduce +
-                (ex5-select-age
-                 (ex5-select-people-on-or-below-equator
-                  (ex5-map-home-to-latitude-and-longitude
-                   (ex3-select-children village))))))
+                  (ex5-select-age
+                   (ex5-select-people-on-or-below-equator
+                    (ex5-map-home-to-latitude-and-longitude
+                     (ex3-select-children village))))))
 ;; =>
 "Elapsed time: 0.091714 msecs"
 
 
 ;; Example 6 - time fold adding up Example 5's ages
 #_(time (r/fold +
-              (ex5-select-age
-               (ex5-select-people-on-or-below-equator
-                (ex5-map-home-to-latitude-and-longitude
-                 (ex3-select-children village))))))
+                (ex5-select-age
+                 (ex5-select-people-on-or-below-equator
+                  (ex5-map-home-to-latitude-and-longitude
+                   (ex3-select-children village))))))
 ;; =>
 "Elapsed time: 0.185448 msecs"
 
@@ -385,13 +385,13 @@
 (defn ex8-combiner
   ([] {}) ;; note this is the init value for each reduced chunk
   ([a b]
-     (let [total-people (+ (get a :total-people) (get b :total-people))
-           total-age (+ (get a :total-age) (get b :total-age))
-           average-age (float (/ total-age total-people))
-           ]
-       {:total-people total-people
-        :total-age total-age
-        :average-age average-age})))
+   (let [total-people (+ (get a :total-people) (get b :total-people))
+         total-age (+ (get a :total-age) (get b :total-age))
+         average-age (float (/ total-age total-people))
+         ]
+     {:total-people total-people
+      :total-age total-age
+      :average-age average-age})))
 
 ;; Example 8 - now run the fold to perform the calculation
 (r/fold ex8-combiner ex8-reducer  ex8-visitors-collection)

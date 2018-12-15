@@ -15,7 +15,7 @@
   (let [ints-to-test (range (apply * denominators))
         div? (fn [numerator]
                (some (fn [denominator] (zero? (rem numerator denominator)))
-                     denominators)) 
+                     denominators))
         n-div (count (filter div? ints-to-test))
         n (count ints-to-test)]
     ;; (println (filter div? ints-to-test))
@@ -35,9 +35,9 @@
 (defn neighbors
   ([size yx] (neighbors [[-1 0] [1 0] [0 -1] [0 1]] size yx))
   ([deltas size yx]
-     (filter (fn [new-yx]
-               (every? #(< -1 % size) new-yx))
-             (map #(vec (map + yx %)) deltas))))
+   (filter (fn [new-yx]
+             (every? #(< -1 % size) new-yx))
+           (map #(vec (map + yx %)) deltas))))
 
 (assert (= (map #(get-in matrix %)
                 (neighbors 3 [0 0]))

@@ -197,7 +197,7 @@
 ;;;
 ;;       F2.0  means   (Float. 2.0)
 ;;;
-;; 
+;;
 ;;              --------------------------------------
 ;;        =     |   2  2N   |  2M 2.0M  |  2.0  F2.0 |
 ;;     -----------------------------------------------
@@ -302,11 +302,11 @@
   (fact "Throw exceptions on overflow"
     (inc Long/MAX_VALUE)
     => (throws ArithmeticException "integer overflow"))
-  ;; 
+  ;;
   (fact "We can avoid overflow exceptions by coercing to BigInt first"
     (inc (bigint Long/MAX_VALUE))
     => max-long-plus-1)
-  ;; 
+  ;;
   (fact "Do not demote from BigInt"
     (type (- max-long-plus-1 Long/MAX_VALUE))
     => clojure.lang.BigInt))

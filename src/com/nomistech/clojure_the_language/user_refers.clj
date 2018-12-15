@@ -17,23 +17,23 @@
                                             (set @user-refers))})
 
 ;; ________________________________________________________________________________
-;; user> 
+;; user>
 ;; (require 'com.nomistech.clojure-the-language.user-refers)
 ;; nil
 ;; ________________________________________________________________________________
-;; user> 
+;; user>
 ;; (com.nomistech.clojure-the-language.user-refers/note-user-refers)
 ;; :done
 ;; ________________________________________________________________________________
-;; user> 
+;; user>
 ;; (com.nomistech.clojure-the-language.user-refers/info)
 ;; {:n-current 736, :n-new 736, :current-not-new #{}, :new-not-current #{}}
 ;; ________________________________________________________________________________
-;; user> 
+;; user>
 ;; (clojure.tools.namespace.repl/refresh)
 ;; :reloading ...
 ;; :ok
 ;; ________________________________________________________________________________
-;; user> 
+;; user>
 ;; (com.nomistech.clojure-the-language.user-refers/info)
 ;; {:n-current 736, :n-new 736, :current-not-new #{}, :new-not-current #{}}

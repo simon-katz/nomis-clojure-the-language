@@ -15,9 +15,9 @@
 (fact "Description" 3 => 3)
 
 (fact "Description"
-      3 => 3
-      4 => 4
-      5 => 5)
+  3 => 3
+  4 => 4
+  5 => 5)
 
 ;;;; ___________________________________________________________________________
 ;;;; Some Terminology
@@ -211,57 +211,57 @@
 ;;;; **** Why is it called "just"?  It makes no sense to me.
 
 (fact
- [1 2 3] => (just [odd? even? odd?]))
+  [1 2 3] => (just [odd? even? odd?]))
 
 (fact
- ["a" "aa" "aaa"] (just [#"a+" #"a+" #"a+"]))
+  ["a" "aa" "aaa"] (just [#"a+" #"a+" #"a+"]))
 
 (fact
- "You can omit the brackets (**** jsk: yeuch!)"
- [1 2 3] => (just odd? even? odd?))
+  "You can omit the brackets (**** jsk: yeuch!)"
+  [1 2 3] => (just odd? even? odd?))
 
 (fact
- "extended equality only applies to the top level"
- [[[1]]] =not=> (just [[[odd?]]])
- [[[1]]] =not=> [[(just odd?)]])
+  "extended equality only applies to the top level"
+  [[[1]]] =not=> (just [[[odd?]]])
+  [[[1]]] =not=> [[(just odd?)]])
 
 (fact
- "you have to do this"
- [[[1]]] => (just (just (just odd?))))
+  "you have to do this"
+  [[[1]]] => (just (just (just odd?))))
 
 
 ;;;; just and not caring about order
 
 (fact
- [2 1 3] => (just #{1 2 3})
- [2 1 3] => (just [1 2 3] :in-any-order)
- [2 1 3] => (just 1 2 3 :in-any-order) ; **** jsk: yeuch++!
- [1 3] => (just [odd? 1] :in-any-order) ; doesn't over-commit to matches
- )
+  [2 1 3] => (just #{1 2 3})
+  [2 1 3] => (just [1 2 3] :in-any-order)
+  [2 1 3] => (just 1 2 3 :in-any-order) ; **** jsk: yeuch++!
+  [1 3] => (just [odd? 1] :in-any-order) ; doesn't over-commit to matches
+  )
 
 ;;;; contains
 ;;;; For matching subsequences.
 
 (facts
- (letfn [(a? [x] (#{:a "a"} x))
-         (b? [x] (#{:b "b"} x))]
-   ;; match a subsequence
-   (fact [0 :a :b "a" 0] =>     (contains [b? a?]))
-   (fact [0 :a :b "a" 0] =not=> (contains [a? a?]))
-   (fact [0 :a :b "a" 0] =>     (contains [b?]))
-   (fact [0 :a :b "a" 0] =>     (contains b?))
-   ;; :in-any-order
-   (fact [0 :a :b 0]   =>     (contains #{b? a?}))
-   (fact [0 :a :b 0]   =>     (contains [b? a?] :in-any-order))
-   (fact [0 :a 0 :b 0] =not=> (contains [b? a?] :in-any-order))
-   ;; :gaps-ok
-   (fact [0 :a :b "a" 0] => (contains [a? a?] :gaps-ok))
-   ;; :in-any-order and :gaps-ok
-   (fact [0 :a 0 :b 0] => (contains [b? a?] :in-any-order :gaps-ok))
-   ;; Marick: "Note: the algorithm used for this complicated case is
-   ;; inefficient and also won't work on longer sequences. I keep
-   ;; hoping someone will replace it."
-   ))
+  (letfn [(a? [x] (#{:a "a"} x))
+          (b? [x] (#{:b "b"} x))]
+    ;; match a subsequence
+    (fact [0 :a :b "a" 0] =>     (contains [b? a?]))
+    (fact [0 :a :b "a" 0] =not=> (contains [a? a?]))
+    (fact [0 :a :b "a" 0] =>     (contains [b?]))
+    (fact [0 :a :b "a" 0] =>     (contains b?))
+    ;; :in-any-order
+    (fact [0 :a :b 0]   =>     (contains #{b? a?}))
+    (fact [0 :a :b 0]   =>     (contains [b? a?] :in-any-order))
+    (fact [0 :a 0 :b 0] =not=> (contains [b? a?] :in-any-order))
+    ;; :gaps-ok
+    (fact [0 :a :b "a" 0] => (contains [a? a?] :gaps-ok))
+    ;; :in-any-order and :gaps-ok
+    (fact [0 :a 0 :b 0] => (contains [b? a?] :in-any-order :gaps-ok))
+    ;; Marick: "Note: the algorithm used for this complicated case is
+    ;; inefficient and also won't work on longer sequences. I keep
+    ;; hoping someone will replace it."
+    ))
 
 ;;; Only for use with extended equality.
 ;;; So, unlike `has-prefix` and `has-suffix`.
@@ -273,17 +273,17 @@
 ;;;;      for elements rather than subsequences.
 ;;;;      See examples below.
 
-(facts 
- (letfn [(a? [x] (#{:a "a"} x))
-         (b? [x] (#{:b "b"} x))]
-   (fact "Leaving off brackets with a single item has the meaning I expect"
-         [0 :a 0] => (contains a?))
-   (facts "**** What I'd expect the word 'contains' to mean, and
+(facts
+  (letfn [(a? [x] (#{:a "a"} x))
+          (b? [x] (#{:b "b"} x))]
+    (fact "Leaving off brackets with a single item has the meaning I expect"
+      [0 :a 0] => (contains a?))
+    (facts "**** What I'd expect the word 'contains' to mean, and
                 what you have to do instead"
-          (fact "I'd expect this to succeed with `=>`"
-                [0 :a [:b "a"] 0] =not=> (contains [b? a?]))
-          (fact "What you have to do instead"
-                [0 :a [:b "a"] 0] => (contains (just [b? a?]))))))
+      (fact "I'd expect this to succeed with `=>`"
+        [0 :a [:b "a"] 0] =not=> (contains [b? a?]))
+      (fact "What you have to do instead"
+        [0 :a [:b "a"] 0] => (contains (just [b? a?]))))))
 
 ;;;; has-prefix
 
@@ -293,11 +293,11 @@
 ;;; `has-prefix` does not.
 
 (fact "has-prefix is anchored to the left"
-      [1 2 3] =not=> (has-prefix [2 3]) ; it's not a prefix
-      [1 2 3] =>     (has-prefix [1 2])     
-      [1 2 3] =not=> (has-prefix [2 1]) ; order matters
-      [1 2 3] =>     (has-prefix [2 1] :in-any-order)
-      [1 2 3] =>     (has-prefix #{2 1}))
+  [1 2 3] =not=> (has-prefix [2 3]) ; it's not a prefix
+  [1 2 3] =>     (has-prefix [1 2])
+  [1 2 3] =not=> (has-prefix [2 1]) ; order matters
+  [1 2 3] =>     (has-prefix [2 1] :in-any-order)
+  [1 2 3] =>     (has-prefix #{2 1}))
 
 ;;;; has-suffix
 
@@ -307,31 +307,31 @@
 ;;;; identical elements"
 
 (fact "one checker to match exactly N elements."
-      ["a"] => (one-of "a")
-      [:k :w] => (two-of keyword?)
-      ["a" "aa" "aaa"] => (three-of #"a+")
-      ;; ...
-      [1 3 5 7 9 11 13 15 17] => (nine-of odd?)
-      ["a" "b" "c" "d" "e" "f" "g" "h" "i" "j"] => (ten-of string?)
-      ;; to go above ten-of
-      (repeat 100 "a") => (n-of "a" 100)
-      ;; nesting
-      [[2 4] [6 8]] => (two-of (two-of even?)))
+  ["a"] => (one-of "a")
+  [:k :w] => (two-of keyword?)
+  ["a" "aa" "aaa"] => (three-of #"a+")
+  ;; ...
+  [1 3 5 7 9 11 13 15 17] => (nine-of odd?)
+  ["a" "b" "c" "d" "e" "f" "g" "h" "i" "j"] => (ten-of string?)
+  ;; to go above ten-of
+  (repeat 100 "a") => (n-of "a" 100)
+  ;; nesting
+  [[2 4] [6 8]] => (two-of (two-of even?)))
 
 ;;;; has
 
 (facts
- (fact "You can do this"
-       [2 3 4] =>     (partial some odd?)
-       [2 4 6] =not=> (partial some odd?))
- (fact "Some more elaborate uses of partial will not work as you expect,
+  (fact "You can do this"
+    [2 3 4] =>     (partial some odd?)
+    [2 4 6] =not=> (partial some odd?))
+  (fact "Some more elaborate uses of partial will not work as you expect,
         because of a mistake in Midje's design (which will be fixed)."
-       [[1] [2]] => (partial every? (just [1])))
- (fact "Use `has` instead"
-       [[1] [2]] =not=> (has every? (just [1])))
- (fact "`has` allows regular expressions"
-       ["ab" "aab" "aaab"] => (has every? #"a+b")
-       [1 2 3] => (has not-any? #"a+b")))
+    [[1] [2]] => (partial every? (just [1])))
+  (fact "Use `has` instead"
+    [[1] [2]] =not=> (has every? (just [1])))
+  (fact "`has` allows regular expressions"
+    ["ab" "aab" "aaab"] => (has every? #"a+b")
+    [1 2 3] => (has not-any? #"a+b")))
 
 ;;;; ___________________________________________________________________________
 ;;;; Collection checkers and strings
@@ -349,31 +349,31 @@
 (defrecord NotR [x y])
 
 (fact
- ;; That the left-hand side below is a record is irrelevant:
- (R. 1 2) => {:x 1, :y 2}
- ;; The contents of the left are compared to the right in exactly
- ;; the same way as if both sides were maps:
- {:x 1, :y 2} => {:x 1, :y 2})
+  ;; That the left-hand side below is a record is irrelevant:
+  (R. 1 2) => {:x 1, :y 2}
+  ;; The contents of the left are compared to the right in exactly
+  ;; the same way as if both sides were maps:
+  {:x 1, :y 2} => {:x 1, :y 2})
 
 (fact
- ;; (**** The example has an extra right parenthesis.)
- "using a record on the right implies that you care about *both* contents and type"
- ;; **** bug: The following two fail; thay also fails with `=>`.
- ;;           (Hmmm, so how well tested is Midje?)
- ;; {:x 1, :y 2} =not=> (R. 1 2)
- ;; (NotR. 1 2)  =not=> (R. 1 2)
- (R. 1 2)     =>     (R. 1 2))
+  ;; (**** The example has an extra right parenthesis.)
+  "using a record on the right implies that you care about *both* contents and type"
+  ;; **** bug: The following two fail; thay also fails with `=>`.
+  ;;           (Hmmm, so how well tested is Midje?)
+  ;; {:x 1, :y 2} =not=> (R. 1 2)
+  ;; (NotR. 1 2)  =not=> (R. 1 2)
+  (R. 1 2)     =>     (R. 1 2))
 
 ;;;; You can use `just` for extended equality.
 ;;;; Use `contains` when you don't care about parts of a map or record
 
 (facts
- (fact "`just` provides extended equality"
-       {:a 1, :b 2, :c "some text"} => (just {:a odd?, :b 2, :c #"text"}))
- (fact "`contains` ignores unmentioned keys"
-       (R. 1 2) => (contains {:x 1}))
- (fact "`contains` provides extended equality"
-       (R. 1 2) => (contains {:x odd?})))
+  (fact "`just` provides extended equality"
+    {:a 1, :b 2, :c "some text"} => (just {:a odd?, :b 2, :c #"text"}))
+  (fact "`contains` ignores unmentioned keys"
+    (R. 1 2) => (contains {:x 1}))
+  (fact "`contains` provides extended equality"
+    (R. 1 2) => (contains {:x odd?})))
 
 ;;;; In both of the previous examples, `contains` will ignore the type
 ;;;; of the left-hand side. If you want to say specifically that the
@@ -381,34 +381,34 @@
 ;;;; checker:
 
 (fact
- (R. 1 2) => (every-checker #(instance? R %)
-                            (contains {:x 1})))
+  (R. 1 2) => (every-checker #(instance? R %)
+                             (contains {:x 1})))
 
 ;;;; `has` works with quantifiers and values
 
 (fact "`has` quantifies over values"
-      {:a 1, :b 3} => (has every? odd?)
-      {:a 1, :b 3} => (has some #(= 1 %)))
+  {:a 1, :b 3} => (has every? odd?)
+  {:a 1, :b 3} => (has some #(= 1 %)))
 
 ;;;; Making claims about keys is more awkward
 
 (fact
- "ways to make claims about keys"
- (fact "Contains every key -- two ways"
-       (keys {:x 1, :y 1}) => (just #{:x :y})
-       {:x 1, :y 1} => (just {:x anything, :y anything}))
- (fact "Contains some of the keys -- two ways"
-       (keys {:x 1, :y 1}) => (contains #{:x})
-       {:x 1, :y 1} => (contains {:x anything})))
+  "ways to make claims about keys"
+  (fact "Contains every key -- two ways"
+    (keys {:x 1, :y 1}) => (just #{:x :y})
+    {:x 1, :y 1} => (just {:x anything, :y anything}))
+  (fact "Contains some of the keys -- two ways"
+    (keys {:x 1, :y 1}) => (contains #{:x})
+    {:x 1, :y 1} => (contains {:x anything})))
 
 ;;;; Map entries
 ;;;; The just and contains right-hand sides can take arrays of pairs
 ;;;; (or Java MapEntry objects) instead of a map or record:
 
 (fact
- "a sequence of key/value pairs is OK on the right-hand side"
- {:a 1, :b 2} => (just [[:a 1] [:b 2]])
- (R. 1 nil) => (contains [[:x 1]]))
+  "a sequence of key/value pairs is OK on the right-hand side"
+  {:a 1, :b 2} => (just [[:a 1] [:b 2]])
+  (R. 1 nil) => (contains [[:x 1]]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Checking sets
@@ -416,21 +416,21 @@
 ;;;; Checking the whole set
 
 (fact "`just` provides extended equality for sets"
-      #{3 8 1} => (just odd? 3 even?))
+  #{3 8 1} => (just odd? 3 even?))
 
 (fact "checking properties of known number of elements"
-      #{1 3 5} => (three-of odd?))
+  #{1 3 5} => (three-of odd?))
 
 (fact "number irrelevant"
-      #{1 3 5} => (has every? odd?))
+  #{1 3 5} => (has every? odd?))
 
 ;;;; Checking a subset
 
 (fact "subsets of literal values"
-      #{1 2 3} => (contains 3))
+  #{1 2 3} => (contains 3))
 
 (fact "subsets of checkers"
-      #{1 2 3} => (contains odd? even?)) ; **** example has extra right parenthesis.
+  #{1 2 3} => (contains odd? even?)) ; **** example has extra right parenthesis.
 
 ;;;; ___________________________________________________________________________
 ;;;; Combining checkers
@@ -464,11 +464,11 @@
 ;;;   (fact ...)
 ;;;   (fact ...)
 ;;;   ...)
-;;; 
+;;;
 ;;; (with-state-changes [(after :facts ...)]
 ;;;   (fact ...)
 ;;;   (fact ...))
-;;; 
+;;;
 ;;; (with-state-changes [(around :facts (... ?form ...))]
 ;;;   (fact ...)
 ;;;   (fact ...))
@@ -545,11 +545,11 @@
   (apply str (map decode-piece (lump-pieces lump))))
 
 (fact
- (decode-lump ..lump..) => "01"
- (provided
-  (lump-pieces ..lump..) => [..0-lump.. ..1-lump..]
-  (decode-piece ..0-lump..) => 0
-  (decode-piece ..1-lump..) => 1))
+  (decode-lump ..lump..) => "01"
+  (provided
+    (lump-pieces ..lump..) => [..0-lump.. ..1-lump..]
+    (decode-piece ..0-lump..) => 0
+    (decode-piece ..1-lump..) => 1))
 
 ;;;; ____
 ;;;; Throwing
@@ -563,9 +563,9 @@
          :throw-happened)))
 
 (fact
- (call-throw-if-4 4) => :throw-happened
- (provided
-  (throw-if-4 4) =throws=> (Error. "boom!")))
+  (call-throw-if-4 4) => :throw-happened
+  (provided
+    (throw-if-4 4) =throws=> (Error. "boom!")))
 
 ;;;; ____
 ;;;; Multiple checkables with pre-requisites -- **** horrible syntax
@@ -578,24 +578,24 @@
 ;;;;      (fact a1 => e1 (provided ...) a2 => e2 (provided ...))
 
 (fact
- "Nasty syntax; don't do this! Have separate facts instead."
- (call-throw-if-4 4) => :throw-happened
- (provided
-  (throw-if-4 4) =throws=> (Error. "boom!"))
- (call-throw-if-4 5) => 5
- (provided
-  (throw-if-4 5) => 5))
-
-(fact
- "Nicer"
- (fact
+  "Nasty syntax; don't do this! Have separate facts instead."
   (call-throw-if-4 4) => :throw-happened
   (provided
-   (throw-if-4 4) =throws=> (Error. "boom!")))
- (fact
+    (throw-if-4 4) =throws=> (Error. "boom!"))
   (call-throw-if-4 5) => 5
   (provided
-   (throw-if-4 5) => 5)))
+    (throw-if-4 5) => 5))
+
+(fact
+  "Nicer"
+  (fact
+    (call-throw-if-4 4) => :throw-happened
+    (provided
+      (throw-if-4 4) =throws=> (Error. "boom!")))
+  (fact
+    (call-throw-if-4 5) => 5
+    (provided
+      (throw-if-4 5) => 5)))
 
 ;;;; ____
 ;;;; The GPA exercises
@@ -613,21 +613,21 @@
             extras))))
 
 (fact
- (let [correct-gpa 3.66
-       tolerance 0.01
-       coursework [{:credit-hours 1, :grade 5}
-                   {:credit-hours 2, :grade 3}]]
-   (fact "without extras"
-         (gpa-1 ..student.. coursework) => (roughly correct-gpa tolerance)
-         (provided (child-of-wealthy-alumnus? ..student..) => false))
-   (fact "with extras"
-         (gpa-1 ..student.. coursework) => (roughly (+ correct-gpa 0.5) tolerance)
-         (provided (child-of-wealthy-alumnus? ..student..) => true)))
- (let [max-gpa 5.0
-       coursework [{:credit-hours 1, :grade 4.7}]]
-   (fact "max"
-         (gpa-1 ..student.. coursework) => max-gpa
-         (provided (child-of-wealthy-alumnus? ..student..) => true))))
+  (let [correct-gpa 3.66
+        tolerance 0.01
+        coursework [{:credit-hours 1, :grade 5}
+                    {:credit-hours 2, :grade 3}]]
+    (fact "without extras"
+      (gpa-1 ..student.. coursework) => (roughly correct-gpa tolerance)
+      (provided (child-of-wealthy-alumnus? ..student..) => false))
+    (fact "with extras"
+      (gpa-1 ..student.. coursework) => (roughly (+ correct-gpa 0.5) tolerance)
+      (provided (child-of-wealthy-alumnus? ..student..) => true)))
+  (let [max-gpa 5.0
+        coursework [{:credit-hours 1, :grade 4.7}]]
+    (fact "max"
+      (gpa-1 ..student.. coursework) => max-gpa
+      (provided (child-of-wealthy-alumnus? ..student..) => true))))
 
 ;;;; ____
 
@@ -645,40 +645,40 @@
             extras))))
 
 (fact
- (let [correct-gpa 3.66
-       tolerance 0.01
-       coursework [{:credit-hours 1, :grade 5}
-                   {:credit-hours 2, :grade 3}]]
-   (fact "fair-gpa"
-         (fair-gpa coursework) => (roughly correct-gpa tolerance))
-   (fact "extras"
-         (fact "without extras"
-               (gpa-2 ..student.. ..coursework..) => (roughly correct-gpa tolerance)
-               (provided (child-of-wealthy-alumnus? ..student..) => false
-                         (fair-gpa ..coursework..) => correct-gpa))
-         (fact "with extras"
-               (gpa-2 ..student.. ..coursework..) => (roughly (+ correct-gpa 0.5) tolerance)
-               (provided (child-of-wealthy-alumnus? ..student..) => true
-                         (fair-gpa ..coursework..) => correct-gpa))
-         (fact "max"
-               (let [max-gpa 5.0]
-                 (fact
-                  (gpa-2 ..student.. ..coursework..) => max-gpa
-                  (provided (child-of-wealthy-alumnus? ..student..) => true
-                            (fair-gpa ..coursework..) => 4.7)))))))
+  (let [correct-gpa 3.66
+        tolerance 0.01
+        coursework [{:credit-hours 1, :grade 5}
+                    {:credit-hours 2, :grade 3}]]
+    (fact "fair-gpa"
+      (fair-gpa coursework) => (roughly correct-gpa tolerance))
+    (fact "extras"
+      (fact "without extras"
+        (gpa-2 ..student.. ..coursework..) => (roughly correct-gpa tolerance)
+        (provided (child-of-wealthy-alumnus? ..student..) => false
+                  (fair-gpa ..coursework..) => correct-gpa))
+      (fact "with extras"
+        (gpa-2 ..student.. ..coursework..) => (roughly (+ correct-gpa 0.5) tolerance)
+        (provided (child-of-wealthy-alumnus? ..student..) => true
+                  (fair-gpa ..coursework..) => correct-gpa))
+      (fact "max"
+        (let [max-gpa 5.0]
+          (fact
+            (gpa-2 ..student.. ..coursework..) => max-gpa
+            (provided (child-of-wealthy-alumnus? ..student..) => true
+                      (fair-gpa ..coursework..) => 4.7)))))))
 
 ;;;; ____
 ;;;; Prerequisites use a variant of extended equality to match
 ;;;; arguments
 ;;;; https://github.com/marick/Midje/wiki/Describing-one-checkable%27s-prerequisites#prerequisites-use-a-variant-of-extended-equality-to-match-arguments
 
-;; (provided 
+;; (provided
 ;;  (g #"hello.*world") => 12)
 
-;; (provided 
+;; (provided
 ;;  (g (roughly 5.0 0.01)) => 89)
 
-;; (provided 
+;; (provided
 ;;  (g anything) => 89)
 
 ;;; Argument matching isn't quite the same as extended equality,
@@ -699,37 +699,37 @@
   42)
 
 (facts
- (fact "By default, expect at least one call"
-       (do-two-calls) => 42
-       (provided
-        (call-me) => anything))
- (fact "Can specify call counts"
-       (do-two-calls) => 42
-       (provided
-        (call-me) => anything :times 2))
- (fact "Can specify call counts as a sequence of permitted values"
-       (do-two-calls) => 42
-       (provided
-        (call-me) => anything :times [2 4]))
- (fact "Can specify call counts as a lazy sequence of permitted values"
-       (do-two-calls) => 42
-       (provided
-        (call-me) => anything :times (range 2 5)))
- (fact "To say this call is optional, use /:times (range)/"
-       (do-two-calls) => 42
-       (provided
-        (call-me) => anything
-        (maybe-call-me) => anything :times (range)))
- (fact "Can specify call counts using checkers"
-       (do-two-calls) => 42
-       (provided
-        (call-me) => anything :times even?))
- (fact "To say not called, must specify args (if any) and result.
+  (fact "By default, expect at least one call"
+    (do-two-calls) => 42
+    (provided
+      (call-me) => anything))
+  (fact "Can specify call counts"
+    (do-two-calls) => 42
+    (provided
+      (call-me) => anything :times 2))
+  (fact "Can specify call counts as a sequence of permitted values"
+    (do-two-calls) => 42
+    (provided
+      (call-me) => anything :times [2 4]))
+  (fact "Can specify call counts as a lazy sequence of permitted values"
+    (do-two-calls) => 42
+    (provided
+      (call-me) => anything :times (range 2 5)))
+  (fact "To say this call is optional, use /:times (range)/"
+    (do-two-calls) => 42
+    (provided
+      (call-me) => anything
+      (maybe-call-me) => anything :times (range)))
+  (fact "Can specify call counts using checkers"
+    (do-two-calls) => 42
+    (provided
+      (call-me) => anything :times even?))
+  (fact "To say not called, must specify args (if any) and result.
         This will be improved later."
-       (do-two-calls) => 42
-       (provided
-        (call-me) => anything
-        (maybe-call-me) => anything :times 0)))
+    (do-two-calls) => 42
+    (provided
+      (call-me) => anything
+      (maybe-call-me) => anything :times 0)))
 
 ;;;; ____
 ;;;; Shorthand for prerequisite chaining
@@ -740,15 +740,15 @@
   (inc (happens-second (happens-first 1 n))))
 
 (fact "Not using prerequisite chaining"
-      (function-under-test 5) => 101
-      (provided
-       (happens-first 1 5) => ..some-result..
-       (happens-second ..some-result..) => 100))
+  (function-under-test 5) => 101
+  (provided
+    (happens-first 1 5) => ..some-result..
+    (happens-second ..some-result..) => 100))
 
 (fact "Using prerequisite chaining"
-      (function-under-test 5) => 101
-      (provided
-       (happens-second (happens-first 1 5)) => 100))
+  (function-under-test 5) => 101
+  (provided
+    (happens-second (happens-first 1 5)) => 100))
 
 ;;;; ____
 ;;;; Variant prerequisite arrows
@@ -767,9 +767,9 @@
 ;;;; prerequisites requires a little extra work.
 
 ;; use midje.open-protocols in addition to midje.sweet
-;; 
+;;
 ;; Use `defrecord-openly`, `deftype-openly`.
-;; 
+;;
 ;; Other protocol functions like reify don't have -openly variants
 ;; yet.
 
@@ -789,10 +789,10 @@
 (defn fwp-1*2 [] (* (fwp-1) (fwp-2)))
 
 (fact
- (prerequisites (fwp-1) => 3
-                (fwp-2) => 4)
- (fwp-1+2) => 7
- (fwp-1*2) => 12)
+  (prerequisites (fwp-1) => 3
+                 (fwp-2) => 4)
+  (fwp-1+2) => 7
+  (fwp-1*2) => 12)
 
 ;;;; "Fact-wide prerequisites do not have to be used."
 

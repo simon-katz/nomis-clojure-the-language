@@ -13,7 +13,7 @@
 ;;;;   - Retryable
 ;;;; - Atomic compare-and-set modification
 
-;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;;;; `atom`, `deref`, `@` and `swap!`
 
 (def *my-number (atom 0))
@@ -31,12 +31,12 @@
   (swap! *my-number inc) => 3
   (swap! *my-number dec) => 2)
 
-;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;;;; We need a name for the function that `swap!` calls
 ;;;; - We'll use the term "data function"
 ;;;;   - The book /Clojure Applied/ uses this
 
-;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;;;; Supplying additional args to the data function:
 
 (do (swap! *my-number + 10) ; replace the value with: (+ 2 10)
@@ -45,7 +45,7 @@
 (do (swap! *my-number + 1 2 3 4 5) ; replace the value with: (+ 12 1 2 3 4 5)
     (fact @*my-number => 27))
 
-;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;;;; Storing maps in atoms
 
 ;;;; When we have maps in atoms, we use functions like `assoc`, `assoc-in`,
@@ -101,7 +101,7 @@
                                 :n-movies-as-director 55}
                      :n-likes 2}))
 
-;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;;;; `compare-and-set!`
 
 (do (fact @*my-number => 27)
@@ -111,7 +111,7 @@
 (do (fact (compare-and-set! *my-number 27 42) => true)
     (fact @*my-number => 42))
 
-;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;;;; `reset!`
 
 (do (reset! *my-number 100)

@@ -67,4 +67,3 @@
     ;; Cannot compile the call, as expected
     (macro-definer/expand-to-private-macro-attempted-workaround)
     => (throws "Wrong number of args (0) passed to: s-920a-macro-using-private/private-macro-attempted-workaround")))
-

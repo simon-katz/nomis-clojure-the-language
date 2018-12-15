@@ -1,7 +1,7 @@
 (ns com.nomistech.clojure-the-language.old-to-organise.core-match-101-basics
   (:require ;; [com.nomistech.clojure-the-language.old-to-organise.core-match-101-basics :refer :all]
-            [midje.sweet :refer :all]
-            [clojure.core.match :refer [match]]))
+   [midje.sweet :refer :all]
+   [clojure.core.match :refer [match]]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Basics
@@ -63,7 +63,7 @@
 ;;;; #### Maybe want to re-write this in the light of:
 
 ;; This won't compile:
-;; 
+;;
 ;; (match [:a :b :c]
 ;;   [_ _] :two
 ;;   [_ _ _ ] :three)
@@ -263,7 +263,7 @@
 ;;;; ___________________________________________________________________________
 ;;;; Applying functions before doing the matching
 
-(fact "Applying functions before doing the matching" 
+(fact "Applying functions before doing the matching"
   (fact
     (match [0]
       [(1 :<< inc)] :zero->one

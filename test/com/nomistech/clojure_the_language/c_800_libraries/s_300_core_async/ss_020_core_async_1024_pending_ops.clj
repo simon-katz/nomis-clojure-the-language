@@ -3,11 +3,11 @@
             [midje.sweet :refer :all]))
 
 (fact "About pending operations"
-  
+
   (fact "No more than 1024 pending puts"
     (let [c (a/chan)] (dotimes [i 1025] (a/put! c i)))
     => (throws AssertionError #"No more than 1024 pending puts"))
-  
+
   (fact "No more than 1024 pending takes"
     (let [c (a/chan)] (dotimes [i 1025] (a/take! c #(do 42))))
     => (throws AssertionError #"No more than 1024 pending takes")))

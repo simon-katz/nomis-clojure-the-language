@@ -57,7 +57,7 @@
                                            (-> (:level data)
                                                name
                                                str/upper-case)
-                                           (:vargs data))))}}} 
+                                           (:vargs data))))}}}
     (fun)))
 
 (defmacro with-test-log-config [{} & body]
@@ -74,14 +74,14 @@
        (print "My normal output")))))
 
 (fact "`with-ignore-logging` works"
-  
+
   (fact "default logging level"
     (with-ignore-logging {}
       (do-test-logging))
     => (str/join "\n"
                  ["WARN My warn"
                   "My normal output"]))
-  
+
   (fact "`:info` logging level"
     (with-ignore-logging {:level-to-show :info}
       (do-test-logging))
@@ -101,7 +101,7 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 (fact "`chan->seq` works"
-  
+
   (fact "can take elements before the channel closes"
     (let [c (a/chan 10)]
       (a/go (a/>! c 1)
@@ -110,7 +110,7 @@
       (->> (chan->seq c)
            (take 3)))
     => [1 2 3])
-  
+
   (fact "with a closed channel, the sequence ends"
     (let [c (a/chan 10)]
       (a/go (a/>! c 1)
@@ -156,7 +156,7 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 (fact "`wait-for-condition` works"
-  
+
   (fact "works when `test-fun` eventually returns logical true"
     (let [v (atom :not-done)]
       (future

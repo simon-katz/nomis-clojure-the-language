@@ -43,7 +43,7 @@
 
 (defn make-test-routes []
   ["/"
-   
+
    [["hello-as-resource"
      (yada/as-resource "Hello World!")]
 

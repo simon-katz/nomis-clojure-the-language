@@ -36,7 +36,7 @@
        [namespace-2 :as alias-2]
        ...]
   Symbols that have `alias-i` as their namespace have it replaced with
-  `namepace-i`.  
+  `namepace-i`.
   Does not load any namespaces.
   Note: One might argue that this should load namespaces, but that would be
   bad -- better not to have side effects that would make things confusing
@@ -53,7 +53,7 @@
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 (fact "`with-ns-aliases` works"
-  
+
   (fact
     (macroexpand-1 '(with-ns-aliases [[my-ns :as my-alias]]
                       my-alias/x

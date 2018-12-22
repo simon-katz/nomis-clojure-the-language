@@ -418,7 +418,7 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- Destructuring ----
 
-;;;; You also have destructuring stuff in com.nomistech.clojure-the-language.c-200-clojure-basics.s-300-collections -- should combine
+;;;; You also have destructuring stuff in com.nomistech.clojure-the-language.c-200-clojure-basics.s-300-collections-test -- should combine
 
 (let [[a [b c] & rest :as x] [1 [2 3] 4 5]]
   [x [a b c]])

@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.c-700-macros.s-910a-macros-showing-symbols-defs-test)
+(ns com.nomistech.clojure-the-language.c-700-macros.s-910-macros-showing-symbols)
 
 ;;;; ___________________________________________________________________________
 

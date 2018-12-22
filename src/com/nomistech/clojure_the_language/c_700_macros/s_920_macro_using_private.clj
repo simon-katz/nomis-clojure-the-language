@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.c-700-macros.s-920a-macro-using-private-test)
+(ns com.nomistech.clojure-the-language.c-700-macros.s-920-macro-using-private)
 
 ;;;; ___________________________________________________________________________
 

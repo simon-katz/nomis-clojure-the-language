@@ -16,6 +16,9 @@
 
 ;; These tests started to fail weirdly within Emacs when you added Yada stuff
 ;; to the project.
+;; - 2018-12-22
+;;   - They pass if you run them before loading Yada.
+;;   - Yada changes the way in which Dates are formatted.
 ;;
 ;; (fact
 ;;   (generate-string {:foo "bar" :baz (java.util.Date. 0)})

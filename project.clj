@@ -7,7 +7,7 @@
                                                             org.clojure/tools.reader]]
                  [metosin/compojure-api "2.0.0-alpha26"]
                  [com.nomistech/clj-utils "0.8.2"]
-                 [org.clojure/clojure "1.9.0"]
+                 [org.clojure/clojure "1.10.0"]
                  [org.clojure/core.async "0.4.474"]
                  [org.clojure/core.match "0.3.0-alpha5"]
                  [prismatic/schema "1.1.9"]
@@ -15,6 +15,7 @@
                  [ring "1.7.0"]
                  [ring/ring-json "0.4.0" :exclusions [ring/ring-core]]
                  [slingshot "0.12.2"]
+                 [version-clj "0.1.2"]
                  [yada "1.2.15"]]
   :repl-options {:init-ns user}
   :profiles {:dev {:dependencies [[org.clojure/tools.namespace "0.3.0-alpha4"]

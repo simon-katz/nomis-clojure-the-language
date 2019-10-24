@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-700-macros.s-920-macro-using-private-test
   (:require [com.nomistech.clojure-the-language.c-700-macros.s-920-macro-using-private
              :as macro-definer]
+            [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]
             [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
@@ -66,4 +67,6 @@
   (fact
     ;; Cannot compile the call, as expected
     (macro-definer/expand-to-private-macro-attempted-workaround)
-    => (throws "Wrong number of args (0) passed to: s-920-macro-using-private/private-macro-attempted-workaround")))
+    => (if (tu/version< (clojure-version) "1.10.0")
+         (throws "Wrong number of args (0) passed to: s-920-macro-using-private/private-macro-attempted-workaround")
+         (throws #"Wrong number of args \(0\) passed to: .*s-920-macro-using-private/private-macro-attempted-workaround"))))

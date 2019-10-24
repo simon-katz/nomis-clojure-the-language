@@ -1,7 +1,8 @@
 (ns com.nomistech.clojure-the-language.old-to-organise.core-match-101-basics-test
   (:require ;; [com.nomistech.clojure-the-language.old-to-organise.core-match-101-basics-test :refer :all]
    [midje.sweet :refer :all]
-   [clojure.core.match :refer [match]]))
+   [clojure.core.match :refer [match]]
+   [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Basics
@@ -103,8 +104,10 @@
     (fact "Not in a nested vector"
       (macroexpand-1 '(match [1 2 3 4 5]
                         [1 2 & r] (str "r = " r)))
-      => (throws AssertionError
-                 "Pattern row 1: Pattern row has differing number of patterns. [1 2 & r] has 4 pattern/s, expecting 5 for occurrences [1 2 3 4 5]"))))
+      => (if (tu/version< (clojure-version) "1.10.0")
+           (throws AssertionError
+                   "Pattern row 1: Pattern row has differing number of patterns. [1 2 & r] has 4 pattern/s, expecting 5 for occurrences [1 2 3 4 5]")
+           (throws #"Unexpected error macroexpanding match")))))
 
 (fact "Match on a map"
   (fact "Trivial"
@@ -192,11 +195,15 @@
     (fact "Numbers"
       (macroexpand-1 '(match :whatever
                         {1 :a} :this))
-      => (throws java.lang.ClassCastException))
+      => (if (tu/version< (clojure-version) "1.10.0")
+           (throws java.lang.ClassCastException)
+           (throws #"Unexpected error macroexpanding match")))
     (fact "Quoted symbols"
       (macroexpand-1 '(match :whatever
                         {'sym :a} :this))
-      => (throws java.lang.ClassCastException)))
+      => (if (tu/version< (clojure-version) "1.10.0")
+           (throws java.lang.ClassCastException)
+           (throws #"Unexpected error macroexpanding match"))))
   (fact "Variables bound to non- clojure.lang.Named values are allowed as map keys in match patterns"
     (fact "Numbers"
       (let [v 1]

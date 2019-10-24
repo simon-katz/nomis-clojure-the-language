@@ -3,7 +3,8 @@
             [clojure.string :as str]
             [midje.sweet :refer :all]
             [slingshot.slingshot :as slingshot :refer [throw+ try+]]
-            [taoensso.timbre :as timbre]))
+            [taoensso.timbre :as timbre]
+            [version-clj.core :as version]))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- canonicalise-line-endings ----
@@ -232,3 +233,47 @@
   => (throws (make-slingshot-predicate {:a 1
                                         :b 2
                                         :c 3})))
+
+;;;; ___________________________________________________________________________
+;;;; ---- versions ----
+
+(defn version< [v1 v2]
+  (= (version/version-compare v1 v2)
+     -1))
+
+(defn version= [v1 v2]
+  (= (version/version-compare v1 v2)
+     0))
+
+(defn version> [v1 v2]
+  (= (version/version-compare v1 v2)
+     1))
+
+;;;; _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+(tabular
+ (fact "`version<` works"
+   (version< ?v1 ?v2) => ?less?)
+ ?v1     ?v2      ?less?
+ "1.8.0" "1.9.0"  truthy
+ "1.9.0" "1.10.0" truthy
+ "1.9.0" "1.9.0"  falsey
+ "1.9.0" "1.8.0"  falsey)
+
+(tabular
+ (fact "`version=` works"
+   (version= ?v1 ?v2) => ?less?)
+ ?v1     ?v2      ?less?
+ "1.8.0" "1.9.0"  falsey
+ "1.9.0" "1.10.0" falsey
+ "1.9.0" "1.9.0"  truthy
+ "1.9.0" "1.8.0"  falsey)
+
+(tabular
+ (fact "`version<` works"
+   (version> ?v1 ?v2) => ?less?)
+ ?v1     ?v2      ?less?
+ "1.9.0"  "1.8.0" truthy
+ "1.10.0" "1.9.0" truthy
+ "1.9.0"  "1.9.0" falsey
+ "1.8.0"  "1.9.0" falsey)

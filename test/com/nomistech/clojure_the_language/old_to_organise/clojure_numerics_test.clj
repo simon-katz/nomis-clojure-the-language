@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.old-to-organise.clojure-numerics-test
-  (:require [midje.sweet :refer :all]))
+  (:require [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]
+            [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Terminology ----
@@ -339,7 +340,9 @@
     ;; - See https://groups.google.com/d/msg/clojure/1tefVmYKmpc/2hKlXU-c13sJ
     (fact "With a boxed value it seems weird"
       (unchecked-inc boxed-max-long)
-      => (throws ArithmeticException "integer overflow"))
+      => (if (tu/version< (clojure-version) "1.10.0")
+           (throws ArithmeticException "integer overflow")
+           Long/MIN_VALUE))
     (fact "But with an unboxed value it's as you'd expect"
       (let [unboxed-max-long Long/MAX_VALUE]
         (unchecked-inc unboxed-max-long))

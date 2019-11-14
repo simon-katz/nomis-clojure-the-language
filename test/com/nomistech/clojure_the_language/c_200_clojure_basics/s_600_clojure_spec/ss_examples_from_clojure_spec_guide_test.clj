@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-examples-from-clojure-org-test
+(ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-examples-from-clojure-spec-guide-test
   (:require [clojure.spec.alpha :as s]
             [midje.sweet :refer :all])
   (:import java.util.Date))

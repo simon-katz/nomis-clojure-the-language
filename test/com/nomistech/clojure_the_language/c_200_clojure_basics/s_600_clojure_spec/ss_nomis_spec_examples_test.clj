@@ -1,4 +1,4 @@
-(ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-nomis-examples-test
+(ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-nomis-spec-examples-test
   (:require [clojure.spec.alpha :as s]
             [midje.sweet :refer :all]))
 

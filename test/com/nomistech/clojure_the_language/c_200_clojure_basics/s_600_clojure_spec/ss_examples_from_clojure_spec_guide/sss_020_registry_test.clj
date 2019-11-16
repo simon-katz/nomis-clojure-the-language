@@ -23,15 +23,16 @@
 ;;;; Once a spec has been added to the registry, doc knows how to find it and
 ;;;; print it as well:
 
-;;;; (clojure.repl/doc ::date)
-;;;; =prints=>
-;;;; -------------------------
-;;;; :<the-full-ns-name>/date
-;;;; Spec
-;;;;   inst?
-;;;; => nil
+;; (clojure.repl/doc ::date)
+;; =prints=>
+;; -------------------------
+;; :<the-full-ns-name>/date
+;; Spec
+;;   inst?
+;; => nil
 
-;;;; (clojure.repl/doc ::suit)
-;;;; :<the-full-ns-name>/suit
-;;;; Spec
-;;;;   #{:spade :heart :diamond :club}
+;; (clojure.repl/doc ::suit)
+;; =prints=>
+;; :<the-full-ns-name>/suit
+;; Spec
+;;   #{:spade :heart :diamond :club}

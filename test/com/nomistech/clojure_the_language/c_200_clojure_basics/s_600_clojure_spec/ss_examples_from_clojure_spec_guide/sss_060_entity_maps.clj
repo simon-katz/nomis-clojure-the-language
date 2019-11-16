@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-examples-from-clojure-spec-guide.sss-060-entity-maps
   (:require [clojure.spec.alpha :as s]
+            [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]
             [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
@@ -44,23 +45,27 @@
                  ::email      "bugs@example.com"})
   => true)
 
-;;;; Fails required key check:
-(s/explain ::person
-           {::first-name "Bugs"})
-;;;; =prints=>
-;;;; #:my.domain{:first-name "Bugs"} - failed: (contains? % :my.domain/last-name)
-;;;;   spec: :my.domain/person
-;;;; #:my.domain{:first-name "Bugs"} - failed: (contains? % :my.domain/email)
-;;;;   spec: :my.domain/person
-;;;; => nil
+(fact "Fails required key check"
+  (tu/replace-full-ns-name
+   (with-out-str
+     (s/explain ::person
+                {::first-name "Bugs"})))
+  =>
+  (str "#:<full-ns-name>{:first-name \"Bugs\"} - failed: (contains? % :<full-ns-name>/last-name) spec: :<full-ns-name>/person"
+       "\n"
+       "#:<full-ns-name>{:first-name \"Bugs\"} - failed: (contains? % :<full-ns-name>/email) spec: :<full-ns-name>/person"
+       "\n"))
 
-;;;; Fails attribute conformance:
-(s/explain ::person
-           {::first-name "Bugs"
-            ::last-name  "Bunny"
-            ::email      "n/a"})
-;;;; "n/a" - failed: (re-matches email-regex %) in: [:my.domain/email]
-;;;;   at: [:my.domain/email] spec: :my.domain/email-type
+(fact "Fails attribute conformance"
+  (tu/replace-full-ns-name
+   (with-out-str
+     (s/explain ::person
+                {::first-name "Bugs"
+                 ::last-name  "Bunny"
+                 ::email      "n/a"})))
+  =>
+  (str "\"n/a\" - failed: (re-matches email-regex %) in: [:<full-ns-name>/email] at: [:<full-ns-name>/email] spec: :<full-ns-name>/email-type"
+       "\n"))
 
 ;;;; ___________________________________________________________________________
 ;;;; Entity maps -- with unqualified keys
@@ -78,30 +83,45 @@
                  :email      "bugs@example.com"})
   => true)
 
-(s/explain :unq/person
-           {:first-name "Bugs"
-            :last-name  "Bunny"
-            :email      "n/a"})
-;;;; =prints=>
-;;;; "n/a" - failed: (re-matches email-regex %) in: [:email] at: [:email] spec: :my.domain/email-type
-;;;; => nil
+(fact
+  (tu/replace-full-ns-name
+   (with-out-str
+     (s/explain :unq/person
+                {:first-name "Bugs"
+                 :last-name  "Bunny"
+                 :email      "n/a"})))
+  =>
+  (str "\"n/a\" - failed: (re-matches email-regex %) in: [:email] at: [:email] spec: :<full-ns-name>/email-type"
+       "\n"))
 
-(s/explain :unq/person
-           {:first-name "Bugs"})
-;;;; {:first-name "Bugs"} - failed: (contains? % :last-name) spec: :unq/person
-;;;; {:first-name "Bugs"} - failed: (contains? % :email) spec: :unq/person
+(fact
+  (tu/replace-full-ns-name
+   (with-out-str
+     (s/explain :unq/person
+                {:first-name "Bugs"})))
+  =>
+  (str
+   "{:first-name \"Bugs\"} - failed: (contains? % :last-name) spec: :unq/person"
+   "\n"
+   "{:first-name \"Bugs\"} - failed: (contains? % :email) spec: :unq/person"
+   "\n"))
 
 ;;;; ___________________________________________________________________________
 ;;;; Validating record attributes
 
 (defrecord Person [first-name last-name email phone])
 
-(s/explain :unq/person
-           (->Person "Bugs" nil nil nil))
-;;;; =prints=>
-;;;; nil - failed: string? in: [:last-name] at: [:last-name] spec: :my.domain/last-name
-;;;; nil - failed: string? in: [:email] at: [:email] spec: :my.domain/email-type
-=> nil
+(fact
+  (tu/replace-full-ns-name
+   (with-out-str
+     (s/explain :unq/person
+                (->Person "Bugs" nil nil nil))))
+  =>
+  (str
+   "nil - failed: string? in: [:last-name] at: [:last-name] spec: :<full-ns-name>/last-name"
+   "\n"
+   "nil - failed: string? in: [:email] at: [:email] spec: :<full-ns-name>/email-type"
+   "\n"))
 
 (fact (s/valid? :unq/person
                 (->Person "Bugs" "Bunny" "bugs@example.com" nil))
@@ -131,14 +151,14 @@
 ;;;; ___________________________________________________________________________
 ;;;; Combining entity maps with `s/merge`Combining entity maps with `s/merge`
 
-  (s/def :animal/kind string?)
-  (s/def :animal/says string?)
-  (s/def :animal/common (s/keys :req [:animal/kind :animal/says]))
+(s/def :animal/kind string?)
+(s/def :animal/says string?)
+(s/def :animal/common (s/keys :req [:animal/kind :animal/says]))
 
-  (s/def :dog/tail? boolean?)
-  (s/def :dog/breed string?)
-  (s/def :animal/dog (s/merge :animal/common
-                              (s/keys :req [:dog/tail? :dog/breed])))
+(s/def :dog/tail? boolean?)
+(s/def :dog/breed string?)
+(s/def :animal/dog (s/merge :animal/common
+                            (s/keys :req [:dog/tail? :dog/breed])))
 (fact (s/valid? :animal/dog
                 {:animal/kind "dog"
                  :animal/says "woof"

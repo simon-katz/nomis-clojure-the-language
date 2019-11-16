@@ -1,6 +1,8 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-examples-from-clojure-spec-guide.sss-050-explanations
   (:require [clojure.spec.alpha :as s]
-            [midje.sweet :refer :all]))
+            [midje.sweet :refer :all]
+            [clojure.string :as str]
+            [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Explanations
@@ -10,33 +12,52 @@
 (s/def ::name-or-id (s/or :name string?
                           :id   int?))
 
+(s/def ::big-even
+  (s/and int?
+         even?
+         #(> % 1000)))
+
 (fact "About `s/explain`"
   ;; `s/explain` reports (to `*out*`) why a value does not conform to a spec.
 
-  ;; (s/explain ::suit 42)
-  ;; =prints=>
-  ;; 42 - failed: #{:spade :heart :diamond :club} spec: :<the-full-ns-name>/suit
-  ;; => nil
+  (fact
+    (tu/replace-full-ns-name
+     (with-out-str
+       (s/explain ::suit 42)))
+    =>
+    (str "42 - failed: #{:spade :heart :diamond :club} spec: :<full-ns-name>/suit"
+         "\n"))
 
-  ;; (s/explain ::suit :club)
-  ;; =prints=>
-  ;; Success!
-  ;; => nil
+  (fact
+    (with-out-str
+      (s/explain ::suit :club))
+    =>
+    (str "Success!"
+         "\n"))
 
-  ;; (s/explain ::big-even 5)
-  ;; =prints=>
-  ;; 5 - failed: even? spec: :<the-full-ns-name>/big-even
+  (fact
+    (tu/replace-full-ns-name
+     (with-out-str
+       (s/explain ::big-even 5)))
+    =>
+    (str "5 - failed: even? spec: :<full-ns-name>/big-even"
+         "\n"))
 
-  ;; (s/explain ::name-or-id :foo)
-  ;; =prints=>
-  ;; :foo - failed: string? at: [:name] spec: :<the-full-ns-name>/name-or-id
-  ;; :foo - failed: int? at: [:id] spec: :<the-full-ns-name>/name-or-id
-  )
+  (fact (tu/replace-full-ns-name
+         (with-out-str
+           (s/explain ::name-or-id :foo)))
+    => (-> "
+:foo - failed: string? at: [:name] spec: :<full-ns-name>/name-or-id
+:foo - failed: int? at: [:id] spec: :<full-ns-name>/name-or-id
+"
+           (subs 1))))
 
 (fact "About `s/explain-str`"
-  ;; (s/explain-str ::suit 42)
-  ;; => "42 - failed: #{:spade :heart :diamond :club} spec: :<the-full-ns-name>/suit\n"
-  )
+  (-> (tu/replace-full-ns-name
+       (s/explain-str ::suit 42)))
+  =>
+  (str "42 - failed: #{:spade :heart :diamond :club} spec: :<full-ns-name>/suit"
+       "\n"))
 
 (fact "About `s/explain-data`"
 

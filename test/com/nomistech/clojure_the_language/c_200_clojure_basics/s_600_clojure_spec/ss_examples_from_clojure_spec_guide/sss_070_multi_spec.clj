@@ -44,19 +44,21 @@
                  :error/code 500})
   => true)
 
-(s/explain :event/event
-           {:event/type :event/restart})
-;;;; =prints=>
-;;;; #:event{:type :event/restart} - failed: no method at: [:event/restart]
-;;;;   spec: :event/event
-;;;; => nil
+(fact
+  (with-out-str
+    (s/explain :event/event
+               {:event/type :event/restart}))
+  =>
+  (str "#:event{:type :event/restart} - failed: no method at: [:event/restart] spec: :event/event"
+       "\n"))
 
-(s/explain :event/event
-           {:event/type :event/search
-            :search/url 200})
-;;;; =prints=>
-;;;; 200 - failed: string? in: [:search/url]
-;;;;   at: [:event/search :search/url] spec: :search/url
-;;;; {:event/type :event/search, :search/url 200} - failed: (contains? % :event/timestamp)
-;;;;   at: [:event/search] spec: :event/event
-;;;; => nil
+(fact
+  (with-out-str
+    (s/explain :event/event
+               {:event/type :event/search
+                :search/url 200}))
+  =>
+  (str "200 - failed: string? in: [:search/url] at: [:event/search :search/url] spec: :search/url"
+       "\n"
+       "{:event/type :event/search, :search/url 200} - failed: (contains? % :event/timestamp) at: [:event/search] spec: :event/event"
+       "\n"))

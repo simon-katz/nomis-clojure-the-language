@@ -7,6 +7,14 @@
             [version-clj.core :as version]))
 
 ;;;; ___________________________________________________________________________
+;;;; ---- replace-full-ns-name ----
+
+(defn replace-full-ns-name [s]
+  (str/replace s
+               (str (ns-name *ns*))
+               "<full-ns-name>"))
+
+;;;; ___________________________________________________________________________
 ;;;; ---- canonicalise-line-endings ----
 
 (defn canonicalise-line-endings [s]

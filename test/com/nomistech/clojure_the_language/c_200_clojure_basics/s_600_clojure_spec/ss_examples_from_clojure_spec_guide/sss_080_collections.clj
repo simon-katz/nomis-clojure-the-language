@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-examples-from-clojure-spec-guide.sss-080-collections
   (:require [clojure.spec.alpha :as s]
-            [midje.sweet :refer :all]))
+            [midje.sweet :refer :all]
+            [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]))
 
 ;;;; ___________________________________________________________________________
 
@@ -51,21 +52,36 @@
   (s/valid? ::vnum3 [1 2 3])
   => true)
 
-;; (s/explain ::vnum3 [1 2 :a])
-;; =prints=>
-;; :a - failed: number? in: [2] spec: :<the-full-ns-name>/vnum3
+(fact
+  (tu/replace-full-ns-name
+   (with-out-str
+     (s/explain ::vnum3 [1 2 :a])))
+  => (str ":a - failed: number? in: [2] spec: :<full-ns-name>/vnum3"
+          "\n"))
 
-;; (s/explain ::vnum3 #{1 2 3})
-;; =prints=>
-;; #{1 3 2} - failed: vector? spec: :<the-full-ns-name>/vnum3
+(fact
+  (tu/replace-full-ns-name
+   (with-out-str
+     (s/explain ::vnum3 #{1 2 3})))
+  =>
+  (str "#{1 3 2} - failed: vector? spec: :<full-ns-name>/vnum3"
+       "\n"))
 
-;; (s/explain ::vnum3 [1 2 3 4])
-;; =prints=>
-;; [1 2 3 4] - failed: (= 3 (count %)) spec: :<the-full-ns-name>/vnum3
+(fact
+  (tu/replace-full-ns-name
+   (with-out-str
+     (s/explain ::vnum3 [1 2 3 4])))
+  =>
+  (str "[1 2 3 4] - failed: (= 3 (count %)) spec: :<full-ns-name>/vnum3"
+       "\n"))
 
-;; (s/explain ::vnum3 [1 1 1])
-;; =prints=>
-;; [1 1 1] - failed: distinct? spec: :<the-full-ns-name>/vnum3
+(fact
+  (tu/replace-full-ns-name
+   (with-out-str
+     (s/explain ::vnum3 [1 1 1])))
+  =>
+  (str "[1 1 1] - failed: distinct? spec: :<full-ns-name>/vnum3"
+       "\n"))
 
 ;;;; ___________________________________________________________________________
 ;;;; `s/tuple`

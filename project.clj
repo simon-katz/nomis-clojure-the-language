@@ -30,4 +30,5 @@
                                                 org.clojure/core.rrb-vector]]
                                   [ring/ring-mock "0.3.2"]]
                    :source-paths ["dev"]
-                   :plugins [[lein-midje "3.2.1"]]}})
+                   :plugins [[lein-midje "3.2.1"]
+                             [lein-nodisassemble "0.1.3"]]}})

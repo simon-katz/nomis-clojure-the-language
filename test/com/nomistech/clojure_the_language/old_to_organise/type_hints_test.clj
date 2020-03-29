@@ -75,7 +75,7 @@
   (fact "`uppify-v3` throws a ClassCastException"
     (uppify-v3 42)
     => (throws java.lang.ClassCastException
-               "java.lang.Long cannot be cast to java.lang.String")))
+               #"java.lang.Long cannot be cast to (class )?java.lang.String")))
 
 ;;;; ---------------------------------------------------------------------------
 

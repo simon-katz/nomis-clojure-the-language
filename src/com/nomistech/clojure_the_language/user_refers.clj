@@ -4,8 +4,11 @@
             [clojure.tools.namespace.repl :as tnr]))
 
 ;;;; ___________________________________________________________________________
-;;;; This is about what needs to go into the `user` ns declaration to stop
-;;;; `refresh` and `reset` changing what's in the `user` ns.
+;;;; This is about what needs to be required by the `user` ns to stop `refresh`
+;;;; and `reset` changing what's in the `user` ns.
+;;;;
+;;;; Note that a better approach is to have a `dev` namespace and work there
+;;;; instead of in the `user` namespace.
 
 (tnr/disable-reload!)
 
@@ -79,7 +82,7 @@
   ;; Instructions
 
   ;; Re-introduce the `clojure.java.javadoc`, `clojure.pprint` and
-  ;; `clojure.repl` `:require` clauses in the `user` ns declaration.
+  ;; `clojure.repl` `require` forms in the `user` ns declaration.
   ;; - Kill the REPL and restart.
   ;; - Evaluate the following forms.
 
@@ -87,10 +90,11 @@
 
   (assert (= (-> (slurp "dev/user.clj")
                  (str/split #"\n"))
-             ["(ns user"
-              "  (:require [clojure.java.javadoc :refer [javadoc]]"
-              "            [clojure.pprint :refer [pp pprint]]"
-              "            [clojure.repl :refer [apropos dir doc find-doc pst source]]))"]))
+             ["(ns user)"
+              ""
+              "(require '[clojure.java.javadoc :refer [javadoc]])"
+              "(require '[clojure.pprint :refer [pp pprint]])"
+              "(require '[clojure.repl :refer [apropos dir doc find-doc pst source]])"]))
 
   (def fixed-up-ns-decl-on-startup-refers (user-ns-refers))
 
@@ -125,7 +129,7 @@
 
   ;; Instructions
   ;; - Restore `user` namespace to original version (that has `:require` stuff,
-  ;;   but with body of file deleted.
+  ;;   but with body of file deleted apart from the `require` forms).
   ;; - Kill the REPL and restart.
   ;; - Evaluate the following forms.
 
@@ -135,13 +139,14 @@
                  (str/split #"\n"))
              ["(ns user"
               "  \"Namespace to support hacking at the REPL.\""
-              "  (:require [clojure.java.javadoc :refer [javadoc]]"
-              "            [clojure.pprint :refer [pp pprint]]"
-              "            [clojure.repl :refer [apropos dir doc find-doc pst source]]"
-              "            [clojure.string :as str]"
+              "  (:require [clojure.string :as str]"
               "            [clojure.tools.namespace.move :refer :all]"
               "            [clojure.tools.namespace.repl :refer :all]"
-              "            [midje.repl :refer :all]))"]))
+              "            [midje.repl :refer :all]))"
+              ""
+              "(require '[clojure.java.javadoc :refer [javadoc]])"
+              "(require '[clojure.pprint :refer [pp pprint]])"
+              "(require '[clojure.repl :refer [apropos dir doc find-doc pst source]])"]))
 
   (def fixed-up-and-extras-ns-decl-on-startup-refers (user-ns-refers))
 
@@ -174,19 +179,20 @@
   ;; ___________________________________________________________________________
 
   ;; ;; Now COMMENT-OUT the `clojure.java.javadoc`, `clojure.pprint` and
-  ;; ;; `clojure.repl` `:require` clauses in the `user` ns declaration.
+  ;; ;; `clojure.repl` `require` forms in the `user` ns declaration.
 
   (assert (= (-> (slurp "dev/user.clj")
                  (str/split #"\n"))
              ["(ns user"
               "  \"Namespace to support hacking at the REPL.\""
-              "  (:require ;; [clojure.java.javadoc :refer [javadoc]]"
-              "            ;; [clojure.pprint :refer [pp pprint]]"
-              "            ;; [clojure.repl :refer [apropos dir doc find-doc pst source]]"
-              "            [clojure.string :as str]"
+              "  (:require [clojure.string :as str]"
               "            [clojure.tools.namespace.move :refer :all]"
               "            [clojure.tools.namespace.repl :refer :all]"
-              "            [midje.repl :refer :all]))"]))
+              "            [midje.repl :refer :all]))"
+              ""
+              ";; (require '[clojure.java.javadoc :refer [javadoc]])"
+              ";; (require '[clojure.pprint :refer [pp pprint]])"
+              ";; (require '[clojure.repl :refer [apropos dir doc find-doc pst source]])"]))
 
   ;; Then, AFTER doing that COMMENTING-OUT:
   (do

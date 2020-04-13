@@ -1,19 +1,18 @@
 (ns user
   "Namespace to support hacking at the REPL."
-  (:require [clojure.string :as str]
+  (:require [clojure.main]
+            [clojure.string :as str]
             [clojure.tools.namespace.move :refer :all]
             [clojure.tools.namespace.repl :refer :all]
             [midje.repl :refer :all]))
 
 ;;;; ___________________________________________________________________________
-;;;; The following set up things that are in the `user` namespace by default,
-;;;; but which would otherwise get lost when calling `tnr/refresh` and `reset`.
-;;;; We put this here rather than in the namespace declaration so that things
-;;;; remain clear if we sort the namespace declaration.
+;;;; Require the standard REPL utils.
+;;;;
+;;;; This is useful in a `dev` namespace, and is needed in a `user` namespace
+;;;; because the requires get blatted by `tnr/refresh` and `reset`.
 
-(require '[clojure.java.javadoc :refer [javadoc]])
-(require '[clojure.pprint :refer [pp pprint]])
-(require '[clojure.repl :refer [apropos dir doc find-doc pst source]])
+(apply require clojure.main/repl-requires)
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- u-classpath ----

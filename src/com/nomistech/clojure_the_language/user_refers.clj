@@ -9,6 +9,9 @@
 ;;;;
 ;;;; Note that a better approach is to have a `dev` namespace and work there
 ;;;; instead of in the `user` namespace.
+;;;;
+;;;; Also note the existence of `clojure.main/repl-requires`, which makes things
+;;;; easier than the old manual stuff I used to have.
 
 (tnr/disable-reload!)
 
@@ -81,8 +84,8 @@
 
   ;; Instructions
 
-  ;; Re-introduce the `clojure.java.javadoc`, `clojure.pprint` and
-  ;; `clojure.repl` `require` forms in the `user` ns declaration.
+  ;; - Re-introduce the `(apply require clojure.main/repl-requires)` form in the
+  ;;   `user` namespace.
   ;; - Kill the REPL and restart.
   ;; - Evaluate the following forms.
 
@@ -90,11 +93,10 @@
 
   (assert (= (-> (slurp "dev/user.clj")
                  (str/split #"\n"))
-             ["(ns user)"
+             ["(ns user"
+              "  (:require [clojure.main]))"
               ""
-              "(require '[clojure.java.javadoc :refer [javadoc]])"
-              "(require '[clojure.pprint :refer [pp pprint]])"
-              "(require '[clojure.repl :refer [apropos dir doc find-doc pst source]])"]))
+              "(apply require clojure.main/repl-requires)"]))
 
   (def fixed-up-ns-decl-on-startup-refers (user-ns-refers))
 
@@ -129,7 +131,8 @@
 
   ;; Instructions
   ;; - Restore `user` namespace to original version (that has `:require` stuff,
-  ;;   but with body of file deleted apart from the `require` forms).
+  ;;   but with body of file deleted apart from the
+  ;;   `(apply require clojure.main/repl-requires)` form.
   ;; - Kill the REPL and restart.
   ;; - Evaluate the following forms.
 
@@ -139,14 +142,13 @@
                  (str/split #"\n"))
              ["(ns user"
               "  \"Namespace to support hacking at the REPL.\""
-              "  (:require [clojure.string :as str]"
+              "  (:require [clojure.main]"
+              "            [clojure.string :as str]"
               "            [clojure.tools.namespace.move :refer :all]"
               "            [clojure.tools.namespace.repl :refer :all]"
               "            [midje.repl :refer :all]))"
               ""
-              "(require '[clojure.java.javadoc :refer [javadoc]])"
-              "(require '[clojure.pprint :refer [pp pprint]])"
-              "(require '[clojure.repl :refer [apropos dir doc find-doc pst source]])"]))
+              "(apply require clojure.main/repl-requires)"]))
 
   (def fixed-up-and-extras-ns-decl-on-startup-refers (user-ns-refers))
 
@@ -178,21 +180,19 @@
 
   ;; ___________________________________________________________________________
 
-  ;; ;; Now COMMENT-OUT the `clojure.java.javadoc`, `clojure.pprint` and
-  ;; ;; `clojure.repl` `require` forms in the `user` ns declaration.
+  ;; Now COMMENT-OUT the `(apply require clojure.main/repl-requires)` form.
 
   (assert (= (-> (slurp "dev/user.clj")
                  (str/split #"\n"))
              ["(ns user"
               "  \"Namespace to support hacking at the REPL.\""
-              "  (:require [clojure.string :as str]"
+              "  (:require [clojure.main]"
+              "            [clojure.string :as str]"
               "            [clojure.tools.namespace.move :refer :all]"
               "            [clojure.tools.namespace.repl :refer :all]"
               "            [midje.repl :refer :all]))"
               ""
-              ";; (require '[clojure.java.javadoc :refer [javadoc]])"
-              ";; (require '[clojure.pprint :refer [pp pprint]])"
-              ";; (require '[clojure.repl :refer [apropos dir doc find-doc pst source]])"]))
+              ";; (apply require clojure.main/repl-requires)"]))
 
   ;; Then, AFTER doing that COMMENTING-OUT:
   (do

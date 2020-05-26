@@ -16,7 +16,8 @@
                  [ring/ring-json "0.4.0" :exclusions [ring/ring-core]]
                  [slingshot "0.12.2"]
                  [version-clj "0.1.2"]
-                 [yada "1.2.15"]]
+                 [yada "1.2.15"]
+                 [clojure.java-time "0.3.2"]]
   :repl-options {:init-ns user}
   :profiles {:dev {:dependencies [[org.clojure/tools.namespace "0.3.0-alpha4"]
                                   [org.clojure/core.rrb-vector

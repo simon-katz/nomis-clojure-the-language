@@ -15,19 +15,6 @@
 (apply require clojure.main/repl-requires)
 
 ;;;; ___________________________________________________________________________
-;;;; ---- u-classpath ----
-
-(defn u-classpath []
-  (str/split (System/getProperty "java.class.path")
-             #":"))
-
-;;;; ___________________________________________________________________________
-;;;; ---- u-move-ns-dev-src-test ----
-
-(defn u-move-ns-dev-src-test [old-sym new-sym source-path]
-  (move-ns old-sym new-sym source-path ["dev" "src" "test"]))
-
-;;;; ___________________________________________________________________________
 ;;;; App-specific additional utilities for the REPL or command line
 
 (comment

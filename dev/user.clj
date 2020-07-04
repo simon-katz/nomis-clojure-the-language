@@ -37,7 +37,6 @@
 
 (comment
 
-  (do (autotest :stop)
-      (autotest :filter (complement :slow)))
+  (do (autotest :stop) (autotest :filter (complement :slow)))
 
   )

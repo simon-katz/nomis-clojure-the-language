@@ -20,6 +20,6 @@
     (clojure.pprint/write "#<SystemMap>")))
 
 (comment
-  (->SystemMapWithNothingSpecial 1 2)
-  (->SystemMap 1 2)
+  (map->SystemMapWithNothingSpecial {:a 1 :b 2})
+  (map->SystemMap {:a 1 :b 2})
   )

@@ -38,3 +38,7 @@
     (macroexpand-1 '(syms/demo-of-symbols-passed-to-macros some-ns/name-in-call))
     => '{:unquote--symbol-in-call              some-ns/name-in-call
          :quote-unquote--quoted-symbol-in-call 'some-ns/name-in-call}))
+
+(fact "About using auto-gensyms in macro"
+  (syms/demo-of-auto-gensym-in-macro)
+  => {:use-of-auto-gensymed-symbol 1})

@@ -5,6 +5,8 @@
 (defmacro demo-of-unqualified-symbols-in-macros []
   `{:no-decoration--qualified-name-in-macro   name-in-macro
     :quote--quoted-qualified-name-in-macro    'name-in-macro
+    ;; Use auto-gensyms when you can, rather than ~'xxxx.
+    ;; - See `demo-of-auto-gensym-in-macro`.
     :unquote-quote--unqualified-name-in-macro ~'name-in-macro})
 
 (defmacro demo-of-qualified-symbols-in-macros []
@@ -22,3 +24,6 @@
 (defmacro demo-of-symbols-passed-to-macros [name-in-macro]
   `{:unquote--symbol-in-call              ~name-in-macro
     :quote-unquote--quoted-symbol-in-call '~name-in-macro})
+
+(defmacro demo-of-auto-gensym-in-macro []
+  `{:use-of-auto-gensymed-symbol (let [x# 1] x#)})

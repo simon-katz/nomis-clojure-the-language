@@ -1,0 +1,26 @@
+;; Refs:
+
+;; Midje:
+;; https://raw.githubusercontent.com/marick/Midje/master/test-resources/clj-kondo.exports/marick/midje/config.edn
+
+{:lint-as
+ {midje.checking.checkers.defining/defchecker clojure.core/defn}
+
+ :linters
+ {:refer-all {:exclude [clojure.test midje.sweet]}
+  :unresolved-symbol {:exclude [(midje.sweet/fact
+                                  ;; See Midje reference at top of file.
+                                  [=> =contains=> =deny=> =expands-to=>
+                                   =future=> =not=> =streams=> =test=>
+                                   =throw-parse-exception=> =throws=> anything
+                                   as-checker contains exactly falsey has
+                                   has-prefix has-sufix irrelevant just one-of
+                                   roughly throws truthy two-of])
+                                (midje.sweet/facts
+                                  ;; See Midje reference at top of file.
+                                  [=> =contains=> =deny=> =expands-to=>
+                                   =future=> =not=> =streams=> =test=>
+                                   =throw-parse-exception=> =throws=> anything
+                                   as-checker contains exactly falsey has
+                                   has-prefix has-sufix irrelevant just one-of
+                                   roughly throws truthy two-of])]}}}

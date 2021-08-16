@@ -23,4 +23,8 @@
                                    =throw-parse-exception=> =throws=> anything
                                    as-checker contains exactly falsey has
                                    has-prefix has-sufix irrelevant just one-of
-                                   roughly throws truthy two-of])]}}}
+                                   roughly throws truthy two-of])]}
+
+  ;; See https://clojure-lsp.github.io/clojure-lsp/settings/#clojure-lspunused-public-var
+  :clojure-lsp/unused-public-var
+  {:exclude #{com.nomistech.clojure-the-language.c-950-tools-stuff.s-100-linting.ss-0300-unused-public-var-demo/my-unused-public-var-with-config-saying-ok}}}}

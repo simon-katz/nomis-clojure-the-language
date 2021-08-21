@@ -1,7 +1,9 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-examples-from-clojure-spec-guide.sss-020-registry-test
-  (:require [clojure.spec.alpha :as s]
-            [midje.sweet :refer :all])
-  (:import java.util.Date))
+  (:require
+   [clojure.spec.alpha :as s]
+   [midje.sweet :refer :all])
+  (:import
+   java.util.Date))
 
 ;;;; ___________________________________________________________________________
 ;;;; Registry

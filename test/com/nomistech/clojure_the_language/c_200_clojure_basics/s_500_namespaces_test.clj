@@ -1,5 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-500-namespaces-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [clojure.walk :as walk]
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- with-ns-aliases ----
@@ -45,10 +47,10 @@
   [[& ns-alias-forms]
    & body]
   `(do
-     ~@(clojure.walk/prewalk #(replace-symbol-using-multiple-ns-alias-forms
-                               %
-                               ns-alias-forms)
-                             body)))
+     ~@(walk/prewalk #(replace-symbol-using-multiple-ns-alias-forms
+                       %
+                       ns-alias-forms)
+                     body)))
 
 ;;;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -62,6 +64,7 @@
             y))
 
   (fact
+    #_{:clj-kondo/ignore [:unresolved-namespace :unresolved-symbol]}
     (with-ns-aliases [[clojure.set :as cst]
                       [clojure.string :as csg]]
       (let [v1 #{:a :b}

@@ -1,8 +1,8 @@
 (ns com.nomistech.clojure-the-language.old-to-organise.core-match-101-basics-test
-  (:require ;; [com.nomistech.clojure-the-language.old-to-organise.core-match-101-basics-test :refer :all]
-   [midje.sweet :refer :all]
+  (:require
    [clojure.core.match :refer [match]]
-   [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]))
+   [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Basics
@@ -80,6 +80,7 @@
 ;;;; ___________________________________________________________________________
 ;;;; Match on non-scalar values
 
+#_:clj-kondo/ignore
 (fact "Match on a vector"
   (fact "Very trivial"
     (match [1]
@@ -249,6 +250,7 @@
 ;;;; ___________________________________________________________________________
 ;;;; Guards
 
+#_:clj-kondo/ignore
 (fact "A guard"
   (fact "A simple guard"
     (match 2

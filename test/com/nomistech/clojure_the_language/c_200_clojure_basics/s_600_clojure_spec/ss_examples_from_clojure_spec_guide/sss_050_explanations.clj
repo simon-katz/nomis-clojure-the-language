@@ -1,8 +1,8 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-examples-from-clojure-spec-guide.sss-050-explanations
-  (:require [clojure.spec.alpha :as s]
-            [midje.sweet :refer :all]
-            [clojure.string :as str]
-            [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]))
+  (:require
+   [clojure.spec.alpha :as s]
+   [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Explanations

@@ -8,23 +8,32 @@
 
  :linters
  {:refer-all {:exclude [clojure.test midje.sweet]}
+  :unused-referred-var {:exclude {slingshot.slingshot [throw+ try+]}}
   :unresolved-symbol {:exclude [(midje.sweet/fact
                                   ;; See Midje reference at top of file.
                                   [=> =contains=> =deny=> =expands-to=>
                                    =future=> =not=> =streams=> =test=>
                                    =throw-parse-exception=> =throws=> anything
                                    as-checker contains exactly falsey has
-                                   has-prefix has-sufix irrelevant just one-of
-                                   roughly throws truthy two-of])
+                                   has-prefix has-sufix irrelevant just
+                                   roughly throws truthy
+                                   every-checker some-checker
+                                   provided
+                                   one-of two-of three-of nine-of ten-of n-of])
                                 (midje.sweet/facts
                                   ;; See Midje reference at top of file.
                                   [=> =contains=> =deny=> =expands-to=>
                                    =future=> =not=> =streams=> =test=>
                                    =throw-parse-exception=> =throws=> anything
                                    as-checker contains exactly falsey has
-                                   has-prefix has-sufix irrelevant just one-of
-                                   roughly throws truthy two-of])]}
+                                   has-prefix has-sufix irrelevant just
+                                   roughly throws truthy
+                                   every-checker some-checker
+                                   provided
+                                   one-of two-of three-of nine-of ten-of n-of])]}
 
   ;; See https://clojure-lsp.github.io/clojure-lsp/settings/#clojure-lspunused-public-var
   :clojure-lsp/unused-public-var
-  {:exclude #{com.nomistech.clojure-the-language.c-950-tools-stuff.s-100-linting.ss-0300-unused-public-var-demo/my-unused-public-var-with-config-saying-ok}}}}
+  {:exclude
+   #{com.nomistech.clojure-the-language.c-400-state-and-concurrency.s-050-pmap-etc-test/demo-pmap-like-fun
+     com.nomistech.clojure-the-language.c-950-tools-stuff.s-100-linting.ss-0300-unused-public-var-demo/my-unused-public-var-lint-demo-with-config-saying-ok}}}}

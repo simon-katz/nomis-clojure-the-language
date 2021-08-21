@@ -1,10 +1,11 @@
 (ns com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils
-  (:require [clojure.core.async :as a]
-            [clojure.string :as str]
-            [midje.sweet :refer :all]
-            [slingshot.slingshot :as slingshot :refer [throw+ try+]]
-            [taoensso.timbre :as timbre]
-            [version-clj.core :as version]))
+  (:require
+   [clojure.core.async :as a]
+   [clojure.string :as str]
+   [midje.sweet :refer :all]
+   [slingshot.slingshot :as slingshot :refer [throw+ try+]]
+   [taoensso.timbre :as timbre]
+   [version-clj.core :as version]))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- replace-full-ns-name ----
@@ -226,7 +227,7 @@
 
 (defn make-slingshot-predicate
   "Returns a predicate that returns true for a Slingshot exception
-  produced by `(slingshot/throw+ object)`."
+  produced by `(throw+ object)`."
   [object]
   (fn [e]
     (let [throw-context (slingshot/get-throw-context e)]
@@ -259,6 +260,7 @@
 
 ;;;; _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
+#_{:clj-kondo/ignore [:unresolved-symbol]}
 (tabular
  (fact "`version<` works"
    (version< ?v1 ?v2) => ?less?)
@@ -268,6 +270,7 @@
  "1.9.0" "1.9.0"  falsey
  "1.9.0" "1.8.0"  falsey)
 
+#_{:clj-kondo/ignore [:unresolved-symbol]}
 (tabular
  (fact "`version=` works"
    (version= ?v1 ?v2) => ?less?)
@@ -277,6 +280,7 @@
  "1.9.0" "1.9.0"  truthy
  "1.9.0" "1.8.0"  falsey)
 
+#_{:clj-kondo/ignore [:unresolved-symbol]}
 (tabular
  (fact "`version<` works"
    (version> ?v1 ?v2) => ?less?)

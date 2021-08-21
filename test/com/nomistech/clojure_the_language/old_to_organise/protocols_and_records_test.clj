@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.old-to-organise.protocols-and-records-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- `defrecord` and what it gives you ----
@@ -55,7 +56,7 @@
 
 (defrecord MyRecord2 [x y]
   Object
-  (toString [this]
+  (toString [_this]
     (format "==== MyRecord2 [%s, %s] ====" x y)))
 
 (fact
@@ -75,7 +76,7 @@
 
 (defrecord MyRecord3 [^String x ^String y]
   Object
-  (toString [this]
+  (toString [_this]
     (format "==== MyRecord3 [%s, %s] ====" (.length x) (.length y))))
 
 (fact

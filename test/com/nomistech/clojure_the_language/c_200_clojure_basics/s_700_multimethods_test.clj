@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-700-multimethods-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [midje.sweet :refer :all]))
 
 (defmulti multi-thing :kind)
 

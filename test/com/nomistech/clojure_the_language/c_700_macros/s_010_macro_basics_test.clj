@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-700-macros.s-010-macro-basics-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Macro basics
@@ -123,8 +124,9 @@
 
 ;; Remember we had:
 
-(defmacro our-if-not-1 [test then else]
-  (list 'if test else then))
+(comment
+  (defmacro our-if-not-1 [test then else]
+    (list 'if test else then)))
 
 ;; A nicer way:
 
@@ -177,6 +179,7 @@
         (* a b c)))
 
 (fact
+  #_{:clj-kondo/ignore [:unresolved-symbol]}
   (lisp-let [[a 2]
              [b 3]
              [c 4]]

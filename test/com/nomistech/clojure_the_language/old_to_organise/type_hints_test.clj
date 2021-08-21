@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.old-to-organise.type-hints-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; What type hints are not.
@@ -15,6 +16,7 @@
   )
 
 (fact
+  #_{:clj-kondo/ignore [:type-mismatch]}
   (f 42)
   => 42 ; even though not a String
   )
@@ -73,7 +75,7 @@
                "No matching field found: toUpperCase for class java.lang.Long"))
 
   (fact "`uppify-v3` throws a ClassCastException"
-    (uppify-v3 42)
+    (uppify-v3 #_{:clj-kondo/ignore [:type-mismatch]} 42)
     => (throws java.lang.ClassCastException
                #"java.lang.Long cannot be cast to (class )?java.lang.String")))
 

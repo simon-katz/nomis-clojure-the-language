@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-000-log.s-2017-08-test
-  (:require [clojure.inspector]
-            [midje.sweet :refer :all]))
+  (:require
+   [clojure.inspector]
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Stuart Halloway on REPL-Driven Development -- Chicago Clojure - 2017-06-21

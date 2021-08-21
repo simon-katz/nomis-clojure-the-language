@@ -23,27 +23,38 @@
 
 (def running true)
 
-(defstruct cell :food :pher) ;may also have :ant and :home
+(defstruct
+  #_{:clj-kondo/ignore [:unresolved-symbol]}
+  cell
+  :food :pher) ;may also have :ant and :home
 
 (def world
   "A 2d vector of refs to cells."
   (apply vector
          (map (fn [_]
-                (apply vector (map (fn [_] (ref (struct cell 0 0)))
-                                   (range dim))))
+                (apply vector
+                       (map (fn [_]
+                              (ref (struct
+                                    #_{:clj-kondo/ignore [:unresolved-symbol]}
+                                    cell 0 0)))
+                            (range dim))))
               (range dim))))
 
 (defn place [[x y]]
   (-> world (nth x) (nth y)))
 
-(defstruct ant :dir) ;may also have :food
+(defstruct
+  #_{:clj-kondo/ignore [:unresolved-symbol]}
+  ant
+  :dir) ;may also have :food
 
 (defn create-ant
   "create an ant at the location, returning an ant agent on the location"
   [loc dir]
   (sync nil
         (let [p (place loc)
-              a (struct ant dir)]
+              a (struct #_{:clj-kondo/ignore [:unresolved-symbol]} ant
+                        dir)]
           (alter p assoc :ant a)
           (agent loc))))
 
@@ -54,7 +65,7 @@
   "places initial food and ants, returns seq of ant agents"
   []
   (sync nil
-        (dotimes [i food-places]
+        (dotimes [_ food-places]
           (let [p (place [(rand-int dim) (rand-int dim)])]
             (alter p assoc :food (rand-int food-range))))
         (doall
@@ -133,9 +144,10 @@
       (alter oldp assoc :pher (inc (:pher @oldp))))
     newloc))
 
-(defn take-food [loc]
+(defn take-food
   "Takes one food from current location. Must be called in a
   transaction that has verified there is food available"
+  [loc]
   (let [p (place loc)
         ant (:ant @p)]
     (alter p assoc
@@ -143,9 +155,10 @@
            :ant (assoc ant :food true))
     loc))
 
-(defn drop-food [loc]
+(defn drop-food
   "Drops food at current location. Must be called in a
   transaction that has verified the ant has food"
+  [loc]
   (let [p (place loc)
         ant (:ant @p)]
     (alter p assoc
@@ -231,9 +244,9 @@
         (.fillRect (* x scale) (* y scale) scale scale)))
 
     (defn render-ant [ant #^Graphics g x y]
-      (let [black (. (new Color 0 0 0 255) (getRGB))
-            gray (. (new Color 100 100 100 255) (getRGB))
-            red (. (new Color 255 0 0 255) (getRGB))
+      (let [_black (. (new Color 0 0 0 255) (getRGB))
+            _gray (. (new Color 100 100 100 255) (getRGB))
+            _red (. (new Color 255 0 0 255) (getRGB))
             [hx hy tx ty] ({0 [2 0 2 4]
                             1 [4 0 0 4]
                             2 [4 2 0 2]
@@ -287,7 +300,7 @@
 
     (def animator (agent nil))
 
-    (defn animation [x]
+    (defn animation [_]
       (when running
         (send-off *agent* #'animation))
       (. panel (repaint))
@@ -296,7 +309,7 @@
 
     (def evaporator (agent nil))
 
-    (defn evaporation [x]
+    (defn evaporation [_]
       (when running
         (send-off *agent* #'evaporation))
       (evaporate)
@@ -304,10 +317,12 @@
       nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; use ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    #_{:clj-kondo/ignore [:redundant-do]}
     (do
       ;; demo
       ;; (load-file "/Users/rich/dev/clojure/ants.clj")
       (do
+        #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
         (def frame (doto (new JFrame) (.add panel) .pack .show))
         (def ants (setup))
         (send-off animator animation)

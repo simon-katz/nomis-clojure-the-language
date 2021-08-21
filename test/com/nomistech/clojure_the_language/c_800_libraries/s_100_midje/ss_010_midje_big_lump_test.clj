@@ -1,5 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-100-midje.ss-010-midje-big-lump-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [clojure.set :as set]
+   [midje.sweet :refer :all]))
 
 ;;;; Most of these facts evaluate to `true`. A few examples fail and
 ;;;; evaluate to `false`. I only show results when false.
@@ -47,9 +49,12 @@
 ;;;; ___________________________________________________________________________
 ;;;; Future facts
 
+#_{:clj-kondo/ignore [:unresolved-symbol]}
 (future-fact "Description" (plop 6) => 7)
 ;; WORK TO DO "Description" at (NO_SOURCE_FILE:1)
 ;; => nil
+
+(defn plop [_x])
 
 (fact "Description" (plop 6) =future=> 7)
 ;; WORK TO DO "Description - on `(plop 6)`" at (NO_SOURCE_FILE:1)
@@ -109,7 +114,7 @@
 ;;;; - Now a more natural way of doing the `each-element-is-one-of`
 ;;;;   example above:
 
-(fact [1 2] => #(clojure.set/subset? % [1 2 3 4]))
+(fact (set [1 2]) => #(set/subset? % (set [1 2 3 4])))
 
 ;;;; Perhaps what you say is true for subset, but you have `details=`
 ;;;; in Tea Knots (tea-knots.domain.tasks-test) and that seems useful.
@@ -346,6 +351,7 @@
 ;;;; Checking maps and records
 
 (defrecord R [x y])
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defrecord NotR [x y])
 
 (fact
@@ -539,11 +545,14 @@
 
 ;;; Note the use of metaconstants (..lump.. etc).
 
+#_:clj-kondo/ignore
 (unfinished lump-pieces decode-piece)
 
+#_:clj-kondo/ignore
 (defn decode-lump [lump]
   (apply str (map decode-piece (lump-pieces lump))))
 
+#_:clj-kondo/ignore
 (fact
   (decode-lump ..lump..) => "01"
   (provided
@@ -554,14 +563,17 @@
 ;;;; ____
 ;;;; Throwing
 
+#_:clj-kondo/ignore
 (unfinished throw-if-4)
 
+#_:clj-kondo/ignore
 (defn call-throw-if-4 [x]
   (try (throw-if-4 x)
        (catch Error
            e
          :throw-happened)))
 
+#_:clj-kondo/ignore
 (fact
   (call-throw-if-4 4) => :throw-happened
   (provided
@@ -577,6 +589,7 @@
 ;;;;      aren't together.
 ;;;;      (fact a1 => e1 (provided ...) a2 => e2 (provided ...))
 
+#_:clj-kondo/ignore
 (fact
   "Nasty syntax; don't do this! Have separate facts instead."
   (call-throw-if-4 4) => :throw-happened
@@ -586,6 +599,7 @@
   (provided
     (throw-if-4 5) => 5))
 
+#_:clj-kondo/ignore
 (fact
   "Nicer"
   (fact
@@ -600,8 +614,10 @@
 ;;;; ____
 ;;;; The GPA exercises
 
+#_:clj-kondo/ignore
 (unfinished child-of-wealthy-alumnus?)
 
+#_:clj-kondo/ignore
 (defn gpa-1 [student coursework]
   (let [total-hours (reduce + (map :credit-hours
                                    coursework))
@@ -612,6 +628,7 @@
          (+ (/ total-grads total-hours)
             extras))))
 
+#_:clj-kondo/ignore
 (fact
   (let [correct-gpa 3.66
         tolerance 0.01
@@ -638,12 +655,14 @@
                                    coursework))]
     (/ total-grads total-hours)))
 
+#_:clj-kondo/ignore
 (defn gpa-2 [student coursework]
   (let [extras (if (child-of-wealthy-alumnus? student) 0.5 0)]
     (min 5.0
          (+ (fair-gpa coursework)
             extras))))
 
+#_:clj-kondo/ignore
 (fact
   (let [correct-gpa 3.66
         tolerance 0.01
@@ -691,13 +710,16 @@
 ;;;; ____
 ;;;; Call counts
 
+#_:clj-kondo/ignore
 (unfinished call-me maybe-call-me)
 
+#_:clj-kondo/ignore
 (defn do-two-calls []
   (call-me)
   (call-me)
   42)
 
+#_:clj-kondo/ignore
 (facts
   (fact "By default, expect at least one call"
     (do-two-calls) => 42
@@ -734,17 +756,21 @@
 ;;;; ____
 ;;;; Shorthand for prerequisite chaining
 
+#_:clj-kondo/ignore
 (unfinished happens-first happens-second)
 
+#_:clj-kondo/ignore
 (defn function-under-test [n]
   (inc (happens-second (happens-first 1 n))))
 
+#_:clj-kondo/ignore
 (fact "Not using prerequisite chaining"
   (function-under-test 5) => 101
   (provided
     (happens-first 1 5) => ..some-result..
     (happens-second ..some-result..) => 100))
 
+#_:clj-kondo/ignore
 (fact "Using prerequisite chaining"
   (function-under-test 5) => 101
   (provided
@@ -783,11 +809,15 @@
 ;;;; ____
 ;;;; Establishing fact-wide prerequisites
 
+#_:clj-kondo/ignore
 (unfinished fwp-1 fwp-2)
 
+#_:clj-kondo/ignore
 (defn fwp-1+2 [] (+ (fwp-1) (fwp-2)))
+#_:clj-kondo/ignore
 (defn fwp-1*2 [] (* (fwp-1) (fwp-2)))
 
+#_:clj-kondo/ignore
 (fact
   (prerequisites (fwp-1) => 3
                  (fwp-2) => 4)
@@ -815,4 +845,4 @@
 ;;;; =expands-to=>
 ;;;; The left-hand side is macroexpanded and compared to the right-hand side:
 
-(fact (when true 3) =expands-to=> (if true (do 3)))
+(fact (when true 3) =expands-to=> #_:clj-kondo/ignore (if true (do 3)))

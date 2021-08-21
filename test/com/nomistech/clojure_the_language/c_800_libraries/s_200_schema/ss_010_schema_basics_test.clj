@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-200-schema.ss-010-schema-basics-test
-  (:require [midje.sweet :refer :all]
-            [schema.core :as s]))
+  (:require
+   [midje.sweet :refer :all]
+   [schema.core :as s]))
 
 (def ABEtc
   {s/Any s/Any

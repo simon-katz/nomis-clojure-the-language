@@ -1,8 +1,9 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-800-web.ss-600-bidi-yada.sss-200-yada-test
-  (:require [clj-http.client :as http-client]
-            [com.nomistech.clj-utils :as nu]
-            [midje.sweet :refer :all]
-            [yada.yada :as yada]))
+  (:require
+   [clj-http.client :as http-client]
+   [com.nomistech.clj-utils :as nu]
+   [midje.sweet :refer :all]
+   [yada.yada :as yada]))
 
 ;;;; ___________________________________________________________________________
 

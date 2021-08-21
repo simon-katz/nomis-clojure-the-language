@@ -1,12 +1,10 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-800-web.ss-020-ring-test
-  (:require [clojure.string :as str]
-            [compojure.core :as cc]
-            [compojure.middleware :as cm]
-            [midje.sweet :refer :all]
-            [ring.middleware.json :as rmj]
-            [ring.middleware.keyword-params :as rmk]
-            [ring.middleware.params :as rmp]
-            [ring.util.response :as rur]))
+  (:require
+   [midje.sweet :refer :all]
+   [ring.middleware.json :as rmj]
+   [ring.middleware.keyword-params :as rmk]
+   [ring.middleware.params :as rmp]
+   [ring.util.response :as rur]))
 
 ;;;; ___________________________________________________________________________
 
@@ -114,7 +112,7 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- rmj/wrap-json-response ----
 
-(defn handler-with-interesting-response [request]
+(defn handler-with-interesting-response [_request]
   (rur/response {:foo "bar"}))
 
 (def wrapped-handler-with-interesting-response

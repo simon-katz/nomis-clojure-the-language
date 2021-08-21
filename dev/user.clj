@@ -1,11 +1,12 @@
 (ns user
   "Namespace to support hacking at the REPL."
-  (:require [clojure.main]
-            [clojure.string :as str]
-            [clojure.tools.namespace.move :refer :all]
-            [clojure.tools.namespace.repl :as tnr
-             :refer [refresh refresh-all]]
-            [midje.repl :refer :all]))
+  #_{:clj-kondo/ignore [:refer-all :unused-referred-var]}
+  (:require
+   [clojure.main]
+   [clojure.tools.namespace.move :refer :all]
+   [clojure.tools.namespace.repl :as tnr
+    :refer [refresh refresh-all]]
+   [midje.repl :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Require the standard REPL utils.

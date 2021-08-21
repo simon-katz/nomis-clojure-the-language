@@ -1,10 +1,11 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-800-web.ss-500-compojure-api.sss-100-compojure-api-test
-  (:require [cheshire.core :as cheshire]
-            [compojure.api.sweet :as c]
-            [midje.sweet :refer :all]
-            [ring.mock.request :as mock]
-            [ring.util.http-response :as rur]
-            [schema.core :as s]))
+  (:require
+   [cheshire.core :as cheshire]
+   [compojure.api.sweet :as c]
+   [midje.sweet :refer :all]
+   [ring.mock.request :as mock]
+   [ring.util.http-response :as rur]
+   [schema.core :as s]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Example building on compojure-api template stuff -- non tests
@@ -16,7 +17,8 @@
    :origin {:country (s/enum :FI :PO)
             :city s/Str}})
 
-(defn make-handler [config]
+#_{:clj-kondo/ignore [:unresolved-symbol]}
+(defn make-handler [_config]
   (c/api
    {:swagger
     {:ui "/"

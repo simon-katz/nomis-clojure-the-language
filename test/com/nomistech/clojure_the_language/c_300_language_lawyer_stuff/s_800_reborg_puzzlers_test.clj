@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-300-language-lawyer-stuff.s-800-reborg-puzzlers-test
-  (:require [midje.sweet :refer :all]
-            [no.disassemble :as dis]))
+  (:require
+   [midje.sweet :refer :all]
+   [no.disassemble :as dis]))
 
 ;;;; ___________________________________________________________________________
 
@@ -17,7 +18,9 @@
 (fact "Puzzle #1 -- Something about `quote`"
 
   (fact "The puzzle"
-    (first ''hello)
+    (first
+     #_{:clj-kondo/ignore [:type-mismatch]}
+     ''hello)
     => 'quote)
 
   (fact "Explanation"
@@ -177,6 +180,7 @@
 
 (def puzzle-8-myfns [puzzle-8-a])
 
+#_{:clj-kondo/ignore [:redefined-var]}
 (defn puzzle-8-a [x] (* 100 x))
 
 (fact "Puzzle #8 -- A thing about vars"

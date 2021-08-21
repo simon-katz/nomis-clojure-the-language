@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-850-utils.s-600-system-maps
-  (:require  [midje.sweet :as midje]))
+  (:require
+   [clojure.pprint :as pprint]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Avoid annoying printing of large system maps
@@ -10,14 +11,14 @@
 
 (defmethod print-method SystemMap
   ;; This is called when pretty printing is off.
-  [system ^java.io.Writer writer]
+  [_system ^java.io.Writer writer]
   (.write writer "#<SystemMap>"))
 
 (defmethod clojure.pprint/simple-dispatch SystemMap
   ;; This is called when pretty printing is on.
-  [v]
+  [_system]
   (binding [*print-readably* false]
-    (clojure.pprint/write "#<SystemMap>")))
+    (pprint/write "#<SystemMap>")))
 
 (comment
   (map->SystemMapWithNothingSpecial {:a 1 :b 2})

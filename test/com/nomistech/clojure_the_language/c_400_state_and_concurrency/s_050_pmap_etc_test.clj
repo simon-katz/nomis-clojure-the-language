@@ -1,7 +1,13 @@
 (ns com.nomistech.clojure-the-language.c-400-state-and-concurrency.s-050-pmap-etc-test
-  (:require [com.climate.claypoole :as cp]
-            [com.nomistech.clj-utils :as nu]
-            [midje.sweet :refer :all]))
+  (:require
+   [com.climate.claypoole :as cp]
+   [com.nomistech.clj-utils :as nu]
+   [midje.sweet :refer :all]))
+
+(comment
+  ;; Prevent ns cleaning from removing requires:
+  cp/pmap
+  nu/unchunk)
 
 ;;;; ___________________________________________________________________________
 ;;;; Superficially, `pmap` is like `map`

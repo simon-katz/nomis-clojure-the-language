@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-400-state-and-concurrency.s-030-refs-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Refs basics

@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-300-core-async.ss-010-core-async-basics-test
-  (:require [clojure.core.async :as a]
-            [midje.sweet :refer :all]))
+  (:require
+   [clojure.core.async :as a]
+   [midje.sweet :refer :all]))
 
 (comment ; maybe turn some of this into tests
 
@@ -43,7 +44,7 @@
     (let [c (a/chan)]
       (dotimes [i n]
         (a/go (a/>! c i)))
-      (for [i (range n)]
+      (for [_ (range n)]
         (a/<!! (a/go (a/<! c))))))
 
   (put-and-take-n 10)
@@ -52,7 +53,7 @@
     (let [c (a/chan 10)]
       (dotimes [i n]
         (a/>!! c i))
-      (for [i (range n)]
+      (for [_ (range n)]
         (a/<!! c))))
 
   (put-and-take-n-more-simple 10)
@@ -167,8 +168,8 @@
         cs (repeatedly n a/chan)
         begin (System/currentTimeMillis)]
     (doseq [c cs] (a/go (a/>! c "hi")))
-    (dotimes [i n]
-      (let [[v c] (a/alts!! cs)]
+    (dotimes [_ n]
+      (let [[v _c] (a/alts!! cs)]
         (assert (= "hi" v))))
     (println "Read" n "msgs in" (- (System/currentTimeMillis) begin) "ms"))
 
@@ -209,5 +210,6 @@
 
 (comment
   ;; Use this pattern when taking from a possibly-closed channel:
+  #_:clj-kondo/ignore
   (when-let [v (a/<! c)]
     ... v ...))

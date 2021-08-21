@@ -27,3 +27,10 @@
 
 (defmacro demo-of-auto-gensym-in-macro []
   `{:use-of-auto-gensymed-symbol (let [x# 1] x#)})
+
+(comment
+  (demo-of-unqualified-symbols-in-macros)
+  (demo-of-qualified-symbols-in-macros)
+  (demo-of-special-symbols-in-macros)
+  (demo-of-symbols-passed-to-macros 'foo)
+  (demo-of-auto-gensym-in-macro))

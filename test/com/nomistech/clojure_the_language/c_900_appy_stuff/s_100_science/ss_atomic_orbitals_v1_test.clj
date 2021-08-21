@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-900-appy-stuff.s-100-science.ss-atomic-orbitals-v1-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [midje.sweet :refer :all]))
 
 ;;;; The approach here quickly gets into numbers and differences betwen numbers.
 ;;;; Hard to follow.
@@ -23,7 +24,7 @@
   (for [m +extra-possible-orbitals-in-shell+]
     (if (empty? m)
       0
-      (apply + (for [[k v] m]
+      (apply + (for [[_k v] m]
                  v)))))
 
 (def +max-extra-electrons-in-shell+
@@ -76,7 +77,7 @@
   [s]
   (cons 0 (successive-differences s)))
 
-(defn successive-funcalls [fs v]
+(defn successive-funcalls
   "`fs` is a sequence of functions.
   Let's call the functions f1, f2, f3, etc.
   Returns a sequence (r1 r2 r3 ...) where
@@ -84,6 +85,7 @@
     r2 = (f2 r1)
     r3 = (f3 r2)
     etc."
+  [fs v]
   (rest (reductions (fn [v f] (f v))
                     v
                     fs)))

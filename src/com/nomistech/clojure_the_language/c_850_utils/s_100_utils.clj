@@ -21,6 +21,7 @@
   Inspired by Overtone's overtone.helpers.ns/immigrate."
   [ns syms]
   (doseq [sym syms]
+    #_{:clj-kondo/ignore [:redundant-do]}
     (let [var (do
                 ;; this roundabout approach handles namespace aliases,
                 ;; but a simple (ns-resolve ns sym) does not
@@ -30,6 +31,7 @@
                              var
                              (var-get var))))))
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defmacro import-vars
   "A macro that wraps `import-vars*`."
   [ns syms]
@@ -40,6 +42,7 @@
 
 ;;;; #### No tests. Copied from stuff I did long ago. May not work anymore.
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defmacro def-cyclic-printers
   "Define methods on
      `clojure.core/print-method`

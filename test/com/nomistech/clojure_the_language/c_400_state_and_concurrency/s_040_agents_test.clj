@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-400-state-and-concurrency.s-040-agents-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [midje.sweet :refer :all]))
 
 (fact
   (let [*a (agent 0)]

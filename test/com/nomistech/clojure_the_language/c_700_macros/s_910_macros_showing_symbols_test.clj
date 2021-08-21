@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-700-macros.s-910-macros-showing-symbols-test
-  (:require [com.nomistech.clojure-the-language.c-700-macros.s-910-macros-showing-symbols :as syms]
-            [midje.sweet :refer [fact]]))
+  (:require
+   [com.nomistech.clojure-the-language.c-700-macros.s-910-macros-showing-symbols :as syms]
+   [midje.sweet :refer [fact]]))
 
 ;;;; ___________________________________________________________________________
 

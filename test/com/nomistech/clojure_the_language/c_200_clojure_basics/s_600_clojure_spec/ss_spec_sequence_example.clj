@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-spec-sequence-example
-  (:require [clojure.spec.alpha :as s]
-            [midje.sweet :refer :all]))
+  (:require
+   [clojure.spec.alpha :as s]
+   [midje.sweet :refer :all]))
 
 ;;;; Example from https://clojure.org/about/spec
 

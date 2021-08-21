@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.old-to-organise.clojure-numerics-test
-  (:require [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]
-            [midje.sweet :refer :all]))
+  (:require
+   [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Terminology ----

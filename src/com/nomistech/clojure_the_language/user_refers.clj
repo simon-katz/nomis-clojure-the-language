@@ -1,7 +1,8 @@
 (ns com.nomistech.clojure-the-language.user-refers
-  (:require [clojure.set :as set]
-            [clojure.string :as str]
-            [clojure.tools.namespace.repl :as tnr]))
+  (:require
+   [clojure.set :as set]
+   [clojure.string :as str]
+   [clojure.tools.namespace.repl :as tnr]))
 
 ;;;; ___________________________________________________________________________
 ;;;; This is about what needs to be required by the `user` ns to stop `refresh`
@@ -24,6 +25,7 @@
    :new-not-old (set/difference (set new) (set old))})
 
 (def refers-that-get-lost-when-refreshing
+  #_{:clj-kondo/ignore [:unresolved-namespace]}
   #{['javadoc  #'clojure.java.javadoc/javadoc]
     ['pp       #'clojure.pprint/pp]
     ['pprint   #'clojure.pprint/pprint]
@@ -89,6 +91,7 @@
   ;; - Kill the REPL and restart.
   ;; - Evaluate the following forms.
 
+  #_{:clj-kondo/ignore [:duplicate-require]}
   (require 'com.nomistech.clojure-the-language.user-refers)
 
   (assert (= (-> (slurp "dev/user.clj")
@@ -108,6 +111,7 @@
         (refers-diffs fixed-up-ns-decl-on-startup-refers
                       fixed-up-ns-decl-post-refresh-refers)))
 
+  #_{:clj-kondo/ignore [:duplicate-require]}
   (require 'midje.sweet)
 
   (midje.sweet/fact
@@ -136,6 +140,7 @@
   ;; - Kill the REPL and restart.
   ;; - Evaluate the following forms.
 
+  #_{:clj-kondo/ignore [:duplicate-require]}
   (require 'com.nomistech.clojure-the-language.user-refers)
 
   (assert (= (-> (slurp "dev/user.clj")
@@ -160,6 +165,7 @@
         (refers-diffs fixed-up-and-extras-ns-decl-on-startup-refers
                       fixed-up-and-extras-ns-decl-post-refresh-refers)))
 
+  #_{:clj-kondo/ignore [:duplicate-require]}
   (require 'midje.sweet)
 
   (midje.sweet/fact

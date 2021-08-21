@@ -1,8 +1,9 @@
 (ns com.nomistech.clojure-the-language.old-to-organise.clojure-fundamentals-test
-  (:require [clojure.test]
-            [clojure.zip :as zip]
-            [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]
-            [midje.sweet :refer :all]))
+  (:require
+   [clojure.test]
+   [clojure.zip :as zip]
+   [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 
@@ -238,16 +239,20 @@
 (assert (= (macroexpand-1 '(define-many-things [a b c] [1 2 3]))
            '(do (def a 1) (def b 2) (def c 3))))
 
+#_{:clj-kondo/ignore [:unresolved-symbol]}
 (define-many-things [a b c] [1 2 3])
 
-(assert (= [a b c]
+(assert (= #_{:clj-kondo/ignore [:unresolved-symbol]}
+           [a b c]
            [1 2 3]))
 
+#_{:clj-kondo/ignore [:unresolved-symbol]}
 (define-many-things [d e f]
   [(range 10)
    (+ 3 4)
    (concat "abc" "xyz")])
 
+#_{:clj-kondo/ignore [:unresolved-symbol]}
 (assert (= [d e f]
            (list '(0 1 2 3 4 5 6 7 8 9)
                  7
@@ -302,6 +307,7 @@
            ;; so you get more info...
            4))
 
+#_{:clj-kondo/ignore [:redundant-do]}
 (let [items [:b false nil]]
   (do
     ;; Using some
@@ -394,6 +400,7 @@
           n ))
 (quote (a b c [d e "plop" f g] h i))
 
+#_{:clj-kondo/ignore [:redundant-expression]}
 (when (< 8 10) 1 2 3 4)
 
 
@@ -420,7 +427,7 @@
 
 ;;;; You also have destructuring stuff in com.nomistech.clojure-the-language.c-200-clojure-basics.s-300-collections-test -- should combine
 
-(let [[a [b c] & rest :as x] [1 [2 3] 4 5]]
+(let [[a [b c] & _rest :as x] [1 [2 3] 4 5]]
   [x [a b c]])
 ;; => [[1 [2 3] 4 5] [1 2 3]]
 
@@ -455,11 +462,10 @@
   [a b])
 ;; => [1 2]
 
-(do
-  ;; Can use keywords inside :keys, but that is undocumented.
-  ;; - maybe an implementation detail -- probably shouldn't rely on it.
-  (let [{:keys [:a :b]} {:a 1 :b 2}]
-    [a b]))
+;; Can use keywords inside :keys, but that is undocumented.
+;; - maybe an implementation detail -- probably shouldn't rely on it.
+(let [{:keys [:a :b]} {:a 1 :b 2}]
+  [a b])
 ;; => [1 2]
 
 (let [{:syms [a b]} {'a 1 'b 2}]
@@ -489,6 +495,10 @@
          (take-nth 2 (drop 1 sequential))
          (take-nth 2 sequential))))
 
+(fact
+  (swap-pairs [1 2 3 4 5 6])
+  => [2 1 4 3 6 5])
+
 ;;;; ___________________________________________________________________________
 ;;;; ---- get vs. find ----
 
@@ -512,9 +522,11 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- get vs. nth ----
 
-(get 42 0)
-;; => nil
+(fact (get 42 0)
+  => nil)
+
 (fact
+  #_{:clj-kondo/ignore [:type-mismatch]}
   (nth 42 0)
   => (throws java.lang.UnsupportedOperationException))
 ;; java.lang.UnsupportedOperationException: nth not supported on this type: Long

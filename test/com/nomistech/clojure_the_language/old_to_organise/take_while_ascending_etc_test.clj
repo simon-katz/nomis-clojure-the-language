@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.old-to-organise.take-while-ascending-etc-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [midje.sweet :refer :all]))
 
 
 ;; Or was what you did at that interview better?

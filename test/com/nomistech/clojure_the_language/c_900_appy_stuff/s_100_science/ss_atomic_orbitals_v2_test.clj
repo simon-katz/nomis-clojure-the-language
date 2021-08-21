@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-900-appy-stuff.s-100-science.ss-atomic-orbitals-v2-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [midje.sweet :refer :all]))
 
 ;;;; The approach here builds a model (`+possible-orbitals-in-shell+`) and
 ;;;; then uses that for computation.

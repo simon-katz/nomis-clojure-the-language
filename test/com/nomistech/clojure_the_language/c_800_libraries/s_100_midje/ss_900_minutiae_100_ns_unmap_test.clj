@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-100-midje.ss-900-minutiae-100-ns-unmap-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Midje and `ns-unmap` don't play nicely together, because Midje holds on
@@ -16,11 +17,13 @@
   (def x1 43)
   (fact x1 => 43))
 
+#_{:clj-kondo/ignore [:redundant-let :redefined-var]}
 (let [] ; This uses the old var:
   (ns-unmap *ns* 'x1)
   (def x1 43)
   (fact x1 => #(= (type %) clojure.lang.Var$Unbound)))
 
+#_{:clj-kondo/ignore [:redundant-let :redefined-var]}
 (do ; This is a workaround:
   (def ^:dynamic *x1*)
   (let []

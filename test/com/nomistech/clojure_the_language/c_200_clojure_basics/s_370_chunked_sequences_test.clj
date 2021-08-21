@@ -1,7 +1,8 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-370-chunked-sequences-test
-  (:require [clojure.core.reducers :as r]
-            [com.nomistech.clj-utils :as u]
-            [midje.sweet :refer :all]))
+  (:require
+   [clojure.core.reducers :as r]
+   [com.nomistech.clj-utils :as u]
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Chunked sequences
@@ -21,6 +22,7 @@
     (take 1 (map identity-with-print-dot
                  (range n)))))
 
+#_{:clj-kondo/ignore [:redundant-do]}
 (fact "Demo of chunked sequences -- in chunks of size 32"
   (letfn [(string--of-n-dots [n]
             (apply str (for [_ (range n)] \.)))]

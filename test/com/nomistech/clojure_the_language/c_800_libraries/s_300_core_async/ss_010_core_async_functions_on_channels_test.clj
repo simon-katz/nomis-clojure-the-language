@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-300-core-async.ss-010-core-async-functions-on-channels-test
-  (:require [clojure.core.async :as a]
-            [midje.sweet :refer :all]))
+  (:require
+   [clojure.core.async :as a]
+   [midje.sweet :refer :all]))
 
 ;;;; You can put functions on channels.
 ;;;; - That's cool.
@@ -13,7 +14,7 @@
   (let [c (a/chan 10)]
     (dotimes [i n]
       (a/>!! c (fn [] i)))
-    (for [i (range n)]
+    (for [_ (range n)]
       (let [f (a/<!! c)]
         (f)))))
 

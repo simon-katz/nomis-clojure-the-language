@@ -1,7 +1,8 @@
 (ns com.nomistech.clojure-the-language.old-to-organise.reducers-rumford-test
-  (:require [clojure.core.reducers :as r]
-            [clojure.string :as string]
-            [midje.sweet :refer :all]))
+  (:require
+   [clojure.core.reducers :as r]
+   [clojure.string :as string]
+   [midje.sweet :refer :all]))
 
 ;;;; From http://ianrumford.github.io/blog/2013/08/25/some-trivial-examples-of-using-clojure-reducers/
 ;;;; and the corresponding gist at https://gist.github.com/ianrumford/6333358
@@ -37,7 +38,9 @@
 ;; Examples 1 - how many children?
 
 ;; Example 1 - create the reducers map function to return 1 if a child, else 0
-(def ex1-map-children-to-value-1 (r/map #(if (= :child (:role %)) 1 0)))
+(def ex1-map-children-to-value-1
+  #_:clj-kondo/ignore
+  (r/map #(if (= :child (:role %)) 1 0)))
 
 ;; Example 1 - use redcue to add up all the mapped values
 (r/reduce + 0 (ex1-map-children-to-value-1 village))
@@ -55,7 +58,7 @@
   (if (person--child? person) 1 0))
 
 (fact
-  (r/reduce + 0 ((r/map person--child?->1) village))
+  (r/reduce + 0 #_:clj-kondo/ignore ((r/map person--child?->1) village))
   => 8)
 
 (fact "can have same 'shape' usage as old-style `map` etc functions"
@@ -63,8 +66,8 @@
   => 8)
 
 (fact "reducing functions are composable"
-  (r/reduce + 0 ((comp (r/map (constantly 1))
-                       (r/filter person--child?))
+  (r/reduce + 0 ((comp #_:clj-kondo/ignore (r/map (constantly 1))
+                       #_:clj-kondo/ignore (r/filter person--child?))
                  village))
   => 8)
 
@@ -87,7 +90,9 @@
 ;; Example 2 - how many children in the Brown family?
 
 ;; Example 2 - select the members of the Brown family
-(def ex2-select-the-brown-family (r/filter #(= "brown" (string/lower-case (:family %)))))
+(def ex2-select-the-brown-family
+  #_:clj-kondo/ignore
+  (r/filter #(= "brown" (string/lower-case (:family %)))))
 
 ;; Example 2 - compose a composite function to select the Brown family and map children to 1
 (def ex2-pipeline (comp ex1-map-children-to-value-1 ex2-select-the-brown-family))
@@ -105,9 +110,9 @@
      "brown"))
 
 (fact
-  (r/reduce + 0 ((comp (r/map (constantly 1))
-                       (r/filter person--child?)
-                       (r/filter person--brown-family-member?))
+  (r/reduce + 0 ((comp #_:clj-kondo/ignore (r/map (constantly 1))
+                       #_:clj-kondo/ignore (r/filter person--child?)
+                       #_:clj-kondo/ignore (r/filter person--brown-family-member?))
                  village))
   => 2)
 
@@ -116,14 +121,16 @@
 ;; Example 3 - how many children's names start with the letter J?
 
 ;; Example 3 - selecting (filtering) just the children
-(def ex3-select-children (r/filter #(= :child (:role %))))
+(def ex3-select-children #_:clj-kondo/ignore (r/filter #(= :child (:role %))))
 
 
 ;; Example 3 - selecting names beginning with "j"
-(def ex3-select-names-beginning-with-j (r/filter #(= "j" (string/lower-case (first (:name %))))))
+(def ex3-select-names-beginning-with-j
+  #_:clj-kondo/ignore
+  (r/filter #(= "j" (string/lower-case (first (:name %))))))
 
 ;; Example 3 - mapping the  entries in a collection to 1
-(def ex0-map-to-value-1 (r/map (fn [v]  1)))
+(def ex0-map-to-value-1 #_:clj-kondo/ignore (r/map (fn [v]  1)))
 
 (into [] (ex3-select-children village))
 
@@ -146,9 +153,9 @@
      "j"))
 
 (fact
-  (r/reduce + 0 ((comp (r/map (constantly 1))
-                       (r/filter person--name-begins-with-j?)
-                       (r/filter person--child?))
+  (r/reduce + 0 ((comp #_:clj-kondo/ignore (r/map (constantly 1))
+                       #_:clj-kondo/ignore (r/filter person--name-begins-with-j?)
+                       #_:clj-kondo/ignore (r/filter person--child?))
                  village))
   => 3)
 
@@ -172,8 +179,8 @@
 ;;;; nomis stuff
 
 (fact
-  (into [] ((comp (r/filter person--name-begins-with-j?)
-                  (r/filter person--child?))
+  (into [] ((comp #_:clj-kondo/ignore (r/filter person--name-begins-with-j?)
+                  #_:clj-kondo/ignore (r/filter person--child?))
             village))
   =>
   [{:age 19, :home :south, :name "jackie", :sex :f, :family "jones", :role :child}
@@ -188,6 +195,7 @@
 
 ;; Example 5 - map :home to latitude and longitude
 (def ex5-map-home-to-latitude-and-longitude
+  #_:clj-kondo/ignore
   (r/map
    (fn [v]
      (condp = (:home v)
@@ -197,7 +205,9 @@
        :east (assoc v :lat 0 :lng 180)))))
 
 ;; Example 5 - select people on or below the equator i.e. latitude <= 0
-(def ex5-select-people-on-or-below-equator (r/filter #(>= 0 (:lat %))))
+(def ex5-select-people-on-or-below-equator
+  #_:clj-kondo/ignore
+  (r/filter #(>= 0 (:lat %))))
 
 
 ;; Example 5 - count the number of children
@@ -211,7 +221,9 @@
 
 ;; Example 5 - sum the ages of children
 
-(def ex5-select-age (r/map #(:age %)))
+(def ex5-select-age
+  #_:clj-kondo/ignore
+  (r/map #(:age %)))
 
 (def ex5-sum-of-ages-of-children-on-or-below-the-equator
   (r/reduce + 0
@@ -248,6 +260,7 @@
     :west (assoc person :lat 0 :lng -180)
     :east (assoc person :lat 0 :lng 180)))
 
+#_:clj-kondo/ignore
 (fact
   (let [children-below-equator ((comp (r/filter #(>= 0 (:lat %)))
                                       (r/map person--add-lat-and-long)
@@ -423,6 +436,7 @@
   => [:a :b :c])
 
 (fact
+  #_:clj-kondo/ignore
   (with-collect-logging {:log-name log}
     (log :a)
     (log :b)
@@ -433,6 +447,7 @@
 ;;;; Demo of ordering
 
 (fact
+  #_:clj-kondo/ignore
   (with-collect-logging {:log-name log}
     (reduce +  0 ((comp (partial map (fn [x] (log "+") (+ x 10)))
                         (partial map (fn [x] (log "*") (* x 10))))
@@ -440,6 +455,7 @@
   => ["*" "*" "*" "+" "+" "+"])
 
 (fact
+  #_:clj-kondo/ignore
   (with-collect-logging {:log-name log}
     (reduce +  0 ((comp (r/map (fn [x] (log "+") (+ x 10)))
                         (r/map (fn [x] (log "*") (* x 10))))

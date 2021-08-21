@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-100-intro-to-clojure-data-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Scalar data

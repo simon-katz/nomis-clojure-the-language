@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.old-to-organise.homeless-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Stuff that doesn't belong here ----
@@ -20,10 +21,14 @@
         n (count ints-to-test)]
     ;; (println (filter div? ints-to-test))
     (/ n-div n)))
-#_
-(proportion-div-by-any [7 8 9])
-#_
-(proportion-div-by-any [2 3])
+
+(fact
+  (proportion-div-by-any [7 8 9])
+  => 1/3)
+
+(fact
+  (proportion-div-by-any [2 3])
+  => 2/3)
 
 ;;;; ------------------------------------------------
 

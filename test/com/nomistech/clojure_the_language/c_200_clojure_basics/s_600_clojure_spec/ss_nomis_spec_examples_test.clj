@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-nomis-spec-examples-test
-  (:require [clojure.spec.alpha :as s]
-            [midje.sweet :refer :all]))
+  (:require
+   [clojure.spec.alpha :as s]
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Use `s/spec` to wrap things for nesting.

@@ -1,7 +1,8 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-110-slingshot.ss-010-slingshot-test
-  (:require [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]
-            [midje.sweet :refer :all]
-            [slingshot.slingshot :as slingshot :refer [throw+ try+]]))
+  (:require
+   [com.nomistech.clojure-the-language.c-850-utils.s-200-test-utils :as tu]
+   [midje.sweet :refer :all]
+   [slingshot.slingshot :as slingshot :refer [throw+ try+]]))
 
 ;;;; ___________________________________________________________________________
 
@@ -15,6 +16,7 @@
 
 (defn provided-throws-b []
   (try+ (provided-throws-a)
+        #_:clj-kondo/ignore
         (catch [:type :exception-type-1] {:keys [a b]}
           {:caught {:type :exception-type-1
                     :a a

@@ -1,7 +1,9 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-examples-from-clojure-spec-guide.sss-010-basics-test
-  (:require [clojure.spec.alpha :as s]
-            [midje.sweet :refer :all])
-  (:import java.util.Date))
+  (:require
+   [clojure.spec.alpha :as s]
+   [midje.sweet :refer :all])
+  (:import
+   java.util.Date))
 
 ;;;; Reference: This is mostly stuff from https://clojure.org/guides/spec
 ;;;; TODO When you have finished going through https://clojure.org/guides/spec

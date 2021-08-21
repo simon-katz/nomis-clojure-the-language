@@ -12,9 +12,9 @@
 
 (fact
   (comment
-    undefined-thing-1 ; Not OK
-    =>                ; OK
-    undefined-thing-2 ; Not OK
+    lint-demo-undefined-thing-1 ; Not OK
+    =>                          ; OK
+    lint-demo-undefined-thing-2 ; Not OK
     )
   (testing "plop"
     (+ 1 2) => 3))

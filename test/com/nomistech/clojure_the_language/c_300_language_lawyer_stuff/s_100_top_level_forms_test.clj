@@ -1,5 +1,6 @@
 (ns com.nomistech.clojure-the-language.c-300-language-lawyer-stuff.s-100-top-level-forms-test
-  (:require [midje.sweet :refer :all]))
+  (:require
+   [midje.sweet :refer :all]))
 
 #_
 (do

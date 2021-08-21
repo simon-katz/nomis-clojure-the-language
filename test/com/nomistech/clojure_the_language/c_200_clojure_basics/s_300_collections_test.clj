@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-300-collections-test
-  (:require [midje.sweet :refer :all]
-            [clojure.set]))
+  (:require
+   [clojure.set]
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Miscellaneous ----
@@ -232,10 +233,10 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- Sorted sets ----
 
-(do #{:a :b :c})
+#{:a :b :c}
 ;; order not maintained -> e.g. #{:a :c :b}
 
-(do (sorted-set :a :b :c))
+(sorted-set :a :b :c)
 ;; order maintained -> #{:a :b :c}
 
 ;; = does not care about order:
@@ -333,6 +334,7 @@
 ;;;; ___________________________________________________________________________
 ;;;; ----  Example pos function ----
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn pos-1 [e coll]
   ;; yeuch!
   (let [cmp (if (map? coll)

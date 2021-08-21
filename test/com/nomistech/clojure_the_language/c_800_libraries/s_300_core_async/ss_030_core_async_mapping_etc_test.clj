@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-300-core-async.ss-030-core-async-mapping-etc-test
-  (:require [clojure.core.async :as a]
-            [midje.sweet :refer :all]))
+  (:require
+   [clojure.core.async :as a]
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Utils
@@ -29,42 +30,44 @@
     (factorial 5))
   => 120)
 
-(fact "About `a/map<` (N.B. This is deprecated)"
-  (chan->seq (a/map< (partial * 100)
-                     (a/to-chan [0 1 2 3 4])))
-  => [0 100 200 300 400])
+#_{:clj-kondo/ignore [:deprecated-var]}
+(do
+  (fact "About `a/map<` (N.B. This is deprecated)"
+    (chan->seq (a/map< (partial * 100)
+                       (a/to-chan [0 1 2 3 4])))
+    => [0 100 200 300 400])
 
-(fact "About `a/map>` (N.B. This is deprecated)"
-  (let [wrapped-ch  (a/chan)
-        wrapping-ch (a/map> (partial * 100)
-                            wrapped-ch)]
-    (a/go
-      (doseq [i [0 1 2 3 4]]
-        (a/>! wrapping-ch i))
-      (a/close! wrapping-ch))
-    (chan->seq wrapped-ch))
-  => [0 100 200 300 400])
-
-(fact "About `a/filter<` (N.B. This is deprecated)"
-  (chan->seq (a/filter< even?
-                        (a/to-chan [0 1 2 3 4])))
-  => [0 2 4])
-
-(fact "About `a/filter>` (N.B. This is deprecated)"
-  (let [wrapped-ch  (a/chan)
-        wrapping-ch (a/filter> even?
+  (fact "About `a/map>` (N.B. This is deprecated)"
+    (let [wrapped-ch  (a/chan)
+          wrapping-ch  (a/map> (partial * 100)
                                wrapped-ch)]
-    (a/go
-      (doseq [i [0 1 2 3 4]]
-        (a/>! wrapping-ch i))
-      (a/close! wrapping-ch))
-    (chan->seq wrapped-ch))
-  => [0 2 4])
+      (a/go
+        (doseq [i [0 1 2 3 4]]
+          (a/>! wrapping-ch i))
+        (a/close! wrapping-ch))
+      (chan->seq wrapped-ch))
+    => [0 100 200 300 400])
 
-(fact "About `a/mapcat< (N.B. This is deprecated)"
-  (chan->seq (a/mapcat< (fn [x] [x :plop])
-                        (a/to-chan [0 1 2 3 4])))
-  => [0 :plop 1 :plop 2 :plop 3 :plop 4 :plop])
+  (fact "About `a/filter<` (N.B. This is deprecated)"
+    (chan->seq (a/filter< even?
+                          (a/to-chan [0 1 2 3 4])))
+    => [0 2 4])
+
+  (fact "About `a/filter>` (N.B. This is deprecated)"
+    (let [wrapped-ch  (a/chan)
+          wrapping-ch (a/filter> even?
+                                 wrapped-ch)]
+      (a/go
+        (doseq [i [0 1 2 3 4]]
+          (a/>! wrapping-ch i))
+        (a/close! wrapping-ch))
+      (chan->seq wrapped-ch))
+    => [0 2 4])
+
+  (fact "About `a/mapcat< (N.B. This is deprecated)"
+    (chan->seq (a/mapcat< (fn [x] [x :plop])
+                          (a/to-chan [0 1 2 3 4])))
+    => [0 :plop 1 :plop 2 :plop 3 :plop 4 :plop]))
 
 ;;;; ___________________________________________________________________________
 ;;;; Transducer-based stuff
@@ -121,7 +124,7 @@
 
 (comment
   (let [c (a/chan)]
-    (when-let [x ...]
+    (when-let [_x ...]
       (a/>! c ...))
     c))
 
@@ -165,7 +168,8 @@
 
       (fact "In Clojure 1.6"
         (let [wrapped-ch  (a/chan)
-              wrapping-ch (a/remove> sentynil? wrapped-ch)]
+              wrapping-ch #_{:clj-kondo/ignore
+                             [:deprecated-var]} (a/remove> sentynil? wrapped-ch)]
           (a/onto-chan wrapping-ch values-from-who-knows-where)
           (chan->seq wrapped-ch))
         => [0 1 3])
@@ -180,9 +184,11 @@
 
       (letfn [(chan->seq-with-sentynil->nil [c]
                 (lazy-seq
+                 #_{:clj-kondo/ignore [:unresolved-symbol]}
                  (with-if-sentynil-take [v (a/<!! c)]
                    (cons v
                          (chan->seq-with-sentynil->nil c))
+                   #_{:clj-kondo/ignore [:redundant-do]}
                    (do
                      ;; whatever is needed when channel is closed
                      ))))]

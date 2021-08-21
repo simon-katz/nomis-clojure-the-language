@@ -1,11 +1,13 @@
 (ns com.nomistech.clojure-the-language.c-800-libraries.s-105-generative-testing.midje-gen-test
-  (:require [clojure.test.check.generators :as gen]
-            [midje.experimental :refer [for-all]]
-            [midje.sweet :refer :all]))
+  (:require
+   [clojure.test.check.generators :as gen]
+   [midje.experimental :refer [for-all]]
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; From https://github.com/marick/Midje/wiki/Generative-testing-with-for-all
 
+#_:clj-kondo/ignore
 (for-all "Midge generative test example #1 from Midje Wiki page"
     [positive-num gen/s-pos-int
      int          gen/int]
@@ -19,6 +21,7 @@
 
 (defn my-vals [a-map] (map second a-map))
 
+#_:clj-kondo/ignore
 (for-all "Midge generative test example #2 from Midje Wiki page"
     [str-map (gen/map gen/keyword gen/string)]
   {:max-size 10
@@ -35,10 +38,12 @@
 
 ;;;; See also `com.nomistech.clojure-the-language.c-800-libraries.s-105-generative-testing.test-check-test`
 
+#_:clj-kondo/ignore
 (for-all "Sort is idempotent"
     [v (gen/vector gen/int)]
   (fact (sort v) => (sort (sort v))))
 
+#_:clj-kondo/ignore
 (for-all "First element is min after sorting"
     [v (gen/not-empty (gen/vector gen/int))]
   {:num-tests 100}
@@ -47,6 +52,7 @@
 
 (comment
   ;; A failing test.
+  #_:clj-kondo/ignore
   (for-all "Prop sorted first less than last"
       [v (gen/not-empty (gen/vector gen/int))]
     {:num-tests 10}
@@ -58,6 +64,7 @@
 ;;;; ___________________________________________________________________________
 ;;;; More examples
 
+#_:clj-kondo/ignore
 (for-all "Sorting a vector of length 0 or 1 returns the same value"
     [v (gen/vector gen/int 0 1)]
   (fact (sort v) => v))

@@ -1,6 +1,7 @@
 (ns com.nomistech.clojure-the-language.c-200-clojure-basics.s-600-clojure-spec.ss-examples-from-clojure-spec-guide.sss-070-multi-spec
-  (:require [clojure.spec.alpha :as s]
-            [midje.sweet :refer :all]))
+  (:require
+   [clojure.spec.alpha :as s]
+   [midje.sweet :refer :all]))
 
 ;;;; ___________________________________________________________________________
 ;;;; `s/multi-spec`

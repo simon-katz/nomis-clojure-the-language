@@ -32,8 +32,34 @@
                                    provided
                                    one-of two-of three-of nine-of ten-of n-of])]}
 
-  ;; See https://clojure-lsp.github.io/clojure-lsp/settings/#clojure-lspunused-public-var
+  ;; See
+  ;; https://clojure-lsp.github.io/clojure-lsp/settings/#clojure-lspunused-public-var
+  ;;
+  ;; This seems to be an issue when linting the project takes a long
+  ;; time (deduced by deleting directories and restarting the workspace to see
+  ;; what happens).
+  ;; If I delete all test dirs other than c_000_log and c_200_clojure_basics,
+  ;; and add a src file com.nomistech.clojure-the-language.play with:
+  ;;     #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
+  ;;     (def foo 42)
+  ;; then, following a workspace restart, this code sometimes has a warning and
+  ;; sometimes not.
+  ;;
+  ;; When I used `#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}` before
+  ;; each relevant form in the source code, things didn't work well. Every time
+  ;; I restarted the LSP workspace, linting messages for all of these
+  ;; re-appeared and I had to visit and/or type in the files to get rid of the
+  ;; messages.
   :clojure-lsp/unused-public-var
   {:exclude
-   #{com.nomistech.clojure-the-language.c-400-state-and-concurrency.s-050-pmap-etc-test/demo-pmap-like-fun
-     com.nomistech.clojure-the-language.c-950-tools-stuff.s-100-linting.ss-0300-unused-public-var-demo/my-unused-public-var-lint-demo-with-config-saying-ok}}}}
+   #{com.nomistech.clojure-the-language.ants-by-rich-hickey/frame
+     com.nomistech.clojure-the-language.c-200-clojure-basics.s-300-collections-test/pos-1
+     com.nomistech.clojure-the-language.c-200-clojure-basics.s-451-deftype-missing-methods-ok-test/method-2
+     com.nomistech.clojure-the-language.c-400-state-and-concurrency.s-050-pmap-etc-test/demo-pmap-like-fun
+     com.nomistech.clojure-the-language.c-700-macros.s-920-macro-using-private/expand-to-private-fun
+     com.nomistech.clojure-the-language.c-700-macros.s-920-macro-using-private/expand-to-private-macro
+     com.nomistech.clojure-the-language.c-800-libraries.s-100-midje.ss-010-midje-big-lump-test/NotR
+     com.nomistech.clojure-the-language.c-850-utils.s-100-utils/def-cyclic-printers
+     com.nomistech.clojure-the-language.c-850-utils.s-100-utils/import-vars
+     com.nomistech.clojure-the-language.c-950-tools-stuff.s-100-linting.ss-0300-unused-public-var-demo/my-unused-public-var-lint-demo-with-config-saying-ok
+     com.nomistech.clojure-the-language.example-for-top-level-forms/x}}}}

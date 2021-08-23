@@ -6,7 +6,6 @@
 ;;;; the desired protocol(s) and interface(s), but that's not enforced as shown
 ;;;; here.
 
-#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defprotocol MyProtocol
   (method-1 [_])
   (method-2 [_]))

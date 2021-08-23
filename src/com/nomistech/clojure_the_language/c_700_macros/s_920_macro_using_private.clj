@@ -21,7 +21,6 @@
 (defn ^:private private-fun []
   :private-fun)
 
-#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defmacro expand-to-private-fun []
   `(private-fun))
 
@@ -30,7 +29,6 @@
 (defmacro ^:private private-macro []
   :private-macro)
 
-#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defmacro expand-to-private-macro []
   `(private-macro))
 

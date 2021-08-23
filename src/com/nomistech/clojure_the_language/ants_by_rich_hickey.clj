@@ -322,7 +322,6 @@
       ;; demo
       ;; (load-file "/Users/rich/dev/clojure/ants.clj")
       (do
-        #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
         (def frame (doto (new JFrame) (.add panel) .pack .show))
         (def ants (setup))
         (send-off animator animation)

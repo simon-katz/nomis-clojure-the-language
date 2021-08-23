@@ -351,7 +351,6 @@
 ;;;; Checking maps and records
 
 (defrecord R [x y])
-#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defrecord NotR [x y])
 
 (fact

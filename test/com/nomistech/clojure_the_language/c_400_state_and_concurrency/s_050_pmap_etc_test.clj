@@ -28,6 +28,7 @@
 
 ;;;; ___________________________________________________________________________
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn demo-pmap-like-fun [my-pmap my-range]
   (doseq [i (map (partial * 2) (range 18))]
     (print i

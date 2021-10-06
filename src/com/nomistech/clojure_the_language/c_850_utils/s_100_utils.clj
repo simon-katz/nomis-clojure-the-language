@@ -31,6 +31,7 @@
                              var
                              (var-get var))))))
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defmacro import-vars
   "A macro that wraps `import-vars*`."
   [ns syms]
@@ -41,6 +42,7 @@
 
 ;;;; #### No tests. Copied from stuff I did long ago. May not work anymore.
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defmacro def-cyclic-printers
   "Define methods on
      `clojure.core/print-method`

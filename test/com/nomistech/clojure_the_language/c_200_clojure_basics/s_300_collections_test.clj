@@ -334,6 +334,7 @@
 ;;;; ___________________________________________________________________________
 ;;;; ----  Example pos function ----
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn pos-1 [e coll]
   ;; yeuch!
   (let [cmp (if (map? coll)

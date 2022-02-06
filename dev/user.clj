@@ -38,6 +38,10 @@
 
 (comment
 
-  (do (autotest :stop) (autotest :filter (complement :slow)))
+  #_{:clj-kondo/ignore [:duplicate-require]} ; because we have copied this from a general place
+  (do (require 'midje.repl)
+      (midje.repl/autotest :stop)
+      (midje.repl/autotest :files "dev" "src" "test"
+                           :filter (complement :slow)))
 
   )

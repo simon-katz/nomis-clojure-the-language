@@ -38,3 +38,33 @@
                   :total-age 0
                   :hair-colours {}}
                  people))))
+
+(defn ^:private allocate-item [{:keys [outstanding-items
+                                       people-cycle
+                                       allocated-items]
+                                :as _allocation-info}]
+  (assert (seq outstanding-items))
+  (let [[item & other-items]    outstanding-items
+        [person & other-people] people-cycle]
+    {:people-cycle      other-people
+     :outstanding-items other-items
+     :allocated-items   (update allocated-items
+                                (:name person)
+                                (fnil conj [])
+                                item)}))
+
+(deftest iterate-example
+  (is (= {"Alice" [0 4 8]
+          "Bob"   [1 5 9]
+          "Cath"  [2 6]
+          "Dean"  [3 7]}
+         (let [items                   (range 10)
+               initial-allocation-info {:people-cycle      (cycle people)
+                                        :outstanding-items items
+                                        :allocated-items   {}}
+               final-allocation-info   (->> initial-allocation-info
+                                            (iterate allocate-item)
+                                            (filter #(empty?
+                                                      (:outstanding-items %)))
+                                            first)]
+           (:allocated-items final-allocation-info)))))

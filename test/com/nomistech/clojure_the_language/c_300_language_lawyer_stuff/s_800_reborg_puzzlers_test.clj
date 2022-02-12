@@ -26,7 +26,8 @@
   (fact "Explanation"
     (= ''hello
        '(quote hello)
-       (quote (quote hello)))
+       (quote (quote hello))
+       (list 'quote 'hello))
     => true))
 
 ;;;; ___________________________________________________________________________

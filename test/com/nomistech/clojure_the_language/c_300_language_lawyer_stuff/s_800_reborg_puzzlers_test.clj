@@ -72,7 +72,10 @@
                     x11 x12 x13 x14 x15 x16 x17 x18 x19 x20
                     x21]
                  42))
-        => (throws #"Syntax error"))))
+        => (throws RuntimeException
+                   #"Syntax error"
+                   #(= (-> % ex-cause ex-message)
+                       "Can't specify more than 20 params")))))
 
   ;; You can have more than 20 args in ClojureScript.
   )

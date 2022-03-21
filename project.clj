@@ -17,7 +17,8 @@
                  [slingshot "0.12.2"]
                  [version-clj "0.1.2"]
                  [yada "1.2.15"]
-                 [clojure.java-time "0.3.2"]]
+                 [clojure.java-time "0.3.2"]
+                 [org.clojure/data.xml "0.2.0-alpha6"]]
   :repl-options {:init-ns user}
   :profiles {:dev {:dependencies [[org.clojure/tools.namespace "0.3.0-alpha4"]
                                   [org.clojure/core.rrb-vector

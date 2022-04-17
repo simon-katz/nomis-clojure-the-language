@@ -153,13 +153,56 @@
     (throw (ex-info "cljxml has unexpected structure"
                     {})))
   (walk/prewalk (fn [x]
-                  (if (cljxml-with-no-attrs? x)
-                    (let [{:keys [tag content]} x]
-                      {tag content})
+                  (if (instance? clojure.data.xml.node.Element x)
+                    (if (empty? (:attrs x))
+                      (let [{:keys [tag content]} x]
+                        {tag content})
+                      (throw (ex-info "cljxml has unexpected structure"
+                                      {})))
                     x))
                 cljxml))
 
 (deftest clojurify-cljxml-with-no-attrs-test
+
+  (testing "Invalid data"
+    (testing "Must be a map"
+      (is (thrown-with-msg?
+           Exception
+           #"cljxml has unexpected structure"
+           (clojurify-cljxml-with-no-attrs 42))))
+    (testing "Must have :tag"
+      (is (thrown-with-msg?
+           Exception
+           #"cljxml has unexpected structure"
+           (clojurify-cljxml-with-no-attrs {:attrs {}
+                                            :content ["the-content-part-1"
+                                                      "the-content-part-2"]}))))
+    (testing "Must not have :attrs"
+      (is (thrown-with-msg?
+           Exception
+           #"cljxml has unexpected structure"
+           (clojurify-cljxml-with-no-attrs {:tag "the-tag"
+                                            :attrs {}}))))
+
+    (testing "Must not have :attrs in nested elements"
+      (is (thrown-with-msg?
+           Exception
+           #"cljxml has unexpected structure"
+           (clojurify-cljxml-with-no-attrs
+            (xml/element :x
+                         {}
+                         (xml/element :x1
+                                      {:a 1}
+                                      "x1 text")))))))
+
+  (testing "Simple valid data"
+    (is (= {:the-tag ["the-content-part-1"
+                      "the-content-part-2"]}
+           (clojurify-cljxml-with-no-attrs
+            (xml/element :the-tag
+                         {}
+                         "the-content-part-1"
+                         "the-content-part-2")))))
 
   (testing "Non-XML content"
     (let [actual   (clojurify-cljxml-with-no-attrs

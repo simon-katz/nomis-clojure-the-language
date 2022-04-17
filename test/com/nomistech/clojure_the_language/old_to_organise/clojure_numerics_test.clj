@@ -303,7 +303,7 @@
   ;;
   (fact "Throw exceptions on overflow"
     (inc Long/MAX_VALUE)
-    => (throws ArithmeticException "integer overflow"))
+    => (throws ArithmeticException "long overflow"))
   ;;
   (fact "We can avoid overflow exceptions by coercing to BigInt first"
     (inc (bigint Long/MAX_VALUE))

@@ -7,7 +7,7 @@
                                                             org.clojure/tools.reader]]
                  [metosin/compojure-api "2.0.0-alpha26"]
                  [com.nomistech/clj-utils "0.8.2"]
-                 [org.clojure/clojure "1.10.1"]
+                 [org.clojure/clojure "1.11.1"]
                  [org.clojure/core.async "0.4.474"]
                  [org.clojure/core.match "0.3.0-alpha5"]
                  [prismatic/schema "1.1.9"]

@@ -34,8 +34,13 @@
               "The quick brown fox jumps over the lazy dog")))
 
 (deftest predicate-test
+  ;; Functions are used as predicates.
   (is (match? even?
               1234))
+  (is (match? not
+              (= 1 2)))
+  (is (match? inc ; not normally considered a predicate, but used as one here
+              1))
   (is (match? (m/pred even?)
               1234)) ; TODO: I guess we need this in contexts where `even?` would not be treated as a pred -- but what are those contexts?
   )

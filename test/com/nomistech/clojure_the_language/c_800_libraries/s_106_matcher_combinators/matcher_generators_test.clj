@@ -68,9 +68,7 @@
 
 (deftest predicates-for-map-values-test
   (is (match? {:a even?}
-              {:a 1234}))
-  (is (match? {:a {:nested even?}}
-              {:a {:nested 1234}})))
+              {:a 1234})))
 
 (deftest predicates-within-equals-test
   (is (match? (m/equals {:a 1 :b even?})
@@ -136,14 +134,11 @@
   ;; Use `m/set-equals` to repeat predicates.
   (is (match? (m/set-equals [odd? odd? 2]) #{1 2 3})))
 
-(deftest nested-datastructures-test
-  ;; Maps, sequences, and sets follow the same semantics whether at
-  ;; the top level or nested within a structure.
-  (is (match? {:band/members [{:name/first "Alfredo"}
-                              {:name/first "Benedito"}]}
-              {:band/members [{:name/first  "Alfredo"
-                               :name/last   "da Rocha Viana"
-                               :name/suffix "Jr."}
-                              {:name/first "Benedito"
-                               :name/last  "Lacerda"}]
-               :band/recordings []})))
+(deftest nested-test
+  ;; Maps, sequences and sets follow the same semantics whether at the top level
+  ;; or nested within a structure.
+  (is (match? {:a {:z even?}
+               :b [1 even? 3]}
+              {:a {:z 1234}
+               :b [1 2 3]
+               :c :this-is-all-very-cool})))

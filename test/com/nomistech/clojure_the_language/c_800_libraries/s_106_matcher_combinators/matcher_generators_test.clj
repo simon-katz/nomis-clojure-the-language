@@ -12,6 +12,14 @@
 ;;;; We use `m/mismatch` to demo what would otherwise be failing tests.
 ;;;; Note that `m/mismatch` should generally be avoided.
 
+(deftest match-with-explicit-matchers-test
+  ;; TODO: When is this useful? /eg/ Just `(is (match? 37 (+ 29 8)))`
+  ;;       works fine.
+  (is (match? (m/equals 37)
+              (+ 29 8)))
+  (is (match? (m/regex #"fox")
+              "The quick brown fox jumps over the lazy dog")))
+
 (deftest most-scalars-use-equality-test
   ;; Most scalar values are interpreted as an `equals` matcher.
   (is (match? 37
@@ -31,12 +39,6 @@
   (is (match? (m/pred even?)
               1234)) ; TODO: I guess we need this in contexts where `even?` would not be treated as a pred -- but what are those contexts?
   )
-
-(deftest first-equals-example-from-documentation-test
-  ;; From https://github.com/nubank/matcher-combinators
-  ;; TODO: Why this? Just `(is (match? 37 (+ 29 8)))` works fine.
-  (is (match? (m/equals 37)
-              (+ 29 8))))
 
 (deftest equals-overrides-predicate-test
   (is (match? (m/equals even?)
@@ -88,11 +90,6 @@
 ;;;; ___________________________________________________________________________
 
 ;;;; From docs
-
-(deftest test-matching-with-explicit-matchers
-  ;; TODO: When is this useful?
-  (is (match? (m/equals 37) (+ 29 8)))
-  (is (match? (m/regex #"fox") "The quick brown fox jumps over the lazy dog")))
 
 (deftest test-matching-sequences
   ;; A sequence is interpreted as an `equals` matcher, which specifies

@@ -12,14 +12,6 @@
 ;;;; We use `m/mismatch` to demo what would otherwise be failing tests.
 ;;;; Note that `m/mismatch` should generally be avoided.
 
-(deftest match-with-explicit-matchers-test
-  ;; TODO: When is this useful? Just /eg/ `(is (match? 37 (+ 29 8)))`
-  ;;       works fine.
-  (is (match? (m/equals 37)
-              (+ 29 8)))
-  (is (match? (m/regex #"fox")
-              "The quick brown fox jumps over the lazy dog")))
-
 (deftest most-scalars-use-equality-test
   ;; Most scalar values are interpreted as an `equals` matcher.
   (is (match? 37
@@ -40,10 +32,7 @@
   (is (match? not
               (= 1 2)))
   (is (match? inc ; not normally considered a predicate, but used as one here
-              1))
-  (is (match? (m/pred even?)
-              1234)) ; TODO: I guess we need this in contexts where `even?` would not be treated as a pred -- but what are those contexts?
-  )
+              1)))
 
 (deftest equals-overrides-predicate-test
   (is (match? (m/equals even?)
@@ -91,6 +80,19 @@
   (is (thrown-match? clojure.lang.ExceptionInfo
                      {:foo 1}
                      (throw (ex-info "Boom!" {:foo 1 :bar 2})))))
+
+;;;; ___________________________________________________________________________
+
+(deftest match-with-explicit-matchers-test
+  ;; TODO: When is this useful? Just /eg/ `(is (match? 37 (+ 29 8)))`
+  ;;       works fine.
+  (is (match? (m/equals 37)
+              (+ 29 8)))
+  (is (match? (m/regex #"fox")
+              "The quick brown fox jumps over the lazy dog"))
+  (is (match? (m/pred even?)
+              1234)) ; TODO: I guess we need this in contexts where `even?` would not be treated as a pred -- but what are those contexts?
+  )
 
 ;;;; ___________________________________________________________________________
 

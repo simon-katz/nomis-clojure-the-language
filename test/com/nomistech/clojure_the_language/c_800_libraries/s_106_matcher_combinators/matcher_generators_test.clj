@@ -98,25 +98,30 @@
 
 ;;;; From docs
 
-(deftest test-matching-sequences
-  ;; A sequence is interpreted as an `equals` matcher, which specifies
-  ;; count and order of matching elements. The elements, themselves,
-  ;; are matched based on their types.
-  (is (match? [1 3] [1 3]))
-  (is (match? [1 odd?] [1 3]))
-  (is (match? [#"red" #"violet"] ["Roses are red" "Violets are ... violet"]))
+(deftest sequences-test
+  ;; A sequence is interpreted as an `equals` matcher, which specifies count and
+  ;; order of matching elements. The elements are matched based on their types.
 
-  ;; use m/prefix when you only care about the first n items
-  (is (match? (m/prefix [odd? 3]) [1 3 5]))
+  (is (match? [1 2 3]
+              [1 2 3]))
+  (is (match? [1 even? 3]
+              [1 2 3]))
+  (is (match? [#"red"
+               #"violet"]
+              ["Roses are red"
+               "Violets are ... violet"]))
 
-  ;; use m/in-any-order when order doesn't matter
-  (is (match? (m/in-any-order [odd? odd? even?]) [1 2 3]))
+  ;; Use `m/prefix` when you only care about the first n items.
+  (is (match? (m/prefix [1 even?])
+              [1 2 3]))
 
-  ;; NOTE: in-any-order is O(n!) because it compares every expected element
+  ;; Use `m/in-any-order` when order doesn't matter.
+  ;; NOTE: `m/in-any-order` is O(n!) because it compares every expected element
   ;; with every actual element in order to find a best-match for each one,
   ;; removing matched elements from both sequences as it goes.
   ;; Avoid applying this to long sequences.
-  )
+  (is (match? (m/in-any-order [odd? odd? even?])
+              [1 2 3])))
 
 (deftest test-matching-sets
   ;; A set is also interpreted as an `equals` matcher.

@@ -30,4 +30,6 @@
                                    roughly throws truthy
                                    every-checker some-checker
                                    provided
-                                   one-of two-of three-of nine-of ten-of n-of])]}}}
+                                   one-of two-of three-of nine-of ten-of n-of])
+                                (clojure.test/is [match?
+                                                  thrown-match?])]}}}

@@ -30,7 +30,8 @@
                                   [midje "1.9.3"
                                    :exclusions [riddley
                                                 org.clojure/core.rrb-vector]]
-                                  [ring/ring-mock "0.3.2"]]
+                                  [ring/ring-mock "0.3.2"]
+                                  [nubank/matcher-combinators "3.5.0"]]
                    :source-paths ["dev"]
                    :plugins [[lein-midje "3.2.1"]
                              [lein-nodisassemble "0.1.3"]]}})

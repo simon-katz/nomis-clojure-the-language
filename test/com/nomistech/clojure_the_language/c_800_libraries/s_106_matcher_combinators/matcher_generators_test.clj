@@ -13,6 +13,7 @@
 ;;;; Note that `m/mismatch` should generally be avoided.
 
 (deftest most-scalars-use-equality-test
+  ;; Most scalar values are interpreted as an `equals` matcher.
   (is (match? 37
               (+ 29 8)))
   (is (match? "abc"
@@ -42,6 +43,10 @@
               even?)))
 
 (deftest maps-test
+
+  ;; A map is interpreted as an `embeds` matcher, which ignores
+  ;; un-specified keys.
+  ;; - TODO: When you understand properly, maybe fix that comma.
 
   (testing "Bare map -- expected equal to actual"
     (is (match? {:a 1}
@@ -89,14 +94,6 @@
   (is (match? (m/equals 37) (+ 29 8)))
   (is (match? (m/regex #"fox") "The quick brown fox jumps over the lazy dog")))
 
-(deftest test-matching-scalars
-  ;; most scalar values are interpreted as an `equals` matcher
-  (is (match? 37 (+ 29 8)))
-  (is (match? "this string" (str "this" " " "string")))
-  (is (match? :this/keyword (keyword "this" "keyword")))
-  ;; regular expressions are handled specially
-  (is (match? #"fox" "The quick brown fox jumps over the lazy dog")))
-
 (deftest test-matching-sequences
   ;; A sequence is interpreted as an `equals` matcher, which specifies
   ;; count and order of matching elements. The elements, themselves,
@@ -130,14 +127,6 @@
   ;; Avoid applying this to large sets.
   )
 
-(deftest test-matching-maps
-  ;; A map is interpreted as an `embeds` matcher, which ignores
-  ;; un-specified keys
-  (is (match? {:name/first "Alfredo"}
-              {:name/first  "Alfredo"
-               :name/last   "da Rocha Viana"
-               :name/suffix "Jr."})))
-
 (deftest test-matching-nested-datastructures
   ;; Maps, sequences, and sets follow the same semantics whether at
   ;; the top level or nested within a structure.
@@ -149,8 +138,3 @@
                               {:name/first "Benedito"
                                :name/last  "Lacerda"}]
                :band/recordings []})))
-
-(deftest exception-matching
-  (is (thrown-match? clojure.lang.ExceptionInfo
-                     {:foo 1}
-                     (throw (ex-info "Boom!" {:foo 1 :bar 2})))))

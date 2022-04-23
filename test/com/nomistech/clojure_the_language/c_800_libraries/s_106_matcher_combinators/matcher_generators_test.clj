@@ -5,6 +5,9 @@
    [matcher-combinators.test] ; adds support for `match?` and `thrown-match?` in `is` expressions
    ))
 
+;;;; TODO: What is an `equals` matcher?
+;;;; TODO: What is an `embeds` matcher?
+
 ;;;; ++use-of-mismatch++
 ;;;; We use `m/mismatch` to demo what would otherwise be failing tests.
 ;;;; Note that `m/mismatch` should generally be avoided.
@@ -82,6 +85,7 @@
 ;;;; From docs
 
 (deftest test-matching-with-explicit-matchers
+  ;; TODO: When is this useful?
   (is (match? (m/equals 37) (+ 29 8)))
   (is (match? (m/regex #"fox") "The quick brown fox jumps over the lazy dog")))
 

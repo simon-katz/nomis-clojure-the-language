@@ -13,7 +13,7 @@
 ;;;; Note that `m/mismatch` should generally be avoided.
 
 (deftest match-with-explicit-matchers-test
-  ;; TODO: When is this useful? /eg/ Just `(is (match? 37 (+ 29 8)))`
+  ;; TODO: When is this useful? Just /eg/ `(is (match? 37 (+ 29 8)))`
   ;;       works fine.
   (is (match? (m/equals 37)
               (+ 29 8)))

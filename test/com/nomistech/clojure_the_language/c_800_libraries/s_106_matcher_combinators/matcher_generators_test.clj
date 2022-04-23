@@ -124,17 +124,17 @@
               [1 2 3])))
 
 (deftest sets-test
-  ;; A set is also interpreted as an `equals` matcher.
-  (is (match? #{1 2 3} #{3 2 1}))
-  (is (match? #{odd? even?} #{1 2}))
-  ;; use m/set-equals to repeat predicates
-  (is (match? (m/set-equals [odd? odd? even?]) #{1 2 3}))
-
+  ;; A set is interpreted as an `equals` matcher.
   ;; NOTE: matching sets is an O(n!) operation because it compares every
   ;; expected element with every actual element in order to find a best-match
   ;; for each one, removing matched elements from both sets as it goes.
   ;; Avoid applying this to large sets.
-  )
+
+  (is (match? #{1 2 3} #{3 2 1}))
+  (is (match? #{odd? even?} #{1 2}))
+
+  ;; Use `m/set-equals` to repeat predicates.
+  (is (match? (m/set-equals [odd? odd? 2]) #{1 2 3})))
 
 (deftest nested-datastructures-test
   ;; Maps, sequences, and sets follow the same semantics whether at

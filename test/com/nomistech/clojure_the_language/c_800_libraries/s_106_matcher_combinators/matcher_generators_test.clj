@@ -136,3 +136,7 @@
   (is (match? (m/pred even?)
               1234)) ; TODO: I guess we need this in contexts where `even?` would not be treated as a pred -- but what are those contexts?
   )
+
+;;;; TODO: There's more. Continue going through the documentation at
+;;;;       https://github.com/nubank/matcher-combinators and adding
+;;;;       examples here.

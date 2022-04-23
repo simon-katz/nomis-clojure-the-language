@@ -123,7 +123,7 @@
   (is (match? (m/in-any-order [odd? odd? even?])
               [1 2 3])))
 
-(deftest test-matching-sets
+(deftest sets-test
   ;; A set is also interpreted as an `equals` matcher.
   (is (match? #{1 2 3} #{3 2 1}))
   (is (match? #{odd? even?} #{1 2}))
@@ -136,7 +136,7 @@
   ;; Avoid applying this to large sets.
   )
 
-(deftest test-matching-nested-datastructures
+(deftest nested-datastructures-test
   ;; Maps, sequences, and sets follow the same semantics whether at
   ;; the top level or nested within a structure.
   (is (match? {:band/members [{:name/first "Alfredo"}

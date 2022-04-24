@@ -74,11 +74,6 @@
   (is (match? (m/equals {:a 1 :b even?})
               {:a 1 :b 1234})))
 
-(deftest exception-matching-test
-  (is (thrown-match? clojure.lang.ExceptionInfo
-                     {:foo 1}
-                     (throw (ex-info "Boom!" {:foo 1 :bar 2})))))
-
 (deftest sequences-test
   ;; A sequence is interpreted as an `equals` matcher, which specifies count and
   ;; order of matching elements. The elements are matched based on their types.
@@ -136,6 +131,11 @@
   (is (match? (m/pred even?)
               1234)) ; TODO: I guess we need this in contexts where `even?` would not be treated as a pred -- but what are those contexts?
   )
+
+(deftest exception-matching-test
+  (is (thrown-match? clojure.lang.ExceptionInfo
+                     {:foo 1}
+                     (throw (ex-info "Boom!" {:foo 1 :bar 2})))))
 
 ;;;; TODO: There's more. Continue going through the documentation at
 ;;;;       https://github.com/nubank/matcher-combinators and adding

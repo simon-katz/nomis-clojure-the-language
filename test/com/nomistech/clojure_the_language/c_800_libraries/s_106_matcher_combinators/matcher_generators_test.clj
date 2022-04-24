@@ -43,10 +43,6 @@
   (is (match? inc ; not normally considered a predicate, but used as one here
               1)))
 
-(deftest equals-overrides-predicate-test
-  (is (match? (m/equals even?)
-              even?)))
-
 ;;;; ___________________________________________________________________________
 ;;;; ---- Maps ----
 
@@ -64,13 +60,6 @@
     (is (match? {:a 1}
                 {:a 1 :b 2})))
 
-  (testing "Use m/equals for exact match"
-    (is (match? (m/equals {:a 1 :b 2})
-                {:a 1 :b 2}))
-    (is (match? (m/mismatch ; see ++use-of-mismatch++ at top of file
-                 (m/equals {:a 1}))
-                {:a 1 :b 2})))
-
   (testing "Use m/absent to check for absence of a key"
     (is (match? {:a 1 :b m/absent}
                 {:a 1}))
@@ -81,10 +70,6 @@
 (deftest predicates-for-map-values-test
   (is (match? {:a even?}
               {:a 1234})))
-
-(deftest predicates-within-equals-test
-  (is (match? (m/equals {:a 1 :b even?})
-              {:a 1 :b 1234})))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Sequences ----
@@ -155,6 +140,22 @@
   (is (match? (m/pred even?)
               1234)) ; TODO: I guess we need this in contexts where `even?` would not be treated as a pred -- but what are those contexts?
   )
+
+(deftest equals-overrides-predicate-test
+  (is (match? (m/equals even?)
+              even?)))
+
+(deftest equals-overrides-map-embeds-test
+  (testing "Use m/equals for exact match"
+    (is (match? (m/equals {:a 1 :b 2})
+                {:a 1 :b 2}))
+    (is (match? (m/mismatch ; see ++use-of-mismatch++ at top of file
+                 (m/equals {:a 1}))
+                {:a 1 :b 2}))))
+
+(deftest predicates-within-equals-test
+  (is (match? (m/equals {:a 1 :b even?})
+              {:a 1 :b 1234})))
 
 (deftest WIP-embeds-test ; TODO
   (is (match? (m/embeds [1 3 5])

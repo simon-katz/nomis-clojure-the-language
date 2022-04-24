@@ -125,7 +125,14 @@
   ;; removing matched elements from both sequences as it goes.
   ;; Avoid applying this to long sequences.
   (is (match? (m/in-any-order [3 1 1 2])
-              [1 2 3 1])))
+              [1 2 3 1]))
+
+  ;; There doesn't seem to be a way to say that expected is a subsequence of
+  ;; actual.
+
+  ;; There doesn't seem to be a way to say that the expected items all occur
+  ;; in actual, in order but with gaps allowed.
+  )
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Sets ----

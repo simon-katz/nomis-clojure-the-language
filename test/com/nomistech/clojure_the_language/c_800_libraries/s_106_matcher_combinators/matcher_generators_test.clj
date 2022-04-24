@@ -130,14 +130,16 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- Explicit matchers ----
 
-(deftest explicit-matchers-test
+(deftest explicit-use-of-default-matchers-test
   (testing "Some examples that I think are never needed -- these are the defaults for the data types (TODO: Are there contexts where you would need these?)"
     (is (match? (m/equals 37)
                 (+ 29 8)))
     (is (match? (m/regex #"fox")
                 "The quick brown fox jumps over the lazy dog"))
     (is (match? (m/pred even?)
-                1234))))
+                1234))
+    (is (match? (m/embeds {:a 1})
+                {:a 1 :b 2}))))
 
 (deftest explicit-use-of-equals-test
 

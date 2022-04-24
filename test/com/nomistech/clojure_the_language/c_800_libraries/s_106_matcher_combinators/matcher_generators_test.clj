@@ -130,34 +130,33 @@
 ;;;; ___________________________________________________________________________
 ;;;; ---- Explicit matchers ----
 
-(deftest match-with-explicit-matchers-test
-  ;; TODO: When is this useful? Just /eg/ `(is (match? 37 (+ 29 8)))`
-  ;;       works fine.
-  (is (match? (m/equals 37)
-              (+ 29 8)))
-  (is (match? (m/regex #"fox")
-              "The quick brown fox jumps over the lazy dog"))
-  (is (match? (m/pred even?)
-              1234)) ; TODO: I guess we need this in contexts where `even?` would not be treated as a pred -- but what are those contexts?
-  )
+(deftest explicit-matchers-test
+  (testing "Some examples that I think are never needed -- these are the defaults for the data types (TODO: Are there contexts where you would need these?)"
+    (is (match? (m/equals 37)
+                (+ 29 8)))
+    (is (match? (m/regex #"fox")
+                "The quick brown fox jumps over the lazy dog"))
+    (is (match? (m/pred even?)
+                1234))))
 
-(deftest equals-overrides-predicate-test
-  (is (match? (m/equals even?)
-              even?)))
+(deftest explicit-use-of-equals-test
 
-(deftest equals-overrides-map-embeds-test
-  (testing "Use m/equals for exact match"
+  (testing "`m/equals` overrides default treatment of functions as predicates"
+    (is (match? (m/equals even?)
+                even?)))
+
+  (testing "`m/equals` checks that all map entries are present"
     (is (match? (m/equals {:a 1 :b 2})
                 {:a 1 :b 2}))
     (is (match? (m/mismatch ; see ++use-of-mismatch++ at top of file
                  (m/equals {:a 1}))
-                {:a 1 :b 2}))))
+                {:a 1 :b 2})))
 
-(deftest predicates-within-equals-test
-  (is (match? (m/equals {:a 1 :b even?})
-              {:a 1 :b 1234})))
+  (testing "The overriding does not effect how nested matching works"
+    (is (match? (m/equals {:a 1 :b even?})
+                {:a 1 :b 1234}))))
 
-(deftest WIP-embeds-test ; TODO
+(deftest explicit-use-of-embeds-test ; TODO
   (is (match? (m/embeds [1 3 5])
               [1 2 3 4 5])))
 

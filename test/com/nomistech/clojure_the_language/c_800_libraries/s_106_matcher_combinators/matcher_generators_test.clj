@@ -8,26 +8,51 @@
 ;;;; ___________________________________________________________________________
 ;;;; --- Notes ----
 
-;;;; TODO: What is an `equals` matcher?
-;;;; TODO: What is an `embeds` matcher?
-
 ;;;; ++use-of-mismatch++
 ;;;; We use `m/mismatch` to demo what would otherwise be failing tests.
 ;;;; Note that `m/mismatch` should generally be avoided.
 
 ;;;; ___________________________________________________________________________
-;;;; ---- An introduction to the different types of matcher ----
+;;;; ---- An introduction to the various types of matcher ----
 
-(deftest explicit-use-of-default-matchers-test
-  (testing "Some examples that I think are never needed -- these are the defaults for the data types (TODO: Are there contexts where you would need these?)"
-    (is (match? (m/equals 37)
-                (+ 29 8)))
-    (is (match? (m/regex #"fox")
-                "The quick brown fox jumps over the lazy dog"))
-    (is (match? (m/pred even?)
-                1234))
-    (is (match? (m/embeds {:a 1})
-                {:a 1 :b 2}))))
+(deftest intro-to-various-types-of-matcher-test
+
+  ;; There are various types of matcher:
+  ;; - equals -- Actual and expected must closely match (as defined later).
+  ;; - embeds -- eg For maps, not all keys of actual have to be present in
+  ;;             expected.
+  ;; - regex
+  ;; - pred.
+
+  (testing "Each Clojure data type has an associated matcher by default"
+
+    (testing "Implicit use of default matchers"
+      (is (match? 37 ; uses an equals matcher
+                  (+ 29 8)))
+      (is (match? [1 2 3] ; uses an equals matcher
+                  (map inc (range 3))))
+      (is (match? {:a 1} ; uses an embeds matcher
+                  {:a 1 :b 2}))
+      (is (match? #"fox" ; uses a regex match?
+                  "The quick brown fox jumps over the lazy dog"))
+      (is (match? even? ; uses a pred matcher
+                  1234)))
+
+    (testing "Unnecessary explicit use of default matchers"
+      ;; These are equivalent to the above tests that use default matchers.
+      (is (match? (m/equals 37) ; unnecessary -- don't copy
+                  37))
+      (is (match? (m/equals [1 2 3]) ; unnecessary -- don't copy
+                  [1 2 3]))
+      (is (match? (m/embeds {:a 1}) ; unnecessary -- don't copy
+                  {:a 1 :b 2}))
+      (is (match? (m/regex #"fox") ; unnecessary -- don't copy
+                  "The quick brown fox jumps over the lazy dog"))
+      (is (match? (m/pred even?) ; unnecessary -- don't copy
+                  1234)))))
+
+;;;; Now that we've introduced the various types of matcher, let's get
+;;;; into more detail.
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Scalars ----
@@ -140,6 +165,12 @@
               {:a {:z 1234}
                :b [1 2 3]
                :c :this-is-all-very-cool})))
+
+;;;; ___________________________________________________________________________
+;;;; ---- A deeper explanation of the various types of matcher ----
+
+;;;; TODO: What is an `equals` matcher?
+;;;; TODO: What is an `embeds` matcher?
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Explicit matchers ----

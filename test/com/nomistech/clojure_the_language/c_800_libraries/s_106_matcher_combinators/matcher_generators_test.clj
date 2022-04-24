@@ -145,6 +145,7 @@
 (deftest nested-test
 
   ;; Nested items are matched based on their types.
+  ;; For maps, keys of expected and actual must be equal.
 
   (is (match? [#"red"
                #"violet"]
@@ -177,34 +178,30 @@
                :z :this-is-all-very-cool})))
 
 ;;;; ___________________________________________________________________________
-;;;; ---- A deeper explanation of the various types of matcher ----
+;;;; ---- Overriding default matchers ----
 
-;;;; TODO: What is an `equals` matcher?
-;;;; TODO: What is an `embeds` matcher?
+(deftest overriding-default-matchers-test
 
-;;;; ___________________________________________________________________________
-;;;; ---- Explicit matchers ----
+  ;; Some examples.
 
-(deftest explicit-use-of-equals-test
-
-  (testing "`m/equals` overrides default treatment of functions as predicates"
+  (testing "`m/equals` does not treat a function as a predicate"
     (is (match? (m/equals even?)
                 even?)))
 
-  (testing "`m/equals` checks that all map entries are present"
+  (testing "`m/equals` on a map checks that all entries are present"
     (is (match? (m/equals {:a 1 :b 2})
                 {:a 1 :b 2}))
     (is (match? (m/mismatch ; see ++use-of-mismatch++ at top of file
                  (m/equals {:a 1}))
                 {:a 1 :b 2})))
 
+  (testing "`m/embeds` on a sequence checks that each element of expected is in actual -- order is not relevant"
+    (is (match? (m/embeds [1 3 5])
+                [5 4 3 2 1])))
+
   (testing "The overriding does not effect how nested matching works"
     (is (match? (m/equals {:a 1 :b even?})
                 {:a 1 :b 1234}))))
-
-(deftest explicit-use-of-embeds-test ; TODO
-  (is (match? (m/embeds [1 3 5])
-              [1 2 3 4 5])))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Exceptions ----

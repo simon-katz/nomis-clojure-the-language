@@ -156,6 +156,10 @@
               1234)) ; TODO: I guess we need this in contexts where `even?` would not be treated as a pred -- but what are those contexts?
   )
 
+(deftest WIP-embeds-test ; TODO
+  (is (match? (m/embeds [1 3 5])
+              [1 2 3 4 5])))
+
 ;;;; ___________________________________________________________________________
 ;;;; ---- Exceptions ----
 

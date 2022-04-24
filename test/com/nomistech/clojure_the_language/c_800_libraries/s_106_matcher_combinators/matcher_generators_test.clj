@@ -5,12 +5,18 @@
    [matcher-combinators.test] ; adds support for `match?` and `thrown-match?` in `is` expressions
    ))
 
+;;;; ___________________________________________________________________________
+;;;; --- Notes ----
+
 ;;;; TODO: What is an `equals` matcher?
 ;;;; TODO: What is an `embeds` matcher?
 
 ;;;; ++use-of-mismatch++
 ;;;; We use `m/mismatch` to demo what would otherwise be failing tests.
 ;;;; Note that `m/mismatch` should generally be avoided.
+
+;;;; ___________________________________________________________________________
+;;;; ---- Scalars ----
 
 (deftest most-scalars-use-equality-test
   ;; Most scalar values are interpreted as an `equals` matcher.
@@ -25,6 +31,9 @@
   (is (match? #"fox"
               "The quick brown fox jumps over the lazy dog")))
 
+;;;; ___________________________________________________________________________
+;;;; ---- Predicates ----
+
 (deftest predicate-test
   ;; Functions are used as predicates.
   (is (match? even?
@@ -37,6 +46,9 @@
 (deftest equals-overrides-predicate-test
   (is (match? (m/equals even?)
               even?)))
+
+;;;; ___________________________________________________________________________
+;;;; ---- Maps ----
 
 (deftest maps-test
 
@@ -74,6 +86,9 @@
   (is (match? (m/equals {:a 1 :b even?})
               {:a 1 :b 1234})))
 
+;;;; ___________________________________________________________________________
+;;;; ---- Sequences ----
+
 (deftest sequences-test
   ;; A sequence is interpreted as an `equals` matcher, which specifies count and
   ;; order of matching elements. The elements are matched based on their types.
@@ -99,6 +114,9 @@
   (is (match? (m/in-any-order [odd? odd? even?])
               [1 2 3])))
 
+;;;; ___________________________________________________________________________
+;;;; ---- Sets ----
+
 (deftest sets-test
   ;; A set is interpreted as an `equals` matcher.
   ;; NOTE: matching sets is an O(n!) operation because it compares every
@@ -112,6 +130,9 @@
   ;; Use `m/set-equals` to repeat predicates.
   (is (match? (m/set-equals [odd? odd? 2]) #{1 2 3})))
 
+;;;; ___________________________________________________________________________
+;;;; ---- Nested data structures ----
+
 (deftest nested-test
   ;; Maps, sequences and sets follow the same semantics whether at the top level
   ;; or nested within a structure.
@@ -120,6 +141,9 @@
               {:a {:z 1234}
                :b [1 2 3]
                :c :this-is-all-very-cool})))
+
+;;;; ___________________________________________________________________________
+;;;; ---- Explicit matchers ----
 
 (deftest match-with-explicit-matchers-test
   ;; TODO: When is this useful? Just /eg/ `(is (match? 37 (+ 29 8)))`
@@ -132,10 +156,16 @@
               1234)) ; TODO: I guess we need this in contexts where `even?` would not be treated as a pred -- but what are those contexts?
   )
 
+;;;; ___________________________________________________________________________
+;;;; ---- Exceptions ----
+
 (deftest exception-matching-test
   (is (thrown-match? clojure.lang.ExceptionInfo
                      {:foo 1}
                      (throw (ex-info "Boom!" {:foo 1 :bar 2})))))
+
+;;;; ___________________________________________________________________________
+;;;; ---- More ----
 
 ;;;; TODO: There's more. Continue going through the documentation at
 ;;;;       https://github.com/nubank/matcher-combinators and adding

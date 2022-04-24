@@ -105,37 +105,27 @@
                  {:a 1 :b m/absent})
                 {:a 1 :b 2}))))
 
-(deftest predicates-for-map-values-test
-  (is (match? {:a even?}
-              {:a 1234})))
-
 ;;;; ___________________________________________________________________________
 ;;;; ---- Sequences ----
 
 (deftest sequences-test
-  ;; A sequence is interpreted as an `equals` matcher, which specifies count and
-  ;; order of matching elements. The elements are matched based on their types.
-
-  (is (match? [1 2 3]
-              [1 2 3]))
-  (is (match? [1 even? 3]
-              [1 2 3]))
-  (is (match? [#"red"
-               #"violet"]
-              ["Roses are red"
-               "Violets are ... violet"]))
+  ;; A sequence is interpreted as an `equals` matcher. Corresponding items of
+  ;; expected and actual must match. Expected and actual must have the
+  ;; same count.
+  (is (match? [1 2 3 1]
+              [1 2 3 1]))
 
   ;; Use `m/prefix` when you only care about the first n items.
-  (is (match? (m/prefix [1 even?])
-              [1 2 3]))
+  (is (match? (m/prefix [1 2])
+              [1 2 3 1]))
 
   ;; Use `m/in-any-order` when order doesn't matter.
   ;; NOTE: `m/in-any-order` is O(n!) because it compares every expected element
   ;; with every actual element in order to find a best-match for each one,
   ;; removing matched elements from both sequences as it goes.
   ;; Avoid applying this to long sequences.
-  (is (match? (m/in-any-order [odd? odd? even?])
-              [1 2 3])))
+  (is (match? (m/in-any-order [3 1 1 2])
+              [1 2 3 1])))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- Sets ----
@@ -147,23 +137,44 @@
   ;; for each one, removing matched elements from both sets as it goes.
   ;; Avoid applying this to large sets.
 
-  (is (match? #{1 2 3} #{3 2 1}))
+  (is (match? #{1 2 3} #{3 2 1})))
+
+;;;; ___________________________________________________________________________
+;;;; ---- Nested data ----
+
+(deftest nested-test
+
+  ;; Nested items are matched based on their types.
+
+  (is (match? [#"red"
+               #"violet"]
+              ["Roses are red"
+               "Violets are ... violet"]))
+
+  (is (match? {:a even?}
+              {:a 1234}))
+
+  (is (match? [1 even? 3 1]
+              [1 2 3 1]))
+
+  (is (match? (m/prefix [1 even?])
+              [1 2 3 1]))
+
+  (is (match? (m/in-any-order [odd? odd? odd? even?])
+              [1 2 3 1]))
+
   (is (match? #{odd? even?} #{1 2}))
 
   ;; Use `m/set-equals` to repeat predicates.
-  (is (match? (m/set-equals [odd? odd? 2]) #{1 2 3})))
+  (is (match? (m/set-equals [odd? odd? 2]) #{1 2 3}))
 
-;;;; ___________________________________________________________________________
-;;;; ---- Nested data structures ----
-
-(deftest nested-test
-  ;; Maps, sequences and sets follow the same semantics whether at the top level
-  ;; or nested within a structure.
   (is (match? {:a {:z even?}
-               :b [1 even? 3]}
+               :b [1 even? 3 1]
+               :c #{odd? even?}}
               {:a {:z 1234}
-               :b [1 2 3]
-               :c :this-is-all-very-cool})))
+               :b [1 2 3 1]
+               :c #{1 2}
+               :z :this-is-all-very-cool})))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- A deeper explanation of the various types of matcher ----

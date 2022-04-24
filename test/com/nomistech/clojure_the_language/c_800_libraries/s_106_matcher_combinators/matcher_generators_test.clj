@@ -74,12 +74,12 @@
 ;;;; ---- Predicates ----
 
 (deftest predicate-test
-  ;; Functions are used as predicates.
+  ;; A function is interpreted as a predicate.
   (is (match? even?
               1234))
   (is (match? not
               (= 1 2)))
-  (is (match? inc ; not normally considered a predicate, but used as one here
+  (is (match? inc ; not normally considered a predicate, but treated as one here
               1)))
 
 ;;;; ___________________________________________________________________________
@@ -87,19 +87,18 @@
 
 (deftest maps-test
 
-  ;; A map is interpreted as an `embeds` matcher, which ignores
-  ;; un-specified keys.
-  ;; - TODO: When you understand properly, maybe fix that comma.
+  ;; A map is interpreted as an `embeds` matcher, so it's OK for actual to
+  ;; have keys that are not present in expected.
 
-  (testing "Bare map -- expected equal to actual"
+  (testing "Expected equal to actual"
     (is (match? {:a 1}
                 {:a 1})))
 
-  (testing "Bare map -- ignores unspecified keys"
+  (testing "Ignores unspecified keys"
     (is (match? {:a 1}
                 {:a 1 :b 2})))
 
-  (testing "Use m/absent to check for absence of a key"
+  (testing "Use `m/absent` to check for absence of a key"
     (is (match? {:a 1 :b m/absent}
                 {:a 1}))
     (is (match? (m/mismatch ; see ++use-of-mismatch++ at top of file

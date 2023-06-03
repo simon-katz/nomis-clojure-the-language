@@ -2,7 +2,7 @@
   :dependencies [[bidi "2.1.4" :exclusions [ring/ring-core]]
                  [cheshire "5.8.1"]
                  [clj-http "3.9.1" :exclusions [riddley]]
-                 [com.climate/claypoole "1.1.4"]
+                 [org.clj-commons/claypoole "1.2.2"]
                  [com.taoensso/timbre "4.10.0" :exclusions [io.aviso/pretty
                                                             org.clojure/tools.reader]]
                  [metosin/compojure-api "2.0.0-alpha26"]

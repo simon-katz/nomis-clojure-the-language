@@ -33,7 +33,7 @@
 
 (fact
   *warn-on-reflection*
-  => nil)
+  => false)
 
 (defn uppify-v1 [s]
   (.toUpperCase s))

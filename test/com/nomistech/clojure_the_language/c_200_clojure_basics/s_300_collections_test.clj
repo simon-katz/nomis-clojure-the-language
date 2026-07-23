@@ -89,69 +89,75 @@
 
 (fact "Order of evaluation of map literals"
 
+  ;; 1.13.0-alpha1 (July 2, 2026): PersistentArrayMaps of only keyword keys
+  ;; now grow up to size 64 (previously was 8) before transitioning
+  ;; to PersistentHashMaps.
+  ;;
+  ;; These tests show non-keyword keys.
+
   (fact "Small maps are as you would expect"
-    (let [i (atom 0)]
-      {:k1 (swap! i inc)
-       :k2 (swap! i inc)
-       :k3 (swap! i inc)
-       :k4 (swap! i inc)
-       :k5 (swap! i inc)
-       :k6 (swap! i inc)
-       :k7 (swap! i inc)
-       :k8 (swap! i inc)})
-    => {:k1 1
-        :k2 2
-        :k3 3
-        :k4 4
-        :k5 5
-        :k6 6
-        :k7 7
-        :k8 8})
+    (let [i (atom 100)]
+      {1 (swap! i inc)
+       2 (swap! i inc)
+       3 (swap! i inc)
+       4 (swap! i inc)
+       5 (swap! i inc)
+       6 (swap! i inc)
+       7 (swap! i inc)
+       8 (swap! i inc)})
+    => {1 101
+        2 102
+        3 103
+        4 104
+        5 105
+        6 106
+        7 107
+        8 108})
 
   (fact "Larger maps might not be as you expect"
-    (let [i (atom 0)]
-      {:k1 (swap! i inc)
-       :k2 (swap! i inc)
-       :k3 (swap! i inc)
-       :k4 (swap! i inc)
-       :k5 (swap! i inc)
-       :k6 (swap! i inc)
-       :k7 (swap! i inc)
-       :k8 (swap! i inc)
-       :k9 (swap! i inc)})
-    =not=> {:k1 1
-            :k2 2
-            :k3 3
-            :k4 4
-            :k5 5
-            :k6 6
-            :k7 7
-            :k8 8
-            :k9 9})
+    (let [i (atom 100)]
+      {1 (swap! i inc)
+       2 (swap! i inc)
+       3 (swap! i inc)
+       4 (swap! i inc)
+       5 (swap! i inc)
+       6 (swap! i inc)
+       7 (swap! i inc)
+       8 (swap! i inc)
+       9 (swap! i inc)})
+    =not=> {1 101
+            2 102
+            3 103
+            4 104
+            5 105
+            6 106
+            7 107
+            8 108
+            9 109})
 
   (fact "Use `hash-map` if order of evaluation is important"
-    (let [i (atom 0)]
-      (hash-map :k1 (swap! i inc)
-                :k2 (swap! i inc)
-                :k3 (swap! i inc)
-                :k4 (swap! i inc)
-                :k5 (swap! i inc)
-                :k6 (swap! i inc)
-                :k7 (swap! i inc)
-                :k8 (swap! i inc)
-                :k9 (swap! i inc)))
-    => {:k1 1
-        :k2 2
-        :k3 3
-        :k4 4
-        :k5 5
-        :k6 6
-        :k7 7
-        :k8 8
-        :k9 9})
+    (let [i (atom 100)]
+      (hash-map 1 (swap! i inc)
+                2 (swap! i inc)
+                3 (swap! i inc)
+                4 (swap! i inc)
+                5 (swap! i inc)
+                6 (swap! i inc)
+                7 (swap! i inc)
+                8 (swap! i inc)
+                9 (swap! i inc)))
+    => {1 101
+        2 102
+        3 103
+        4 104
+        5 105
+        6 106
+        7 107
+        8 108
+        9 109})
 
   (fact "Or put values in a `let`"
-    (let [i (atom 0)
+    (let [i (atom 100)
           v1 (swap! i inc)
           v2 (swap! i inc)
           v3 (swap! i inc)
@@ -161,24 +167,24 @@
           v7 (swap! i inc)
           v8 (swap! i inc)
           v9 (swap! i inc)]
-      {:k1 v1
-       :k2 v2
-       :k3 v3
-       :k4 v4
-       :k5 v5
-       :k6 v6
-       :k7 v7
-       :k8 v8
-       :k9 v9})
-    => {:k1 1
-        :k2 2
-        :k3 3
-        :k4 4
-        :k5 5
-        :k6 6
-        :k7 7
-        :k8 8
-        :k9 9}))
+      {1 v1
+       2 v2
+       3 v3
+       4 v4
+       5 v5
+       6 v6
+       7 v7
+       8 v8
+       9 v9})
+    => {1 101
+        2 102
+        3 103
+        4 104
+        5 105
+        6 106
+        7 107
+        8 108
+        9 109}))
 
 ;;;; ___________________________________________________________________________
 ;;;; ---- sets ----

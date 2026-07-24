@@ -10,9 +10,9 @@
                              :or       {c 103
                                         ;; e 100 ; would contribute nothing
                                         }
-                             :as       as
                              :defaults defaults
-                             :select   select} input]
+                             :select   select
+                             :as       as} input]
                         {:a           a
                          :c           c
                          :defaults    defaults
@@ -65,3 +65,19 @@
     (is (= [101 121 22]
            (destructure {:a 101
                          :b {:b-a 121}})))))
+
+(deftest destructure-multi-level-select-test
+  (let [destructure (fn [m]
+                      (let [defaults {:a 1
+                                      :b {:b-a 21
+                                          :b-b 22}}
+                            mm (m/deep-merge defaults m)
+                            #_{:clj-kondo/ignore [:unused-binding]}
+                            {a :a
+                             {:keys [b-a b-b]} :b
+                             :select select} mm]
+                        select))]
+    (is (= {:a 101 :b {:b-a 121 :b-b 22}}
+           (destructure {:a 101
+                         :b {:b-a 121 :ignored 123}
+                         :ignored 3})))))

@@ -5,10 +5,11 @@
                  [org.clj-commons/claypoole "1.2.2"]
                  [com.taoensso/timbre "4.10.0" :exclusions [io.aviso/pretty
                                                             org.clojure/tools.reader]]
-                 [metosin/compojure-api "2.0.0-alpha26"]
+                 [metosin/compojure-api "2.0.0-alpha26" :exclusions [medley]]
                  [com.nomistech/clj-utils "0.8.2"]
                  [org.clojure/clojure "1.13.0-alpha5"]
                  [org.clojure/core.async "0.4.474"]
+                 [dev.weavejester/medley "1.10.0"]
                  [org.clojure/core.match "0.3.0-alpha5"]
                  [prismatic/schema "1.1.9"]
                  [org.slf4j/slf4j-simple "1.7.25"]

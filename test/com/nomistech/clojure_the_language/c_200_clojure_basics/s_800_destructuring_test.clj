@@ -12,12 +12,14 @@
                                         }
                              :defaults defaults
                              :select   select
-                             :as       as} input]
+                             :as       as
+                             :all      all} input]
                         {:a           a
                          :c           c
                          :defaults    defaults
                          :select      select
                          :as          as
+                         :all         all
                          :as+defaults (merge defaults as)}))]
 
     (let [input {:a 1 :b 2 :z 26}]
@@ -26,6 +28,7 @@
               :defaults    {:c 103}
               :select      {:a 1 :b 2 :c 103}
               :as          {:a 1 :b 2        :z 26}
+              :all         {:a 1 :b 2 :c 103 :z 26}
               :as+defaults {:a 1 :b 2 :c 103 :z 26}}
              (destructure input))))
 
@@ -35,6 +38,7 @@
               :defaults    {:c 103}
               :select      {:a 1 :b 2 :c 3}
               :as          {:a 1 :b 2 :c 3 :z 26}
+              :all         {:a 1 :b 2 :c 3 :z 26}
               :as+defaults {:a 1 :b 2 :c 3 :z 26}}
              (destructure input))))
 
@@ -44,6 +48,7 @@
               :defaults    {:c 103}
               :select      {:a 1 :b 2 :c 103 :d 4}
               :as          {:a 1 :b 2        :d 4 :z 26}
+              :all         {:a 1 :b 2 :c 103 :d 4 :z 26}
               :as+defaults {:a 1 :b 2 :c 103 :d 4 :z 26}}
              (destructure input))))))
 
@@ -58,11 +63,19 @@
                                           :b-b 22}}
                             mm (m/deep-merge defaults m)
                             {a :a
-                             {:keys [b-a b-b]} :b} mm]
-                        [a b-a b-b]))]
-    (is (= [1 21 22]
+                             {:keys [b-a b-b]} :b
+                             :all all} mm]
+                        [[a b-a b-b]
+                         all]))]
+    (is (= [[1 21 22]
+            {:a 1
+             :b {:b-a 21
+                 :b-b 22}}]
            (destructure {})))
-    (is (= [101 121 22]
+    (is (= [[101 121 22]
+            {:a 101
+             :b {:b-a 121
+                 :b-b 22}}]
            (destructure {:a 101
                          :b {:b-a 121}})))))
 

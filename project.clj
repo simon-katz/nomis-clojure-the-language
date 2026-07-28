@@ -7,7 +7,7 @@
                                                             org.clojure/tools.reader]]
                  [metosin/compojure-api "2.0.0-alpha26" :exclusions [medley]]
                  [com.nomistech/clj-utils "0.8.2"]
-                 [org.clojure/clojure "1.13.0-alpha5"]
+                 [org.clojure/clojure "1.13.0-alpha6"]
                  [org.clojure/core.async "0.4.474"]
                  [dev.weavejester/medley "1.10.0"]
                  [org.clojure/core.match "0.3.0-alpha5"]
